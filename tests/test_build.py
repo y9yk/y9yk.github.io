@@ -61,7 +61,9 @@ class PublicBuildTests(unittest.TestCase):
         text=self.build.render(self.data)
         footer=text.split('<footer>')[1].split('</footer>')[0]
         self.assertNotIn('<a ',footer)
-        self.assertEqual(text.count('class="company-avatar"'),len(self.data['career']))
+        self.assertEqual(text.count('class="company-avatar"'),5)
+        self.assertNotIn('<span>SK</span>',text)
+        self.assertNotIn('<span>빌</span>',text)
         self.assertIn('company-logo',text)
         self.assertIn('Customer conversation insights (상담 검색 서비스)',text)
         self.assertIn('SK AI Summit 2024 · Talk &amp; recording',text)

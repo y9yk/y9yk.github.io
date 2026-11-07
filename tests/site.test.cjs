@@ -34,3 +34,17 @@ test('the sticky header compacts only after scrolling', () => {
   window.scrollY = 100; onScroll(); assert.equal(state.get('is-scrolled'), true);
   window.scrollY = 0; onScroll(); assert.equal(state.get('is-scrolled'), false);
 });
+
+
+test('failed company logos hide their whole avatar without a placeholder', () => {
+  let onError;
+  const avatar = { hidden: false };
+  const image = { hidden: false, complete: false, naturalWidth: 0,
+    closest: () => avatar,
+    addEventListener: (name, callback) => { onError = callback; } };
+  const document = { querySelectorAll: () => [image], querySelector: () => null };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../assets/site.js'), 'utf8'), { document });
+  onError();
+  assert.equal(image.hidden, true);
+  assert.equal(avatar.hidden, true);
+});

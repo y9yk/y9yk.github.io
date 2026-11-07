@@ -123,9 +123,8 @@ def render(data):
     for job in data['career']:
         related=''.join(f'<div class="career-project"><h4><a href="#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in data['projects'] if p['career_id']==job['id'])
         logo={'skt-current':'skt.png','skt-previous':'skt.png','hyundai':'hyundai.png','lg':'lg.jpg','tmax':'tmax.png'}.get(job['id'])
-        initials={'skt-current':'SK','skt-previous':'SK','bereview':'빌','hyundai':'H','lg':'LG','tmax':'T'}[job['id']]
         image=f'<img class="company-logo" src="assets/companies/{logo}" alt="" width="36" height="36">' if logo else ''
-        mark=f'<span class="company-avatar" aria-hidden="true"><span>{initials}</span>{image}</span>' 
+        mark=f'<span class="company-avatar" aria-hidden="true">{image}</span>' if logo else ''
         career.append(f'<article class="timeline-row"><div class="period">{esc(job["period"])}</div><div><h3 class="company-name">{mark}<span>{esc(job["company"])}</span></h3><p class="job-role">{esc(job["role"])}</p>{bullets(job["bullets"],"career-bullets")}<p class="exact-date">{esc(job["dates"])}</p><div class="career-projects">{related}</div></div></article>')
     values['career']=''.join(career);values['projects']=cards(data)
     values['fun_section']=f'<section id="for-fun" class="section"><h2>For fun</h2>{fun(data)}</section>' if data.get('for_fun') else ''

@@ -1,7 +1,11 @@
 'use strict';
 
 for (const image of document.querySelectorAll('img')) {
-  const handleError = () => { image.hidden = true; };
+  const handleError = () => {
+    image.hidden = true;
+    const avatar = image.closest?.('.company-avatar');
+    if (avatar) avatar.hidden = true;
+  };
   image.addEventListener('error', handleError);
   if (image.complete && image.naturalWidth === 0) handleError();
 }
