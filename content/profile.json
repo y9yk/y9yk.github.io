@@ -1,0 +1,338 @@
+{
+  "name": "Yong Ki Lee",
+  "role": "AI service developer",
+  "headline": "AI service developer at SK Telecom",
+  "intro": "I turn complex data into actionable insights through LLM integrations and optimized data pipelines.",
+  "bio": [
+    "Build full-stack services and analyze data to solve business problems, from concept to scalable production.",
+    "Choose technology for user value, operational efficiency, and practical impact."
+  ],
+  "site_url": "https://y9yk.github.io/",
+  "links": [
+    {
+      "label": "Email",
+      "url": "mailto:andrew.yk82@gmail.com"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/y9yk"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/yongki-lee-752b4680/"
+    },
+    {
+      "label": "Blog",
+      "url": "https://y9yk.bearblog.dev/"
+    }
+  ],
+  "career": [
+    {
+      "period": "2023 — present",
+      "dates": "Sep 2023 — present",
+      "company": "SK Telecom",
+      "role": "AI Service Developer",
+      "id": "skt-current",
+      "bullets": [
+        "Backend engineering for counseling search.",
+        "AI and backend engineering for SmartBee."
+      ]
+    },
+    {
+      "period": "2020 — 2023",
+      "dates": "Sep 2020 — Apr 2023",
+      "company": "빌리뷰",
+      "role": "Co-founder & CTO",
+      "id": "bereview",
+      "bullets": [
+        "Review topic classification and REVIEWRO backend development."
+      ]
+    },
+    {
+      "period": "2016 — 2020",
+      "dates": "Apr 2016 — Aug 2020",
+      "company": "SK Telecom",
+      "role": "Data Scientist → Backend Developer",
+      "id": "skt-previous",
+      "bullets": [
+        "Data science for personalized targeting and network quality.",
+        "Backend development for personalized targeting and AIAS."
+      ]
+    },
+    {
+      "period": "2014 — 2016",
+      "dates": "Dec 2014 — Mar 2016",
+      "company": "Hyundai Motor Company",
+      "role": "Data Scientist",
+      "id": "hyundai",
+      "bullets": [
+        "Vehicle sensor-data engineering and diagnostic trouble-code analysis."
+      ]
+    },
+    {
+      "period": "2010 — 2014",
+      "dates": "Mar 2010 — Nov 2014",
+      "company": "LG Electronics",
+      "role": "Software Engineer · Smart TV Lab",
+      "id": "lg",
+      "bullets": [
+        "Smart TV search services and electronic program guide data processing."
+      ]
+    },
+    {
+      "period": "2009 — 2010",
+      "dates": "Jan 2009 — Mar 2010",
+      "company": "Tmaxsoft",
+      "role": "Software Engineer · WAS Lab",
+      "id": "tmax",
+      "bullets": [
+        "Servlet/JSP engine development and class-loading work for JEUS."
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "id": "data",
+      "name": "Data foundations",
+      "skills": [
+        {
+          "name": "Python",
+          "icon": "python"
+        },
+        {
+          "name": "Spark / PySpark"
+        },
+        {
+          "name": "Airflow"
+        },
+        {
+          "name": "Hadoop / Hive"
+        },
+        {
+          "name": "SQL",
+          "icon": "mysql"
+        }
+      ]
+    },
+    {
+      "id": "intelligence",
+      "name": "Intelligence & retrieval",
+      "skills": [
+        {
+          "name": "Elasticsearch",
+          "icon": "elasticsearch"
+        },
+        {
+          "name": "scikit-learn",
+          "icon": "sklearn"
+        },
+        {
+          "name": "NLP"
+        },
+        {
+          "name": "ANN search"
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "name": "Product & service APIs",
+      "skills": [
+        {
+          "name": "FastAPI",
+          "icon": "fastapi"
+        },
+        {
+          "name": "NestJS",
+          "icon": "nestjs"
+        },
+        {
+          "name": "Spring Boot",
+          "icon": "spring"
+        },
+        {
+          "name": "TypeScript",
+          "icon": "ts"
+        },
+        {
+          "name": "Java",
+          "icon": "java"
+        },
+        {
+          "name": "MongoDB",
+          "icon": "mongodb"
+        }
+      ]
+    },
+    {
+      "id": "operations",
+      "name": "Cloud & reliability",
+      "skills": [
+        {
+          "name": "Kubernetes",
+          "icon": "kubernetes"
+        },
+        {
+          "name": "Docker",
+          "icon": "docker"
+        },
+        {
+          "name": "GCP",
+          "icon": "gcp"
+        },
+        {
+          "name": "AWS",
+          "icon": "aws"
+        },
+        {
+          "name": "Azure",
+          "icon": "azure"
+        },
+        {
+          "name": "Prometheus",
+          "icon": "prometheus"
+        },
+        {
+          "name": "Grafana",
+          "icon": "grafana"
+        }
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "year": "2011",
+      "title": "Online Video Recommendation Through Tag-Cloud Aggregation",
+      "authors": "Jonghun Park, Sang-Jin Lee, Sung-Jun Lee, Kwanho Kim, Beom-Suk Chung, and Yong-Ki Lee",
+      "venue": "IEEE MultiMedia · Volume 18, Issue 1",
+      "url": "https://doi.org/10.1109/MMUL.2010.6",
+      "citation": "@article{park2011tagcloud,\n  title={Online Video Recommendation Through Tag-Cloud Aggregation},\n  author={Park, Jonghun and Lee, Sang-Jin and Lee, Sung-Jun and Kim, Kwanho and Chung, Beom-Suk and Lee, Yong-Ki},\n  journal={IEEE MultiMedia},\n  volume={18}, number={1}, year={2011},\n  doi={10.1109/MMUL.2010.6}\n}"
+    },
+    {
+      "year": "2009",
+      "title": "Tag-based Object Similarity Computation Using Term Space Dimension Reduction",
+      "authors": "Yong Ki Lee, Sung Jun Lee, and Jonghun Park",
+      "venue": "SIGIR ’09 · 32nd Annual ACM SIGIR Conference",
+      "url": "https://doi.org/10.1145/1571941.1572130",
+      "citation": "@inproceedings{lee2009tagbased,\n  title={Tag-based Object Similarity Computation Using Term Space Dimension Reduction},\n  author={Lee, Yong Ki and Lee, Sung Jun and Park, Jonghun},\n  booktitle={Proceedings of the 32nd Annual ACM SIGIR Conference},\n  year={2009}, doi={10.1145/1571941.1572130}\n}"
+    }
+  ],
+  "education": [
+    {
+      "period": "2007 — 2009",
+      "degree": "M.S. in Industrial Engineering",
+      "school": "Seoul National University",
+      "detail": "Information Management Lab · Advisor: Jonghun Park.",
+      "thesis": {
+        "title": "Tag-based Object Similarity Computation Using Term Space Dimension Reduction",
+        "url": "https://s-space.snu.ac.kr/handle/10371/11693"
+      }
+    },
+    {
+      "period": "2003 — 2007",
+      "degree": "B.S. in Industrial Engineering",
+      "school": "Seoul National University",
+      "detail": ""
+    }
+  ],
+  "for_fun": [
+    {
+      "title": "Site pulse",
+      "summary": "A live, anonymous view of how this site is explored.",
+      "url": "https://y9yk.github.io/stats/"
+    }
+  ],
+  "analytics": {
+    "endpoint": "https://analytics-production-1ca7.up.railway.app",
+    "production_host": "y9yk.github.io"
+  },
+  "projects": [
+    {
+      "id": "counseling-search",
+      "title": "Customer conversation insights",
+      "context": "SK Telecom · presented at SK AI Summit 2024",
+      "career_id": "skt-current",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service."
+    },
+    {
+      "id": "review-analytics",
+      "title": "Review topic analytics",
+      "context": "빌리뷰 · 2020–2023",
+      "career_id": "bereview",
+      "layers": [
+        "data",
+        "intelligence",
+        "services",
+        "operations"
+      ],
+      "summary": "Review topic classification for e-commerce at 빌리뷰."
+    },
+    {
+      "id": "reviewro",
+      "title": "REVIEWRO",
+      "context": "빌리뷰 · retired February 2023",
+      "career_id": "bereview",
+      "layers": [
+        "data",
+        "intelligence",
+        "services",
+        "operations"
+      ],
+      "summary": "Backend development for REVIEWRO, a review-based fashion commerce app. The service closed in February 2023."
+    },
+    {
+      "id": "aias",
+      "title": "AIAS: network quality analytics",
+      "context": "SK Telecom · 2016–2020",
+      "career_id": "skt-previous",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "Backend development for AIAS, a map-based telecom network quality service."
+    },
+    {
+      "id": "targeting",
+      "title": "Personalized targeting",
+      "context": "SK Telecom · 2016–2020",
+      "career_id": "skt-previous",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "Data modeling and backend development for personalized targeting at SK Telecom."
+    }
+  ],
+  "talks": [
+    {
+      "id": "sk-ai-summit-2024",
+      "title": "Customer conversation search: AI-powered insights",
+      "date": "2024",
+      "venue": "SK AI Summit 2024 · SK Telecom",
+      "links": [
+        {
+          "label": "Watch recording",
+          "url": "https://www.youtube.com/watch?v=256PfFzVDtw"
+        },
+        {
+          "label": "Official session",
+          "url": "https://devocean.sk.com/blog/techBoardDetail.do?ID=167900"
+        }
+      ]
+    },
+    {
+      "id": "bereview-seoultech",
+      "title": "빌리뷰, 당신의 리뷰를 믿어요",
+      "date": "25 June 2021",
+      "venue": "Seoul National University of Science and Technology",
+      "links": []
+    }
+  ]
+}

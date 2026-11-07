@@ -1,0 +1,4 @@
+const {test}=require('node:test');const assert=require('node:assert/strict');const vm=require('node:vm');const fs=require('node:fs');const path=require('node:path');
+const window={};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../assets/stats-story.js'),'utf8'),{window});
+test('story names the leading public section using actual counts',()=>{const s=window.sitePulseStory({range:{pageviews:10},pages:[{path:'/projects/',count:6},{path:'/stats/',count:4}]},7);assert.match(s.headline,/Projects/);assert.match(s.detail,/6 of 10/);assert.equal(s.share,60);assert.doesNotMatch(s.detail,/people|read for/);});
+test('ties and empty activity do not imply a fabricated winner',()=>{const s=window.sitePulseStory({range:{pageviews:4},pages:[{path:'/projects/',count:2},{path:'/stats/',count:2}]},30);assert.match(s.headline,/share/);assert.equal(s.share,null);assert.match(window.sitePulseStory({range:{pageviews:0},pages:[]},7).detail,/no recorded/);});

@@ -1,0 +1,6 @@
+.omx/
+dist/
+__pycache__/
+*.pyc
+*.sqlite*
+.DS_Store
