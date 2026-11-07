@@ -256,7 +256,12 @@
         "challenge": "Make conversations with different topics searchable for business questions.",
         "approach": "Built the backend supporting AI-assisted conversation search and analysis."
       },
-      "resources": []
+      "resources": [
+        {
+          "label": "Yonhap coverage",
+          "url": "https://www.yna.co.kr/view/AKR20240127027000017"
+        }
+      ]
     },
     {
       "id": "smartbee",

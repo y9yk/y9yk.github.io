@@ -1,6 +1,6 @@
 # Yong Ki Lee — public homepage
 
-The public profile, short project summaries, research links, and Site pulse dashboard for [y9yk.github.io](https://y9yk.github.io/).
+The public profile, project summary index, research links, and talks for [y9yk.github.io](https://y9yk.github.io/).
 
 ```sh
 make serve
@@ -14,13 +14,13 @@ This repository contains only approved public profile information and brief proj
 
 - `content/profile.json`: approved public content.
 - `scripts/build.py` and `src/`: public page generation.
-- `assets/`: local fonts, icons, and D3 dashboard.
+- `assets/`: local fonts and icons.
 - `services/analytics/`: anonymous aggregate collector.
 - `guides/analytics.md`: metric definitions and collector operations.
 - `DESIGN.md`: typography and interaction rules.
 
 ## Publication state
 
-Projects are a selected subset of the career timeline and appear on the homepage only. Detail pages remain excluded. Stats, its public API, and new browser collection are paused pending a research-backed design review; existing aggregates remain on the collector volume. Empty For fun content is hidden.
+Home keeps career-linked project summaries. The Projects header opens a separate list at /projects/. Detail articles remain in the private local review library and are not published here. Stats, its public API, and new browser collection are paused pending a research-backed design review; existing aggregates remain on the collector volume. Empty For fun content is hidden.
 
 Run `make check` before committing. GitHub Actions verifies, builds, and publishes `dist/` after main-branch pushes.

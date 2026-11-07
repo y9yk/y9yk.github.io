@@ -36,7 +36,8 @@ class PublicBuildTests(unittest.TestCase):
     def test_no_detail_routes_or_detail_links_are_published(self):
         subprocess.run([sys.executable,str(ROOT/'scripts/build.py')],check=True,cwd=ROOT,capture_output=True)
         output=ROOT/'dist'
-        self.assertFalse((output/'projects').exists())
+        self.assertTrue((output/'projects/index.html').is_file())
+        self.assertEqual(list((output/'projects').iterdir()),[output/'projects/index.html'])
         self.assertFalse((output/'talks').exists());self.assertFalse((output/'demos').exists())
         self.assertFalse((output/'stats').exists());self.assertFalse((output/'for-fun').exists())
         for file in output.rglob('*.html'):
@@ -55,8 +56,9 @@ class PublicBuildTests(unittest.TestCase):
         text=self.build.render(self.data)
         for forbidden in ['Site pulse','stats/','analytics.js','for-fun/']:
             self.assertNotIn(forbidden,text)
-        self.assertIn('href="#projects"',text)
-        self.assertIn('id="projects-title">Projects</h2>',text)
+        self.assertIn('href="projects/"',text)
+        self.assertNotIn('id="projects"',text)
+        self.assertIn('<h1>Projects</h1>',self.build.render_projects(self.data))
         self.assertNotIn('Selected projects',text)
     def test_footer_company_marks_and_conversation_talk_link(self):
         text=self.build.render(self.data)
@@ -67,14 +69,14 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('<span>빌</span>',text)
         self.assertIn('company-logo',text)
         self.assertIn('Customer conversation insights (상담 검색 서비스)',text)
-        self.assertIn('SK AI Summit 2024 · Talk &amp; recording',text)
+        self.assertIn('SK AI Summit 2024 · Talk &amp; recording',self.build.render_projects(self.data))
         for filename in ['skt.png','lg.jpg','hyundai.png','tmax.png']:
             self.assertTrue((ROOT/'assets/companies'/filename).is_file())
 
     def test_current_skt_project_order_and_widget_evidence(self):
         ids=[p['id'] for p in self.data['projects'] if p['career_id']=='skt-current']
         self.assertEqual(ids,['counseling-search','smartbee','polaris-studio','marketing-ax-workspace'])
-        text=self.build.render(self.data)
+        text=self.build.render_projects(self.data)
         self.assertIn('https://www.youtube.com/watch?v=B1QARo421XA',text)
         self.assertIn('embeddable widget',text)
 
@@ -82,7 +84,7 @@ class PublicBuildTests(unittest.TestCase):
         import hashlib
         text=self.build.render(self.data)
         for name in ['Polaris Studio','Marketing AX Workspace','My role','Challenge','Approach']:
-            self.assertIn(name,text)
+            self.assertIn(name,self.build.render_projects(self.data))
         self.assertNotIn('Official session',text)
         self.assertIn('https://www.youtube.com/watch?v=256PfFzVDtw',text)
         self.assertIn('assets/talks/seoultech-2021.pdf',text)
@@ -90,6 +92,15 @@ class PublicBuildTests(unittest.TestCase):
         self.assertEqual({str(p.relative_to(ROOT)) for p in (ROOT/'assets/talks').iterdir()},self.build.TALK_ASSETS)
         data=copy.deepcopy(self.data);data['projects'][0]['brief']['internal_notes']='private'
         with self.assertRaises(ValueError):self.build.render(data)
+
+    def test_home_keeps_career_summaries_and_projects_moves_to_index(self):
+        home=self.build.render(self.data)
+        listing=self.build.render_projects(self.data)
+        self.assertNotIn('class="project-grid"',home)
+        self.assertEqual(home.count('class="career-project"'),8)
+        self.assertEqual(listing.count('class="project"'),8)
+        self.assertIn('href="projects/#project-smartbee"',home)
+        self.assertIn('href="https://y9yk.bearblog.dev/">Blog</a>',home)
 
     def test_public_project_summaries_keep_the_approved_names(self):
         html=self.build.render(self.data)

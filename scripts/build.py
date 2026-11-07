@@ -91,7 +91,7 @@ def cards(data):
     result=[]
     for p in data['projects']:
         brief=''.join(f'<div><dt>{label}</dt><dd>{esc(p["brief"][key])}</dd></div>' for key,label in [('problem','Problem'),('role','My role'),('challenge','Challenge'),('approach','Approach')])
-        talk_link='<p class="project-talk"><a href="#talks">SK AI Summit 2024 · Talk &amp; recording</a></p>' if p['id']=='counseling-search' else ''
+        talk_link='<p class="project-talk"><a href="../#talks">SK AI Summit 2024 · Talk &amp; recording</a></p>' if p['id']=='counseling-search' else ''
         resources='<div class="resource-links">'+''.join(action(r['url'],r['label'],True) for r in p['resources'])+'</div>' if p['resources'] else ''
         result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}</article>')
     return '<div class="project-grid">'+''.join(result)+'</div>'
@@ -121,12 +121,12 @@ def render(data):
     values['links'] = ''.join(f'<a href="{safe_url(p["url"])}"><img class="contact-icon" src="assets/icons/{icons[p["label"]]}.svg" alt="" width="16" height="16"><span>{esc(p["label"])}</span></a>' for p in data['links'])
     career=[]
     for job in data['career']:
-        related=''.join(f'<div class="career-project"><h4><a href="#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in data['projects'] if p['career_id']==job['id'])
+        related=''.join(f'<div class="career-project"><h4><a href="projects/#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in data['projects'] if p['career_id']==job['id'])
         logo={'skt-current':'skt.png','skt-previous':'skt.png','hyundai':'hyundai.png','lg':'lg.jpg','tmax':'tmax.png'}.get(job['id'])
         image=f'<img class="company-logo" src="assets/companies/{logo}" alt="" width="36" height="36">' if logo else ''
         mark=f'<span class="company-avatar" aria-hidden="true">{image}</span>' if logo else ''
         career.append(f'<article class="timeline-row"><div class="period">{esc(job["period"])}</div><div><h3 class="company-name">{mark}<span>{esc(job["company"])}</span></h3><p class="job-role">{esc(job["role"])}</p>{bullets(job["bullets"],"career-bullets")}<p class="exact-date">{esc(job["dates"])}</p><div class="career-projects">{related}</div></div></article>')
-    values['career']=''.join(career);values['projects']=cards(data)
+    values['career']=''.join(career)
     values['fun_section']=f'<section id="for-fun" class="section"><h2>For fun</h2>{fun(data)}</section>' if data.get('for_fun') else ''
     values['papers']=''.join(f'<article class="paper"><span class="paper-year">{esc(p["year"])}</span><div><h3><a href="{safe_url(p["url"])}">{esc(p["title"])}</a></h3><p class="authors">{esc(p["authors"])}</p><p class="venue">{esc(p["venue"])}</p><details><summary>BibTeX</summary><pre><code>{esc(p["citation"])}</code></pre></details></div></article>' for p in data['publications'])
     degrees=[]
@@ -150,15 +150,24 @@ def render(data):
     return template('template.html',values)
 
 
+def render_projects(data):
+    validate(data)
+    values=base(data,prefix='../',title=f'{data["name"]} | Projects',route='projects/')
+    values['projects']=cards(data)
+    return template('projects.html',values)
+
+
 def main():
     data=json.loads((ROOT/'content/profile.json').read_text());validate(data)
     output=ROOT/'dist'
     if output.exists():shutil.rmtree(output)
     output.mkdir();(output/'index.html').write_text(render(data))
+    (output/'projects').mkdir()
+    (output/'projects/index.html').write_text(render_projects(data))
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')
-    print('Built the approved public homepage. No detail, collection, or statistics pages are generated.')
+    print('Built the approved public homepage. Projects summary index generated; detail and statistics pages remain unpublished.')
 
 
 if __name__=='__main__':main()
