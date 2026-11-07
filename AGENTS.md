@@ -5,3 +5,5 @@ This checkout is public. Keep detailed project drafts, internal diagrams, source
 The user has explicitly withdrawn publication of detail pages. Only public-profile-level summaries are approved here. Any future detail publication requires the user to review the specific proposed material first. Preserve the test that rejects detail fields and ensures no project/talk detail routes are built.
 
 Run `make check` and `make build` before pushing. Do not seed production analytics or label browser-tab sessions as identified people. Preserve DNT/GPC behavior and aggregate-only public output.
+
+Stats, its public API, and browser collection are paused. Do not republish the dashboard or resume collection before the user reviews a research-backed screen plan. Projects remain a homepage section, not a separate index or detail route.

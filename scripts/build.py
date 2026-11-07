@@ -67,14 +67,12 @@ def validate(data):
 
 
 def base(data, prefix='', title=None, route=''):
-    files = ['style.css', 'site.js', 'analytics.js', 'stats.css', 'stats.js', 'stats-story.js']
+    files = ['style.css', 'site.js']
     version = hashlib.sha256(b''.join((ROOT / 'assets' / name).read_bytes() for name in files)).hexdigest()[:12]
-    endpoint = origin(data['analytics']['endpoint'])
-    policy = f"default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' https://skillicons.dev; connect-src {endpoint}; base-uri 'none'; form-action 'none'"
+    policy = "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' https://skillicons.dev; connect-src 'none'; base-uri 'none'; form-action 'none'"
     return {'name':esc(data['name']), 'prefix':prefix, 'title':esc(title or f'{data["name"]} | AI service developer'),
             'site_url':safe_url(data['site_url']+route), 'version':version, 'policy':esc(policy),
-            'analytics_endpoint':esc(endpoint), 'production_host':esc(data['analytics']['production_host']),
-            'site_header':template('header.html',{'prefix':prefix})}
+            'site_header':template('header.html',{'prefix':prefix,'fun_link':f'<a href="{prefix}#for-fun">For fun</a>' if data.get('for_fun') else ''})}
 
 
 def cards(data):
@@ -96,8 +94,8 @@ def render(data):
     for job in data['career']:
         related=''.join(f'<div class="career-project"><h4><a href="#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in data['projects'] if p['career_id']==job['id'])
         career.append(f'<article class="timeline-row"><div class="period">{esc(job["period"])}</div><div><h3>{esc(job["company"])}</h3><p class="job-role">{esc(job["role"])}</p>{bullets(job["bullets"],"career-bullets")}<p class="exact-date">{esc(job["dates"])}</p><div class="career-projects">{related}</div></div></article>')
-    values['career']=''.join(career);values['projects']=cards(data);values['fun']=fun(data)
-    values['projects_action']=action('projects/','All projects')
+    values['career']=''.join(career);values['projects']=cards(data)
+    values['fun_section']=f'<section id="for-fun" class="section"><h2>For fun</h2>{fun(data)}</section>' if data.get('for_fun') else ''
     values['papers']=''.join(f'<article class="paper"><span class="paper-year">{esc(p["year"])}</span><div><h3><a href="{safe_url(p["url"])}">{esc(p["title"])}</a></h3><p class="authors">{esc(p["authors"])}</p><p class="venue">{esc(p["venue"])}</p><details><summary>BibTeX</summary><pre><code>{esc(p["citation"])}</code></pre></details></div></article>' for p in data['publications'])
     degrees=[]
     for degree in data['education']:
@@ -120,24 +118,15 @@ def render(data):
     return template('template.html',values)
 
 
-def render_collection(data,kind):
-    values=base(data,'../',f'{"Projects" if kind=="projects" else "For fun"} | {data["name"]}',kind+'/')
-    values.update(heading='Projects' if kind=='projects' else 'For fun',description='Public projects and experiments by '+esc(data['name']),cards=cards(data) if kind=='projects' else fun(data))
-    return template('collection.html',values)
-
-
 def main():
     data=json.loads((ROOT/'content/profile.json').read_text());validate(data)
     output=ROOT/'dist'
     if output.exists():shutil.rmtree(output)
     output.mkdir();(output/'index.html').write_text(render(data))
-    for kind in ['projects','for-fun']:
-        (output/kind).mkdir();(output/kind/'index.html').write_text(render_collection(data,kind))
-    (output/'stats').mkdir();(output/'stats/index.html').write_text(template('stats.html',base(data,'../',f'Site pulse | {data["name"]}','stats/')))
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')
-    print('Built approved public summaries, For fun, and Site pulse. No detail pages are generated.')
+    print('Built the approved public homepage. No detail, collection, or statistics pages are generated.')
 
 
 if __name__=='__main__':main()

@@ -19,8 +19,8 @@ This repository contains only approved public profile information and brief proj
 - `guides/analytics.md`: metric definitions and collector operations.
 - `DESIGN.md`: typography and interaction rules.
 
-## Site pulse
+## Publication state
 
-The dashboard turns aggregate activity into short browsing stories and charts. It shows only measured dates, with no raw daily table or individual browsing histories. Device categories use viewport widths. Anonymous tab sessions differ from identified people; DNT/GPC and localhost previews skip collection. No traffic is seeded.
+Projects are a selected subset of the career timeline and appear on the homepage only. Detail pages remain excluded. Stats, its public API, and new browser collection are paused pending a research-backed design review; existing aggregates remain on the collector volume. Empty For fun content is hidden.
 
-Run `make check` before committing. GitHub Actions verifies, builds, and publishes `dist/` after main-branch pushes. The collector is deployed separately and uses no credentials in the public frontend.
+Run `make check` before committing. GitHub Actions verifies, builds, and publishes `dist/` after main-branch pushes.

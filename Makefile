@@ -9,9 +9,6 @@ build:
 check:
 	$(PYTHON) -m unittest discover -s tests -v
 	node --check assets/site.js
-	node --check assets/analytics.js
-	node --check assets/stats.js
-	node --check assets/stats-story.js
 	node --test tests/*.test.cjs
 serve: build
 	@printf '\nPreview: http://127.0.0.1:$(PORT)\nStop with Ctrl+C.\n\n'

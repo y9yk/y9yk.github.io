@@ -73,7 +73,7 @@ class AnalyticsHTTPTests(unittest.TestCase):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         with tempfile.TemporaryDirectory() as directory:
-            handler = type('TestHandler', (module.Handler,), {'store': module.Store(Path(directory)), 'limits': {}})
+            handler = type('TestHandler', (module.Handler,), {'store': module.Store(Path(directory)), 'limits': {}, 'collection_enabled':True, 'public_stats_enabled':True})
             server = module.ThreadingHTTPServer(('127.0.0.1', 0), handler)
             worker = threading.Thread(target=server.serve_forever, daemon=True)
             worker.start()
@@ -91,6 +91,11 @@ class AnalyticsHTTPTests(unittest.TestCase):
                 with urlopen(base+'/api/stats?days=7',timeout=5) as response:
                     self.assertEqual(response.headers['Access-Control-Allow-Origin'],'*')
                     self.assertEqual(json.load(response)['today']['pageviews'],1)
+                handler.public_stats_enabled=False;handler.collection_enabled=False
+                for req in [base+'/api/stats?days=7',valid]:
+                    with self.assertRaises(HTTPError) as error:
+                        urlopen(req,timeout=5)
+                    self.assertEqual(error.exception.code,404);error.exception.close()
                 with self.assertRaises(HTTPError) as error:
                     urlopen(base+'/.session-key',timeout=5)
                 self.assertEqual(error.exception.code,404)

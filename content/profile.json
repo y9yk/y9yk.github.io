@@ -235,17 +235,7 @@
       "detail": ""
     }
   ],
-  "for_fun": [
-    {
-      "title": "Site pulse",
-      "summary": "A live, anonymous view of how this site is explored.",
-      "url": "https://y9yk.github.io/stats/"
-    }
-  ],
-  "analytics": {
-    "endpoint": "https://analytics-production-1ca7.up.railway.app",
-    "production_host": "y9yk.github.io"
-  },
+  "for_fun": [],
   "projects": [
     {
       "id": "counseling-search",

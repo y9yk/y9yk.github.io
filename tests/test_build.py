@@ -36,8 +36,9 @@ class PublicBuildTests(unittest.TestCase):
     def test_no_detail_routes_or_detail_links_are_published(self):
         subprocess.run([sys.executable,str(ROOT/'scripts/build.py')],check=True,cwd=ROOT,capture_output=True)
         output=ROOT/'dist'
-        self.assertEqual(list((output/'projects').rglob('*.html')),[output/'projects/index.html'])
+        self.assertFalse((output/'projects').exists())
         self.assertFalse((output/'talks').exists());self.assertFalse((output/'demos').exists())
+        self.assertFalse((output/'stats').exists());self.assertFalse((output/'for-fun').exists())
         for file in output.rglob('*.html'):
             doc=Document(file.read_text())
             for url in doc.links:
@@ -49,10 +50,12 @@ class PublicBuildTests(unittest.TestCase):
         self.assertIn('https://s-space.snu.ac.kr/handle/10371/11693',html)
         self.assertIn('button button-outline',html)
         self.assertIn('action-icon',html);self.assertNotIn('↗',html)
-    def test_dashboard_omits_implementation_and_raw_table(self):
-        text=(ROOT/'src/stats.html').read_text()+(ROOT/'assets/stats.js').read_text()
-        for forbidden in ['SQLite','Daily data table','<table','Unmeasured','Reading paths']:
+    def test_statistics_and_empty_fun_are_not_exposed(self):
+        text=self.build.render(self.data)
+        for forbidden in ['Site pulse','stats/','analytics.js','for-fun/']:
             self.assertNotIn(forbidden,text)
+        self.assertIn('href="#projects"',text)
+        self.assertIn('Selected projects',text)
     def test_public_project_summaries_keep_the_approved_names(self):
         html=self.build.render(self.data)
         self.assertIn('빌리뷰',html);self.assertNotIn('BeReview',html)

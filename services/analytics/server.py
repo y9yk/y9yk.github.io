@@ -123,6 +123,8 @@ class Store:
 class Handler(BaseHTTPRequestHandler):
     store = None
     allowed_origin = os.environ.get('SITE_ORIGIN', 'https://y9yk.github.io')
+    public_stats_enabled = os.environ.get('PUBLIC_STATS_ENABLED', 'false').lower() == 'true'
+    collection_enabled = os.environ.get('COLLECTION_ENABLED', 'false').lower() == 'true'
     limits = {}
     limits_lock = threading.Lock()
 
@@ -152,6 +154,9 @@ class Handler(BaseHTTPRequestHandler):
         if parsed.path == '/health':
             self.respond(200, {'ok': True})
         elif parsed.path == '/api/stats':
+            if not self.public_stats_enabled:
+                self.respond(404, {'error': 'Not found'})
+                return
             query = parse_qs(parsed.query)
             try:
                 days = int(query.get('days', ['30'])[0])
@@ -176,6 +181,9 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_POST(self):
+        if not self.collection_enabled:
+            self.respond(404, {'error': 'Collection paused'})
+            return
         if self.path != '/api/events':
             self.respond(404, {'error': 'Not found'})
             return
