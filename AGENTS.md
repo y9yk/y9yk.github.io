@@ -7,3 +7,5 @@ The user has explicitly withdrawn publication of detail pages. Only public-profi
 Run `make check` and `make build` before pushing. Do not seed production analytics or label browser-tab sessions as identified people. Preserve DNT/GPC behavior and aggregate-only public output.
 
 Stats, its public API, and browser collection are paused. Do not republish the dashboard or resume collection before the user reviews a research-backed screen plan. Projects remain a homepage section, not a separate index or detail route.
+
+Specific media approval: the user approved publishing the 25 June 2021 SeoulTech talk, “빌리뷰, 당신의 리뷰를 믿어요”. Only its original PDF (SHA-256 95c2cc201942a741c4a8ad92566fba11eafef9511521433d83c7b8438017a0c1) and cover are allowed in assets/talks, alongside the public SK AI Summit YouTube thumbnail. This does not authorize other source documents or project detail pages. Project briefs are limited to short problem, own-role, challenge, and approach summaries. The user directly confirmed service planning and backend architecture/development for Polaris Studio and Marketing AX Workspace; do not attribute colleagues’ implementation work to the site owner.

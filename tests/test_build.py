@@ -42,24 +42,38 @@ class PublicBuildTests(unittest.TestCase):
         for file in output.rglob('*.html'):
             doc=Document(file.read_text())
             for url in doc.links:
-                self.assertNotIn('talks/',url)
+                self.assertFalse(url.startswith('talks/'))
                 self.assertNotRegex(url,r'projects/[^?#/]+/')
                 if url.startswith('#'):self.assertIn(url[1:],doc.ids)
     def test_research_and_outlined_project_action(self):
         html=self.build.render(self.data)
         self.assertIn('https://s-space.snu.ac.kr/handle/10371/11693',html)
-        self.assertIn('button button-outline',html)
-        self.assertIn('action-icon',html);self.assertNotIn('↗',html)
+        button=self.build.action('#projects','Projects')
+        self.assertIn('button button-outline',button)
+        self.assertIn('action-icon',button);self.assertNotIn('↗',html)
     def test_statistics_and_empty_fun_are_not_exposed(self):
         text=self.build.render(self.data)
         for forbidden in ['Site pulse','stats/','analytics.js','for-fun/']:
             self.assertNotIn(forbidden,text)
         self.assertIn('href="#projects"',text)
         self.assertIn('Selected projects',text)
+    def test_project_briefs_and_approved_talk_material(self):
+        import hashlib
+        text=self.build.render(self.data)
+        for name in ['Polaris Studio','Marketing AX Workspace','My role','Challenge','Approach']:
+            self.assertIn(name,text)
+        self.assertNotIn('Official session',text)
+        self.assertIn('https://www.youtube.com/watch?v=256PfFzVDtw',text)
+        self.assertIn('assets/talks/seoultech-2021.pdf',text)
+        self.assertEqual(hashlib.sha256((ROOT/'assets/talks/seoultech-2021.pdf').read_bytes()).hexdigest(),'95c2cc201942a741c4a8ad92566fba11eafef9511521433d83c7b8438017a0c1')
+        self.assertEqual({str(p.relative_to(ROOT)) for p in (ROOT/'assets/talks').iterdir()},self.build.TALK_ASSETS)
+        data=copy.deepcopy(self.data);data['projects'][0]['brief']['internal_notes']='private'
+        with self.assertRaises(ValueError):self.build.render(data)
+
     def test_public_project_summaries_keep_the_approved_names(self):
         html=self.build.render(self.data)
         self.assertIn('빌리뷰',html);self.assertNotIn('BeReview',html)
         self.assertNotIn('CQRS with NestJS',html)
-        self.assertEqual(len(self.data['projects']),5)
+        self.assertEqual(len(self.data['projects']),7)
 
 if __name__=='__main__':unittest.main()

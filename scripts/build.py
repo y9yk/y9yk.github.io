@@ -1,4 +1,4 @@
-"""Build only the approved public profile, collections, and statistics page."""
+"""Build the approved public homepage and explicitly approved talk assets."""
 import hashlib
 import html
 import json
@@ -8,7 +8,13 @@ import shutil
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary'}
+PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief'}
+BRIEF_FIELDS = {'problem', 'role', 'challenge', 'approach'}
+TALK_ASSETS = {'assets/talks/sk-ai-summit-2024-video.jpg', 'assets/talks/seoultech-2021-cover.png', 'assets/talks/seoultech-2021.pdf'}
+
+
+def talk_url(value):
+    return esc(value) if value in TALK_ASSETS else safe_url(value)
 
 
 def esc(value):
@@ -58,6 +64,8 @@ def validate(data):
     for project in data['projects']:
         if set(project) != PROJECT_FIELDS:
             raise ValueError('Only approved public project summary fields are allowed')
+        if set(project['brief']) != BRIEF_FIELDS or any(not isinstance(v, str) or not v.strip() or len(v) > 240 for v in project['brief'].values()):
+            raise ValueError('Project briefs require four concise public summary fields')
         if not re.fullmatch('[a-z][a-z0-9-]*', project['id']) or project['id'] in ids:
             raise ValueError('Invalid project ID')
         ids.add(project['id'])
@@ -76,7 +84,22 @@ def base(data, prefix='', title=None, route=''):
 
 
 def cards(data):
-    return '<div class="project-grid">' + ''.join(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p></article>' for p in data['projects']) + '</div>'
+    result=[]
+    for p in data['projects']:
+        brief=''.join(f'<div><dt>{label}</dt><dd>{esc(p["brief"][key])}</dd></div>' for key,label in [('problem','Problem'),('role','My role'),('challenge','Challenge'),('approach','Approach')])
+        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl></article>')
+    return '<div class="project-grid">'+''.join(result)+'</div>'
+
+
+def talk_card(p):
+    media=p.get('media');preview=''
+    if media:
+        if media['src'] not in TALK_ASSETS:
+            raise ValueError('Unapproved talk media')
+        play='<span class="play-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5v14l11-7z"/></svg></span>' if media['kind']=='video' else ''
+        preview=f'<a class="talk-preview" href="{talk_url(media["url"])}"><span class="talk-image"><img src="{esc(media["src"])}" alt="" loading="lazy" width="480" height="270">{play}</span><span class="talk-caption">{esc(media["label"])}</span></a>'
+    links=''.join(action(r['url'],r['label'],True) for r in p['links'])
+    return f'<article class="talk-row"><span class="period">{esc(p["date"])}</span><div><h3>{esc(p["title"])}</h3><p class="job-role">{esc(p["venue"])}</p>{preview}<div class="resource-links">{links}</div></div></article>'
 
 
 def fun(data):
@@ -103,7 +126,7 @@ def render(data):
         detail=f'<p>{esc(degree["detail"])}</p>' if degree.get('detail') else ''
         degrees.append(f'<article class="education-row"><span class="period">{esc(degree["period"])}</span><div><h3>{esc(degree["degree"])}</h3><p class="school">{esc(degree["school"])}</p>{detail}{link}</div></article>')
     values['education']=''.join(degrees)
-    values['talks']=''.join(f'<article class="talk-row"><span class="period">{esc(p["date"])}</span><div><h3>{esc(p["title"])}</h3><p class="job-role">{esc(p["venue"])}</p><div class="resource-links">{"".join(action(r["url"],r["label"],True) for r in p["links"])}</div></div></article>' for p in data['talks'])
+    values['talks']=''.join(talk_card(p) for p in data['talks'])
     layers=[]
     for layer in data['layers']:
         skills=[]

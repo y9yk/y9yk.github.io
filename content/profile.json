@@ -34,7 +34,8 @@
       "role": "AI Service Developer",
       "id": "skt-current",
       "bullets": [
-        "Backend engineering for counseling search.",
+        "Service planning, backend architecture, and development for Polaris Studio and Marketing AX Workspace.",
+        "Backend engineering for customer conversation search.",
         "AI and backend engineering for SmartBee."
       ]
     },
@@ -238,6 +239,42 @@
   "for_fun": [],
   "projects": [
     {
+      "id": "polaris-studio",
+      "title": "Polaris Studio",
+      "context": "SK Telecom · AI workflow automation",
+      "career_id": "skt-current",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "A no-code AI workflow service for working with internal data and automating repetitive tasks.",
+      "brief": {
+        "problem": "Make customer data and AI workflows accessible to teams without requiring them to write code.",
+        "role": "Service planning, backend architecture, and backend development.",
+        "challenge": "Workflows need to accommodate different departmental data sources and services.",
+        "approach": "Planned the service workflows and designed and implemented the backend supporting them."
+      }
+    },
+    {
+      "id": "marketing-ax-workspace",
+      "title": "Marketing AX Workspace",
+      "context": "SK Telecom · conversational workspace",
+      "career_id": "skt-current",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "A conversational workspace for accessing business data and services through natural-language requests.",
+      "brief": {
+        "problem": "Help marketing teams use business data and tools through a conversational interface.",
+        "role": "Service planning, backend architecture, and backend development.",
+        "challenge": "Support varied user requests across existing data and service interfaces.",
+        "approach": "Planned the workspace experience and designed and implemented the backend for its service flows."
+      }
+    },
+    {
       "id": "counseling-search",
       "title": "Customer conversation insights",
       "context": "SK Telecom · presented at SK AI Summit 2024",
@@ -247,7 +284,13 @@
         "intelligence",
         "services"
       ],
-      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service."
+      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service.",
+      "brief": {
+        "problem": "Find useful signals in unstructured customer conversations.",
+        "role": "Backend engineering for the customer conversation search service.",
+        "challenge": "Make conversations with different topics searchable for business questions.",
+        "approach": "Built the backend supporting AI-assisted conversation search and analysis."
+      }
     },
     {
       "id": "review-analytics",
@@ -260,7 +303,13 @@
         "services",
         "operations"
       ],
-      "summary": "Review topic classification for e-commerce at 빌리뷰."
+      "summary": "Review topic classification for e-commerce at 빌리뷰.",
+      "brief": {
+        "problem": "Help shoppers find relevant information in reviews that cover several topics.",
+        "role": "Led review-data pipelines, service APIs, and administration tools as co-founder and CTO.",
+        "challenge": "Handle informal review language and multiple topics within a single review.",
+        "approach": "Combined review collection and preprocessing with topic analysis and a storefront review widget."
+      }
     },
     {
       "id": "reviewro",
@@ -273,7 +322,13 @@
         "services",
         "operations"
       ],
-      "summary": "Backend development for REVIEWRO, a review-based fashion commerce app. The service closed in February 2023."
+      "summary": "Backend development for REVIEWRO, a review-based fashion commerce app. The service closed in February 2023.",
+      "brief": {
+        "problem": "Help shoppers discover fashion products through reviews.",
+        "role": "Backend development and operation for the REVIEWRO app.",
+        "challenge": "Support review-based discovery alongside commerce workflows.",
+        "approach": "Built the backend connecting product and review data with the app’s commerce features."
+      }
     },
     {
       "id": "aias",
@@ -285,7 +340,13 @@
         "intelligence",
         "services"
       ],
-      "summary": "Backend development for AIAS, a map-based telecom network quality service."
+      "summary": "Backend development for AIAS, a map-based telecom network quality service.",
+      "brief": {
+        "problem": "Help network teams examine service quality in its location context.",
+        "role": "Data science and backend development for AIAS.",
+        "challenge": "Make network-quality and location data usable in a map-based service.",
+        "approach": "Built analytics data marts and backend APIs for exploring network quality."
+      }
     },
     {
       "id": "targeting",
@@ -297,7 +358,13 @@
         "intelligence",
         "services"
       ],
-      "summary": "Data modeling and backend development for personalized targeting at SK Telecom."
+      "summary": "Data modeling and backend development for personalized targeting at SK Telecom.",
+      "brief": {
+        "problem": "Turn customer data into usable inputs for personalized marketing.",
+        "role": "Feature engineering, data modeling, and targeting backend development.",
+        "challenge": "Connect analytical customer profiles with operational marketing services.",
+        "approach": "Developed customer feature matrices and a targeting backend used for Biz-RCS."
+      }
     }
   ],
   "talks": [
@@ -306,23 +373,26 @@
       "title": "Customer conversation search: AI-powered insights",
       "date": "2024",
       "venue": "SK AI Summit 2024 · SK Telecom",
-      "links": [
-        {
-          "label": "Watch recording",
-          "url": "https://www.youtube.com/watch?v=256PfFzVDtw"
-        },
-        {
-          "label": "Official session",
-          "url": "https://devocean.sk.com/blog/techBoardDetail.do?ID=167900"
-        }
-      ]
+      "links": [],
+      "media": {
+        "src": "assets/talks/sk-ai-summit-2024-video.jpg",
+        "url": "https://www.youtube.com/watch?v=256PfFzVDtw",
+        "label": "Watch the SK AI Summit 2024 recording on YouTube",
+        "kind": "video"
+      }
     },
     {
       "id": "bereview-seoultech",
       "title": "빌리뷰, 당신의 리뷰를 믿어요",
       "date": "25 June 2021",
       "venue": "Seoul National University of Science and Technology",
-      "links": []
+      "links": [],
+      "media": {
+        "src": "assets/talks/seoultech-2021-cover.png",
+        "url": "assets/talks/seoultech-2021.pdf",
+        "label": "View slides (PDF · 4.5 MB)",
+        "kind": "slides"
+      }
     }
   ]
 }
