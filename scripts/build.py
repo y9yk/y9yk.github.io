@@ -8,7 +8,7 @@ import shutil
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief'}
+PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief', 'resources'}
 BRIEF_FIELDS = {'problem', 'role', 'challenge', 'approach'}
 TALK_ASSETS = {'assets/talks/sk-ai-summit-2024-video.jpg', 'assets/talks/seoultech-2021-cover.png', 'assets/talks/seoultech-2021.pdf'}
 
@@ -64,6 +64,10 @@ def validate(data):
     for project in data['projects']:
         if set(project) != PROJECT_FIELDS:
             raise ValueError('Only approved public project summary fields are allowed')
+        for resource in project['resources']:
+            if set(resource) != {'label','url'}:
+                raise ValueError('Only public resource labels and URLs are allowed')
+            safe_url(resource['url'])
         if set(project['brief']) != BRIEF_FIELDS or any(not isinstance(v, str) or not v.strip() or len(v) > 240 for v in project['brief'].values()):
             raise ValueError('Project briefs require four concise public summary fields')
         if not re.fullmatch('[a-z][a-z0-9-]*', project['id']) or project['id'] in ids:
@@ -88,7 +92,8 @@ def cards(data):
     for p in data['projects']:
         brief=''.join(f'<div><dt>{label}</dt><dd>{esc(p["brief"][key])}</dd></div>' for key,label in [('problem','Problem'),('role','My role'),('challenge','Challenge'),('approach','Approach')])
         talk_link='<p class="project-talk"><a href="#talks">SK AI Summit 2024 · Talk &amp; recording</a></p>' if p['id']=='counseling-search' else ''
-        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}</article>')
+        resources='<div class="resource-links">'+''.join(action(r['url'],r['label'],True) for r in p['resources'])+'</div>' if p['resources'] else ''
+        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}</article>')
     return '<div class="project-grid">'+''.join(result)+'</div>'
 
 
@@ -118,7 +123,9 @@ def render(data):
     for job in data['career']:
         related=''.join(f'<div class="career-project"><h4><a href="#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in data['projects'] if p['career_id']==job['id'])
         logo={'skt-current':'skt.png','skt-previous':'skt.png','hyundai':'hyundai.png','lg':'lg.jpg','tmax':'tmax.png'}.get(job['id'])
-        mark=f'<img class="company-logo" src="assets/companies/{logo}" alt="" width="44" height="32">' if logo else ''
+        initials={'skt-current':'SK','skt-previous':'SK','bereview':'빌','hyundai':'H','lg':'LG','tmax':'T'}[job['id']]
+        image=f'<img class="company-logo" src="assets/companies/{logo}" alt="" width="36" height="36">' if logo else ''
+        mark=f'<span class="company-avatar" aria-hidden="true"><span>{initials}</span>{image}</span>' 
         career.append(f'<article class="timeline-row"><div class="period">{esc(job["period"])}</div><div><h3 class="company-name">{mark}<span>{esc(job["company"])}</span></h3><p class="job-role">{esc(job["role"])}</p>{bullets(job["bullets"],"career-bullets")}<p class="exact-date">{esc(job["dates"])}</p><div class="career-projects">{related}</div></div></article>')
     values['career']=''.join(career);values['projects']=cards(data)
     values['fun_section']=f'<section id="for-fun" class="section"><h2>For fun</h2>{fun(data)}</section>' if data.get('for_fun') else ''

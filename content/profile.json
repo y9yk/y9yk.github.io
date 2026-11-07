@@ -34,9 +34,10 @@
       "role": "AI Service Developer",
       "id": "skt-current",
       "bullets": [
-        "Service planning, backend architecture, and development for Polaris Studio and Marketing AX Workspace.",
-        "Backend engineering for customer conversation search.",
-        "AI and backend engineering for SmartBee."
+        "Backend engineering for customer conversation search (상담 검색 서비스).",
+        "AI and backend engineering for SmartBee, a RAG chatbot service with an embeddable widget.",
+        "Service planning, backend architecture, and development for Polaris Studio.",
+        "Service planning, backend architecture, and development for Marketing AX Workspace."
       ]
     },
     {
@@ -239,6 +240,49 @@
   "for_fun": [],
   "projects": [
     {
+      "id": "counseling-search",
+      "title": "Customer conversation insights (상담 검색 서비스)",
+      "context": "SK Telecom · presented at SK AI Summit 2024",
+      "career_id": "skt-current",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service.",
+      "brief": {
+        "problem": "Find useful signals in unstructured customer conversations.",
+        "role": "Backend engineering for the customer conversation search service.",
+        "challenge": "Make conversations with different topics searchable for business questions.",
+        "approach": "Built the backend supporting AI-assisted conversation search and analysis."
+      },
+      "resources": []
+    },
+    {
+      "id": "smartbee",
+      "title": "SmartBee",
+      "context": "SK Telecom · RAG chatbot & embeddable widget",
+      "career_id": "skt-current",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "A RAG chatbot service with an embeddable widget that lets teams add document-based Q&A to existing websites.",
+      "brief": {
+        "problem": "Make document-based answers available inside the services people already use.",
+        "role": "AI and backend engineering for SmartBee.",
+        "challenge": "Support retrieval-based answers through an interface that is easy to install and use.",
+        "approach": "Connected the chatbot’s AI and backend capabilities to an embeddable widget experience."
+      },
+      "resources": [
+        {
+          "label": "Watch widget guide",
+          "url": "https://www.youtube.com/watch?v=B1QARo421XA"
+        }
+      ]
+    },
+    {
       "id": "polaris-studio",
       "title": "Polaris Studio",
       "context": "SK Telecom · AI workflow automation",
@@ -254,7 +298,8 @@
         "role": "Service planning, backend architecture, and backend development.",
         "challenge": "Workflows need to accommodate different departmental data sources and services.",
         "approach": "Planned the service workflows and designed and implemented the backend supporting them."
-      }
+      },
+      "resources": []
     },
     {
       "id": "marketing-ax-workspace",
@@ -272,25 +317,8 @@
         "role": "Service planning, backend architecture, and backend development.",
         "challenge": "Support varied user requests across existing data and service interfaces.",
         "approach": "Planned the workspace experience and designed and implemented the backend for its service flows."
-      }
-    },
-    {
-      "id": "counseling-search",
-      "title": "Customer conversation search",
-      "context": "SK Telecom · presented at SK AI Summit 2024",
-      "career_id": "skt-current",
-      "layers": [
-        "data",
-        "intelligence",
-        "services"
-      ],
-      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service.",
-      "brief": {
-        "problem": "Find useful signals in unstructured customer conversations.",
-        "role": "Backend engineering for the customer conversation search service.",
-        "challenge": "Make conversations with different topics searchable for business questions.",
-        "approach": "Built the backend supporting AI-assisted conversation search and analysis."
-      }
+      },
+      "resources": []
     },
     {
       "id": "review-analytics",
@@ -309,7 +337,8 @@
         "role": "Led review-data pipelines, service APIs, and administration tools as co-founder and CTO.",
         "challenge": "Handle informal review language and multiple topics within a single review.",
         "approach": "Combined review collection and preprocessing with topic analysis and a storefront review widget."
-      }
+      },
+      "resources": []
     },
     {
       "id": "reviewro",
@@ -328,7 +357,8 @@
         "role": "Backend development and operation for the REVIEWRO app.",
         "challenge": "Support review-based discovery alongside commerce workflows.",
         "approach": "Built the backend connecting product and review data with the app’s commerce features."
-      }
+      },
+      "resources": []
     },
     {
       "id": "aias",
@@ -346,7 +376,8 @@
         "role": "Data science and backend development for AIAS.",
         "challenge": "Make network-quality and location data usable in a map-based service.",
         "approach": "Built analytics data marts and backend APIs for exploring network quality."
-      }
+      },
+      "resources": []
     },
     {
       "id": "targeting",
@@ -364,7 +395,8 @@
         "role": "Feature engineering, data modeling, and targeting backend development.",
         "challenge": "Connect analytical customer profiles with operational marketing services.",
         "approach": "Developed customer feature matrices and a targeting backend used for Biz-RCS."
-      }
+      },
+      "resources": []
     }
   ],
   "talks": [

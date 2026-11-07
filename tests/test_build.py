@@ -61,11 +61,19 @@ class PublicBuildTests(unittest.TestCase):
         text=self.build.render(self.data)
         footer=text.split('<footer>')[1].split('</footer>')[0]
         self.assertNotIn('<a ',footer)
+        self.assertEqual(text.count('class="company-avatar"'),len(self.data['career']))
         self.assertIn('company-logo',text)
-        self.assertIn('Customer conversation search',text)
+        self.assertIn('Customer conversation insights (상담 검색 서비스)',text)
         self.assertIn('SK AI Summit 2024 · Talk &amp; recording',text)
         for filename in ['skt.png','lg.jpg','hyundai.png','tmax.png']:
             self.assertTrue((ROOT/'assets/companies'/filename).is_file())
+
+    def test_current_skt_project_order_and_widget_evidence(self):
+        ids=[p['id'] for p in self.data['projects'] if p['career_id']=='skt-current']
+        self.assertEqual(ids,['counseling-search','smartbee','polaris-studio','marketing-ax-workspace'])
+        text=self.build.render(self.data)
+        self.assertIn('https://www.youtube.com/watch?v=B1QARo421XA',text)
+        self.assertIn('embeddable widget',text)
 
     def test_project_briefs_and_approved_talk_material(self):
         import hashlib
@@ -84,6 +92,6 @@ class PublicBuildTests(unittest.TestCase):
         html=self.build.render(self.data)
         self.assertIn('빌리뷰',html);self.assertNotIn('BeReview',html)
         self.assertNotIn('CQRS with NestJS',html)
-        self.assertEqual(len(self.data['projects']),7)
+        self.assertEqual(len(self.data['projects']),8)
 
 if __name__=='__main__':unittest.main()
