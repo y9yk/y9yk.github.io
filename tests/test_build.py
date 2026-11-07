@@ -57,6 +57,16 @@ class PublicBuildTests(unittest.TestCase):
             self.assertNotIn(forbidden,text)
         self.assertIn('href="#projects"',text)
         self.assertIn('Selected projects',text)
+    def test_footer_company_marks_and_conversation_talk_link(self):
+        text=self.build.render(self.data)
+        footer=text.split('<footer>')[1].split('</footer>')[0]
+        self.assertNotIn('<a ',footer)
+        self.assertIn('company-logo',text)
+        self.assertIn('Customer conversation search',text)
+        self.assertIn('SK AI Summit 2024 · Talk &amp; recording',text)
+        for filename in ['skt.png','lg.jpg','hyundai.png','tmax.png']:
+            self.assertTrue((ROOT/'assets/companies'/filename).is_file())
+
     def test_project_briefs_and_approved_talk_material(self):
         import hashlib
         text=self.build.render(self.data)
