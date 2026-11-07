@@ -56,7 +56,8 @@ class PublicBuildTests(unittest.TestCase):
         for forbidden in ['Site pulse','stats/','analytics.js','for-fun/']:
             self.assertNotIn(forbidden,text)
         self.assertIn('href="#projects"',text)
-        self.assertIn('Selected projects',text)
+        self.assertIn('id="projects-title">Projects</h2>',text)
+        self.assertNotIn('Selected projects',text)
     def test_footer_company_marks_and_conversation_talk_link(self):
         text=self.build.render(self.data)
         footer=text.split('<footer>')[1].split('</footer>')[0]
