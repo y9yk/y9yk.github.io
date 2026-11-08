@@ -144,14 +144,16 @@ class PublicBuildTests(unittest.TestCase):
     def test_confirmed_collaborators_are_sorted_and_exclude_the_owner(self):
         projects={p['id']:p for p in self.data['projects']}
         self.assertEqual(projects['reviewro']['collaborators'],['한송원','황윤교'])
+        self.assertEqual(projects['aias']['collaborators'],['유근국'])
+        self.assertEqual(projects['targeting']['collaborators'],['김찬호','박인범','임헌정','황윤교'])
         for id in ['counseling-search','smartbee','polaris-studio','marketing-ax-workspace']:
             names=projects[id]['collaborators']
             self.assertEqual(names,sorted(set(names)))
             self.assertIn('유성현',names)
             self.assertNotIn('이용기',names)
-        self.assertEqual(self.build.render_projects(self.data).count('class="project-collaborators"'),6)
+        self.assertEqual(self.build.render_projects(self.data).count('class="project-collaborators"'),8)
         listing=self.build.render_projects(self.data)
-        self.assertEqual(listing.count('SK Telecom colleagues'),4)
+        self.assertEqual(listing.count('SK Telecom colleagues'),6)
         self.assertNotIn('<p>Collaborators</p>',listing)
 
     def test_public_project_summaries_keep_the_approved_names(self):
