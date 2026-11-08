@@ -120,11 +120,13 @@ class PublicBuildTests(unittest.TestCase):
 
     def test_project_previews_are_public_media_and_do_not_open_details(self):
         listing=self.build.render_projects(self.data)
-        self.assertEqual(listing.count('class="project-list-preview"'),3)
-        for path in ['assets/projects/review-widget.png','assets/projects/smartbee-widget-guide.jpg']:
+        self.assertEqual(listing.count('class="project-list-preview"'),1)
+        for path in ['assets/projects/review-widget.png']:
             self.assertTrue((ROOT/path).is_file())
             self.assertIn('../'+path,listing)
         self.assertNotIn('Read project',listing)
+        self.assertNotIn('smartbee-widget-guide.jpg',listing)
+        self.assertNotIn('sk-ai-summit-2024-video.jpg',listing)
         self.assertNotIn('notion',listing.lower())
         for link in Document(listing).links:
             self.assertNotRegex(link,r'(?:projects/)?(?:smartbee|reviewro|polaris-studio|marketing-ax-workspace)/')

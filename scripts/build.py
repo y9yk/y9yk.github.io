@@ -11,8 +11,6 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief', 'resources'}
 BRIEF_FIELDS = {'problem', 'role', 'challenge', 'approach'}
 PROJECT_PREVIEWS = {
-    'counseling-search': ('assets/talks/sk-ai-summit-2024-video.jpg', 'SK AI Summit 2024 session preview', 'Public presentation · customer conversation search', 480, 360),
-    'smartbee': ('assets/projects/smartbee-widget-guide.jpg', 'SmartBee widget guide preview', 'Public product guide · widget installation and use', 480, 360),
     'review-analytics': ('assets/projects/review-widget.png', 'Review widgets installed in storefronts', 'Storefront widget examples · SeoulTech lecture', 3468, 1212),
 }
 
