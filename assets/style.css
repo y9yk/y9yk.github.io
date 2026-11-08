@@ -19,4 +19,6 @@
 
 .blog-shell{max-width:960px;margin:auto;padding:16px 36px 0}.blog-frame{display:block;width:100%;height:calc(100svh - var(--site-header-height) - 16px);min-height:440px;border:0;background:#fff}.blog-direct{font-size:12px;text-align:right;padding:8px 0 12px;margin:0}@media(max-width:700px){.blog-shell{padding:12px 24px 0}.blog-frame{height:calc(100svh - var(--site-header-height) - 12px)}}@media(max-width:460px){.blog-shell{padding:8px 12px 0}.blog-frame{height:calc(100svh - var(--site-header-height) - 8px)}}
 
-.project-collaborators{margin-top:20px;color:var(--muted)}.project-collaborators>p{font-size:12px;margin:0 0 6px}.project-collaborators ul{display:flex;flex-wrap:wrap;gap:4px 16px;list-style:none;padding:0;margin:0;font-size:14px}.project-collaborators li{padding:0;margin:0;white-space:nowrap}
+.project-collaborators{margin:8px 0 18px;color:var(--muted)}.project-collaborators ul{list-style:none;padding:0;margin:0;font-size:13px;line-height:1.8}.project-collaborators li{display:inline;padding:0;margin:0;white-space:nowrap}.project-collaborators li:not(:last-child)::after{content:","}
+
+.collaborator-affiliation{display:block;font-size:12px;font-weight:400;line-height:1.6;margin-top:2px;color:var(--muted)}

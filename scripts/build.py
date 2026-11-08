@@ -103,8 +103,9 @@ def cards(data):
         if p['id'] in PROJECT_PREVIEWS:
             src,alt,caption,width,height=PROJECT_PREVIEWS[p['id']]
             media=f'<figure class="project-list-preview"><img src="../{src}" alt="{esc(alt)}" width="{width}" height="{height}" loading="lazy" decoding="async"><figcaption>{esc(caption)}</figcaption></figure>'
-        people='<div class="project-collaborators"><p>Collaborators</p><ul>'+''.join(f'<li>{esc(name)}</li>' for name in p['collaborators'])+'</ul></div>' if p['collaborators'] else ''
-        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3>{media}<p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}{people}</article>')
+        affiliation='<span class="collaborator-affiliation">SK Telecom colleagues</span>' if p['career_id']=='skt-current' else ''
+        people='<div class="project-collaborators"><ul aria-label="Project collaborators">'+' '.join(f'<li>{esc(name)}</li>' for name in p['collaborators'])+'</ul>'+affiliation+'</div>' if p['collaborators'] else ''
+        result.append(f'<article class="project" id="project-{p["id"]}"><h3>{esc(p["title"])}</h3>{people}{media}<p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}</article>')
     return '<div class="project-grid">'+''.join(result)+'</div>'
 
 

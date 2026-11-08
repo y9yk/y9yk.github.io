@@ -148,6 +148,9 @@ class PublicBuildTests(unittest.TestCase):
             self.assertIn('유성현',names)
             self.assertNotIn('이용기',names)
         self.assertEqual(self.build.render_projects(self.data).count('class="project-collaborators"'),6)
+        listing=self.build.render_projects(self.data)
+        self.assertEqual(listing.count('SK Telecom colleagues'),4)
+        self.assertNotIn('<p>Collaborators</p>',listing)
 
     def test_public_project_summaries_keep_the_approved_names(self):
         html=self.build.render(self.data)
