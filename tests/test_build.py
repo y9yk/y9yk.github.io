@@ -68,7 +68,7 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('<span>SK</span>',text)
         self.assertNotIn('<span>빌</span>',text)
         self.assertIn('company-logo',text)
-        self.assertIn('Customer conversation insights (상담 검색 서비스)',text)
+        self.assertIn('상담 검색 서비스 (Customer conversation insights)',text)
         self.assertIn('SK AI Summit 2024 · Talk &amp; recording',self.build.render_projects(self.data))
         for filename in ['skt.png','lg.jpg','hyundai.png','tmax.png']:
             self.assertTrue((ROOT/'assets/companies'/filename).is_file())
@@ -120,11 +120,14 @@ class PublicBuildTests(unittest.TestCase):
 
     def test_project_previews_are_public_media_and_do_not_open_details(self):
         listing=self.build.render_projects(self.data)
-        self.assertEqual(listing.count('class="project-list-preview"'),6)
+        self.assertEqual(listing.count('class="project-list-preview"'),2)
         for path in ['assets/projects/review-widget.png']:
             self.assertTrue((ROOT/path).is_file())
             self.assertIn('../'+path,listing)
         self.assertNotIn('Read project',listing)
+        for name in ['counseling-screen.png','smartbee-widget.png','aias-screen.png','targeting-screen.png']:
+            self.assertNotIn(name,listing)
+            self.assertFalse((ROOT/'assets/projects'/name).exists())
         self.assertNotIn('polaris-2.png',listing)
         self.assertNotIn('marketing-1.png',listing)
         self.assertNotIn('smartbee-widget-guide.jpg',listing)
@@ -132,7 +135,7 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('notion',listing.lower())
         for link in Document(listing).links:
             self.assertNotRegex(link,r'(?:projects/)?(?:smartbee|reviewro|polaris-studio|marketing-ax-workspace)/')
-        self.assertEqual({p.name for p in (ROOT/'assets/projects').iterdir()},{'review-widget.png','counseling-screen.png','smartbee-widget.png','reviewro-app.png','aias-screen.png','targeting-screen.png','SOURCES.md'})
+        self.assertEqual({p.name for p in (ROOT/'assets/projects').iterdir()},{'review-widget.png','reviewro-app.png','SOURCES.md'})
 
     def test_blog_is_embedded_under_the_shared_site_navigation(self):
         blog=self.build.render_blog(self.data)

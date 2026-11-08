@@ -327,7 +327,7 @@
     },
     {
       "id": "counseling-search",
-      "title": "Customer conversation insights (상담 검색 서비스)",
+      "title": "상담 검색 서비스 (Customer conversation insights)",
       "context": "SK Telecom · presented at SK AI Summit 2024",
       "career_id": "skt-current",
       "layers": [

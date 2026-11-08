@@ -15,7 +15,7 @@
 .company-name{display:flex;align-items:center;gap:12px}.company-avatar{position:relative;display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border:1px solid var(--line);border-radius:7px;background:#f5f7f9;color:#62717e;font-size:16px;font-weight:600;overflow:hidden}.company-logo{position:absolute;inset:5px;display:block;width:36px;height:36px;object-fit:contain;background:#fff}
 .project-talk{margin-top:18px!important;font-size:14px!important}
 
-.project-list-preview{margin:20px 0 24px}.project-list-preview img{display:block;width:100%;height:auto;max-height:330px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}.project-list-preview figcaption{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7}
+.project-list-preview{margin:20px 0 24px}.project-list-preview img{display:block;width:100%;height:auto;max-height:330px;object-fit:contain;border:0;border-radius:0;background:#fff}.project-list-preview figcaption{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7}
 
 .blog-page{height:100svh;overflow:hidden}.blog-shell{max-width:960px;margin:auto;padding:16px 36px 0}.blog-viewport{height:calc(100svh - var(--site-header-height) - 16px);overflow:hidden}/* Keep native frame scrolling; the cross-origin scrollbar rail is clipped by its viewport. */
 .blog-frame{display:block;width:calc(100% + 18px);height:100%;min-height:0;border:0;background:#fff}@media(max-width:700px){.blog-shell{padding:12px 24px 0}.blog-viewport{height:calc(100svh - var(--site-header-height) - 12px)}}@media(max-width:460px){.blog-shell{padding:8px 12px 0}.blog-viewport{height:calc(100svh - var(--site-header-height) - 8px)}}
