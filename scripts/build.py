@@ -130,7 +130,7 @@ def render(data):
     values = base(data)
     values.update({key:esc(data[key]) for key in ['headline','intro']})
     values['bio'] = bullets(data['bio'],'bio-bullets')
-    icons = {'Email':'email','GitHub':'github','LinkedIn':'linkedin','Blog':'blog'}
+    icons = {'GitHub':'github','LinkedIn':'linkedin','Blog':'blog'}
     values['links'] = ''.join(f'<a href="{safe_url(p["url"])}"><img class="contact-icon" src="assets/icons/{icons[p["label"]]}.svg" alt="" width="16" height="16"><span>{esc(p["label"])}</span></a>' for p in data['links'])
     career=[]
     for job in data['career']:
