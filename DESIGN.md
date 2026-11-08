@@ -15,3 +15,5 @@
 - Blog opens /blog/ under the same shared header. Its iframe points only to https://y9yk.bearblog.dev/blog/; the route CSP allows that frame origin and keeps the outer navigation on this site. Browser verification is authoritative: the CLI returned a different 404 response, while the normal browser returned 200 with ALLOWALL.
 
 - Projects representatives must be actual service interfaces, never video thumbnails or architecture slides. Omit the preview when no publishable service screen exists. Video thumbnails remain valid only within Talks.
+
+- Projects display newest-first: Marketing AX, Polaris, SmartBee, conversation search, REVIEWRO, review analytics, AIAS, targeting. Exactly six service previews are selected; Polaris and Marketing AX are text-only.

@@ -236,33 +236,59 @@
   "for_fun": [],
   "projects": [
     {
-      "id": "counseling-search",
-      "title": "Customer conversation insights (상담 검색 서비스)",
-      "context": "SK Telecom · presented at SK AI Summit 2024",
+      "id": "marketing-ax-workspace",
+      "title": "Marketing AX Workspace",
+      "context": "SK Telecom · conversational workspace",
       "career_id": "skt-current",
       "layers": [
         "data",
         "intelligence",
         "services"
       ],
-      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service.",
+      "summary": "A conversational workspace for accessing business data and services through natural-language requests.",
       "brief": {
-        "problem": "Find useful signals in unstructured customer conversations.",
-        "role": "Backend engineering for the customer conversation search service.",
-        "challenge": "Make conversations with different topics searchable for business questions.",
-        "approach": "Built the backend supporting AI-assisted conversation search and analysis."
+        "problem": "Help marketing teams use business data and tools through a conversational interface.",
+        "role": "Service planning, backend architecture, and backend development.",
+        "challenge": "Support varied user requests across existing data and service interfaces.",
+        "approach": "Planned the workspace experience and designed and implemented the backend for its service flows."
       },
-      "resources": [
-        {
-          "label": "Yonhap coverage",
-          "url": "https://www.yna.co.kr/view/AKR20240127027000017"
-        }
-      ],
+      "resources": [],
       "collaborators": [
         "강민구",
         "계상우",
         "김은정",
-        "박성훈",
+        "김태욱",
+        "박승렬",
+        "송의석",
+        "오종해",
+        "유성현",
+        "이재환"
+      ]
+    },
+    {
+      "id": "polaris-studio",
+      "title": "Polaris Studio",
+      "context": "SK Telecom · AI workflow automation",
+      "career_id": "skt-current",
+      "layers": [
+        "data",
+        "intelligence",
+        "services"
+      ],
+      "summary": "A no-code AI workflow service for working with internal data and automating repetitive tasks.",
+      "brief": {
+        "problem": "Make customer data and AI workflows accessible to teams without requiring them to write code.",
+        "role": "Service planning, backend architecture, and backend development.",
+        "challenge": "Workflows need to accommodate different departmental data sources and services.",
+        "approach": "Planned the service workflows and designed and implemented the backend supporting them."
+      },
+      "resources": [],
+      "collaborators": [
+        "계상우",
+        "김은정",
+        "김태욱",
+        "박승렬",
+        "송의석",
         "오종해",
         "유성현"
       ]
@@ -300,85 +326,35 @@
       ]
     },
     {
-      "id": "polaris-studio",
-      "title": "Polaris Studio",
-      "context": "SK Telecom · AI workflow automation",
+      "id": "counseling-search",
+      "title": "Customer conversation insights (상담 검색 서비스)",
+      "context": "SK Telecom · presented at SK AI Summit 2024",
       "career_id": "skt-current",
       "layers": [
         "data",
         "intelligence",
         "services"
       ],
-      "summary": "A no-code AI workflow service for working with internal data and automating repetitive tasks.",
+      "summary": "Backend engineering for SK Telecom’s AI-based customer conversation search service.",
       "brief": {
-        "problem": "Make customer data and AI workflows accessible to teams without requiring them to write code.",
-        "role": "Service planning, backend architecture, and backend development.",
-        "challenge": "Workflows need to accommodate different departmental data sources and services.",
-        "approach": "Planned the service workflows and designed and implemented the backend supporting them."
+        "problem": "Find useful signals in unstructured customer conversations.",
+        "role": "Backend engineering for the customer conversation search service.",
+        "challenge": "Make conversations with different topics searchable for business questions.",
+        "approach": "Built the backend supporting AI-assisted conversation search and analysis."
       },
-      "resources": [],
-      "collaborators": [
-        "계상우",
-        "김은정",
-        "김태욱",
-        "박승렬",
-        "송의석",
-        "오종해",
-        "유성현"
-      ]
-    },
-    {
-      "id": "marketing-ax-workspace",
-      "title": "Marketing AX Workspace",
-      "context": "SK Telecom · conversational workspace",
-      "career_id": "skt-current",
-      "layers": [
-        "data",
-        "intelligence",
-        "services"
+      "resources": [
+        {
+          "label": "Yonhap coverage",
+          "url": "https://www.yna.co.kr/view/AKR20240127027000017"
+        }
       ],
-      "summary": "A conversational workspace for accessing business data and services through natural-language requests.",
-      "brief": {
-        "problem": "Help marketing teams use business data and tools through a conversational interface.",
-        "role": "Service planning, backend architecture, and backend development.",
-        "challenge": "Support varied user requests across existing data and service interfaces.",
-        "approach": "Planned the workspace experience and designed and implemented the backend for its service flows."
-      },
-      "resources": [],
       "collaborators": [
         "강민구",
         "계상우",
         "김은정",
-        "김태욱",
-        "박승렬",
-        "송의석",
+        "박성훈",
         "오종해",
-        "유성현",
-        "이재환"
-      ]
-    },
-    {
-      "id": "review-analytics",
-      "title": "Review topic analytics",
-      "context": "빌리뷰 · 2020–2023",
-      "career_id": "bereview",
-      "layers": [
-        "data",
-        "intelligence",
-        "services",
-        "operations"
-      ],
-      "summary": "Review topic classification for e-commerce at 빌리뷰.",
-      "brief": {
-        "problem": "Help shoppers find relevant information in reviews that cover several topics.",
-        "role": "Led review-data pipelines, service APIs, and administration tools as co-founder and CTO.",
-        "challenge": "Handle informal review language and multiple topics within a single review.",
-        "approach": "Combined review collection and preprocessing with topic analysis and a storefront review widget."
-      },
-      "resources": [],
-      "collaborators": [
-        "한송원",
-        "황윤교"
+        "유성현"
       ]
     },
     {
@@ -398,6 +374,30 @@
         "role": "Backend development and operation for the REVIEWRO app.",
         "challenge": "Support review-based discovery alongside commerce workflows.",
         "approach": "Built the backend connecting product and review data with the app’s commerce features."
+      },
+      "resources": [],
+      "collaborators": [
+        "한송원",
+        "황윤교"
+      ]
+    },
+    {
+      "id": "review-analytics",
+      "title": "Review topic analytics",
+      "context": "빌리뷰 · 2020–2023",
+      "career_id": "bereview",
+      "layers": [
+        "data",
+        "intelligence",
+        "services",
+        "operations"
+      ],
+      "summary": "Review topic classification for e-commerce at 빌리뷰.",
+      "brief": {
+        "problem": "Help shoppers find relevant information in reviews that cover several topics.",
+        "role": "Led review-data pipelines, service APIs, and administration tools as co-founder and CTO.",
+        "challenge": "Handle informal review language and multiple topics within a single review.",
+        "approach": "Combined review collection and preprocessing with topic analysis and a storefront review widget."
       },
       "resources": [],
       "collaborators": [

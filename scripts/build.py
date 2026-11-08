@@ -11,7 +11,12 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief', 'resources', 'collaborators'}
 BRIEF_FIELDS = {'problem', 'role', 'challenge', 'approach'}
 PROJECT_PREVIEWS = {
-    'review-analytics': ('assets/projects/review-widget.png', 'Review widgets installed in storefronts', 'Storefront widget examples · SeoulTech lecture', 3468, 1212),
+    'counseling-search': ('assets/projects/counseling-screen.png','Customer conversation search interface','Customer conversation search',1920,967),
+    'smartbee': ('assets/projects/smartbee-widget.png','SmartBee chat widget','SmartBee chat widget',758,955),
+    'review-analytics': ('assets/projects/review-widget.png','Review widgets installed in storefronts','Storefront review widget',3468,1212),
+    'reviewro': ('assets/projects/reviewro-app.png','REVIEWRO app screens','Product discovery and review exploration',2190,1145),
+    'aias': ('assets/projects/aias-screen.png','AIAS network quality interface','Equipment and network quality analysis',2794,1496),
+    'targeting': ('assets/projects/targeting-screen.png','Audience analysis interface','Audience characteristics and campaign analysis',2680,4384),
 }
 
 TALK_ASSETS = {'assets/talks/sk-ai-summit-2024-video.jpg', 'assets/talks/seoultech-2021-cover.png', 'assets/talks/seoultech-2021.pdf'}
@@ -134,7 +139,6 @@ def render(data):
     career=[]
     for job in data['career']:
         projects=[p for p in data['projects'] if p['career_id']==job['id']]
-        if job['id']=='skt-current':projects.reverse()
         related=''.join(f'<div class="career-project"><h4><a href="projects/#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in projects)
         logo={'skt-current':'skt.png','skt-previous':'skt.png','hyundai':'hyundai.png','lg':'lg.jpg','tmax':'tmax.png'}.get(job['id'])
         image=f'<img class="company-logo" src="assets/companies/{logo}" alt="" width="36" height="36">' if logo else ''

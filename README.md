@@ -25,4 +25,4 @@ Home keeps career-linked project summaries. The Projects header opens a separate
 
 Run `make check` before committing. GitHub Actions verifies, builds, and publishes `dist/` after main-branch pushes.
 
-The Blog header item opens `/blog/`, embedding the public Bearblog index. Home contact links do not repeat Blog. The recent SK Telecom projects on Home render newest-first. Public project previews use only the approved lecture and public videos; internal previews remain in the private review site.
+The Blog header item opens `/blog/`, embedding the public Bearblog index. Home contact links do not repeat Blog. The recent SK Telecom projects on Home render newest-first. Public previews use the six service screens selected by the owner. Polaris Studio and Marketing AX actual screens remain excluded; original source documents stay private.

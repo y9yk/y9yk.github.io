@@ -75,7 +75,7 @@ class PublicBuildTests(unittest.TestCase):
 
     def test_current_skt_project_order_and_widget_evidence(self):
         ids=[p['id'] for p in self.data['projects'] if p['career_id']=='skt-current']
-        self.assertEqual(ids,['counseling-search','smartbee','polaris-studio','marketing-ax-workspace'])
+        self.assertEqual(ids,['marketing-ax-workspace','polaris-studio','smartbee','counseling-search'])
         text=self.build.render_projects(self.data)
         self.assertIn('https://www.youtube.com/watch?v=B1QARo421XA',text)
         self.assertIn('embeddable widget',text)
@@ -108,7 +108,7 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('Blog',social)
         self.assertIn('href="blog/">Blog</a>',home)
 
-    def test_home_recent_projects_are_latest_first_without_changing_source_chronology(self):
+    def test_home_recent_projects_are_latest_first(self):
         home=self.build.render(self.data)
         links=[u for u in Document(home).links if u.startswith('projects/#project-')]
         self.assertEqual(links[:4],['projects/#project-marketing-ax-workspace','projects/#project-polaris-studio','projects/#project-smartbee','projects/#project-counseling-search'])
@@ -120,17 +120,19 @@ class PublicBuildTests(unittest.TestCase):
 
     def test_project_previews_are_public_media_and_do_not_open_details(self):
         listing=self.build.render_projects(self.data)
-        self.assertEqual(listing.count('class="project-list-preview"'),1)
+        self.assertEqual(listing.count('class="project-list-preview"'),6)
         for path in ['assets/projects/review-widget.png']:
             self.assertTrue((ROOT/path).is_file())
             self.assertIn('../'+path,listing)
         self.assertNotIn('Read project',listing)
+        self.assertNotIn('polaris-2.png',listing)
+        self.assertNotIn('marketing-1.png',listing)
         self.assertNotIn('smartbee-widget-guide.jpg',listing)
         self.assertNotIn('sk-ai-summit-2024-video.jpg',listing)
         self.assertNotIn('notion',listing.lower())
         for link in Document(listing).links:
             self.assertNotRegex(link,r'(?:projects/)?(?:smartbee|reviewro|polaris-studio|marketing-ax-workspace)/')
-        self.assertEqual({p.name for p in (ROOT/'assets/projects').iterdir()},{'review-widget.png','smartbee-widget-guide.jpg','SOURCES.md'})
+        self.assertEqual({p.name for p in (ROOT/'assets/projects').iterdir()},{'review-widget.png','counseling-screen.png','smartbee-widget.png','reviewro-app.png','aias-screen.png','targeting-screen.png','SOURCES.md'})
 
     def test_blog_is_embedded_under_the_shared_site_navigation(self):
         blog=self.build.render_blog(self.data)
