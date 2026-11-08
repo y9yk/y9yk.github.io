@@ -25,3 +25,5 @@
 .collaborator-affiliation{display:block;font-size:12px;font-weight:400;line-height:1.6;margin-top:2px;color:var(--muted)}
 
 .collaborator-with{font-size:13px;color:var(--muted);margin-right:4px}.project-collaborators ul{display:inline}
+
+.collaborator-others{font-size:13px;color:var(--muted)}
