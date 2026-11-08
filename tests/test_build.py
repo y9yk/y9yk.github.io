@@ -100,7 +100,42 @@ class PublicBuildTests(unittest.TestCase):
         self.assertEqual(home.count('class="career-project"'),8)
         self.assertEqual(listing.count('class="project"'),8)
         self.assertIn('href="projects/#project-smartbee"',home)
-        self.assertIn('href="https://y9yk.bearblog.dev/">Blog</a>',home)
+        self.assertIn('href="blog/">Blog</a>',home)
+
+    def test_home_contact_links_do_not_repeat_blog_navigation(self):
+        home=self.build.render(self.data)
+        social=home.split('<div class="social-links">')[1].split('</div>')[0]
+        self.assertNotIn('Blog',social)
+        self.assertIn('href="blog/">Blog</a>',home)
+
+    def test_home_recent_projects_are_latest_first_without_changing_source_chronology(self):
+        home=self.build.render(self.data)
+        links=[u for u in Document(home).links if u.startswith('projects/#project-')]
+        self.assertEqual(links[:4],['projects/#project-marketing-ax-workspace','projects/#project-polaris-studio','projects/#project-smartbee','projects/#project-counseling-search'])
+
+    def test_home_and_project_index_share_one_header_component(self):
+        home=self.build.render(self.data).split('<header')[1].split('</header>')[0]
+        listing=self.build.render_projects(self.data).split('<header')[1].split('</header>')[0]
+        self.assertEqual(home,listing.replace('../',''))
+
+    def test_project_previews_are_public_media_and_do_not_open_details(self):
+        listing=self.build.render_projects(self.data)
+        self.assertEqual(listing.count('class="project-list-preview"'),3)
+        for path in ['assets/projects/review-widget.png','assets/projects/smartbee-widget-guide.jpg']:
+            self.assertTrue((ROOT/path).is_file())
+            self.assertIn('../'+path,listing)
+        self.assertNotIn('Read project',listing)
+        self.assertNotIn('notion',listing.lower())
+        for link in Document(listing).links:
+            self.assertNotRegex(link,r'(?:projects/)?(?:smartbee|reviewro|polaris-studio|marketing-ax-workspace)/')
+        self.assertEqual({p.name for p in (ROOT/'assets/projects').iterdir()},{'review-widget.png','smartbee-widget-guide.jpg','SOURCES.md'})
+
+    def test_blog_is_embedded_under_the_shared_site_navigation(self):
+        blog=self.build.render_blog(self.data)
+        self.assertIn('class="site-header"',blog)
+        self.assertIn('src="https://y9yk.bearblog.dev/blog/"',blog)
+        self.assertIn('frame-src https://y9yk.bearblog.dev',blog)
+        self.assertIn('href="../blog/">Blog</a>',blog)
 
     def test_public_project_summaries_keep_the_approved_names(self):
         html=self.build.render(self.data)

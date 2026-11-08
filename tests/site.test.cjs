@@ -24,7 +24,7 @@ test('previously failed images are handled when the script loads', () => {
   assert.equal(renderImage(true, 24).image.hidden, false);
 });
 
-test('the sticky header compacts only after scrolling', () => {
+test('the sticky header adds scroll treatment without changing the shared component', () => {
   const state = new Map(); let onScroll;
   const header = { classList: { toggle: (name, active) => state.set(name, active) } };
   const document = { querySelectorAll: () => [], querySelector: () => header };

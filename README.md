@@ -24,3 +24,5 @@ This repository contains only approved public profile information and brief proj
 Home keeps career-linked project summaries. The Projects header opens a separate list at /projects/. Detail articles remain in the private local review library and are not published here. Stats, its public API, and new browser collection are paused pending a research-backed design review; existing aggregates remain on the collector volume. Empty For fun content is hidden.
 
 Run `make check` before committing. GitHub Actions verifies, builds, and publishes `dist/` after main-branch pushes.
+
+The Blog header item opens `/blog/`, embedding the public Bearblog index. Home contact links do not repeat Blog. The recent SK Telecom projects on Home render newest-first. Public project previews use only the approved lecture and public videos; internal previews remain in the private review site.

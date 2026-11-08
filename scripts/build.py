@@ -10,6 +10,12 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief', 'resources'}
 BRIEF_FIELDS = {'problem', 'role', 'challenge', 'approach'}
+PROJECT_PREVIEWS = {
+    'counseling-search': ('assets/talks/sk-ai-summit-2024-video.jpg', 'SK AI Summit 2024 session preview', 'Public presentation · customer conversation search', 480, 360),
+    'smartbee': ('assets/projects/smartbee-widget-guide.jpg', 'SmartBee widget guide preview', 'Public product guide · widget installation and use', 480, 360),
+    'review-analytics': ('assets/projects/review-widget.png', 'Review widgets installed in storefronts', 'Storefront widget examples · SeoulTech lecture', 3468, 1212),
+}
+
 TALK_ASSETS = {'assets/talks/sk-ai-summit-2024-video.jpg', 'assets/talks/seoultech-2021-cover.png', 'assets/talks/seoultech-2021.pdf'}
 
 
@@ -93,7 +99,11 @@ def cards(data):
         brief=''.join(f'<div><dt>{label}</dt><dd>{esc(p["brief"][key])}</dd></div>' for key,label in [('problem','Problem'),('role','My role'),('challenge','Challenge'),('approach','Approach')])
         talk_link='<p class="project-talk"><a href="../#talks">SK AI Summit 2024 · Talk &amp; recording</a></p>' if p['id']=='counseling-search' else ''
         resources='<div class="resource-links">'+''.join(action(r['url'],r['label'],True) for r in p['resources'])+'</div>' if p['resources'] else ''
-        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3><p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}</article>')
+        media=''
+        if p['id'] in PROJECT_PREVIEWS:
+            src,alt,caption,width,height=PROJECT_PREVIEWS[p['id']]
+            media=f'<figure class="project-list-preview"><img src="../{src}" alt="{esc(alt)}" width="{width}" height="{height}" loading="lazy" decoding="async"><figcaption>{esc(caption)}</figcaption></figure>'
+        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3>{media}<p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}</article>')
     return '<div class="project-grid">'+''.join(result)+'</div>'
 
 
@@ -121,7 +131,9 @@ def render(data):
     values['links'] = ''.join(f'<a href="{safe_url(p["url"])}"><img class="contact-icon" src="assets/icons/{icons[p["label"]]}.svg" alt="" width="16" height="16"><span>{esc(p["label"])}</span></a>' for p in data['links'])
     career=[]
     for job in data['career']:
-        related=''.join(f'<div class="career-project"><h4><a href="projects/#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in data['projects'] if p['career_id']==job['id'])
+        projects=[p for p in data['projects'] if p['career_id']==job['id']]
+        if job['id']=='skt-current':projects.reverse()
+        related=''.join(f'<div class="career-project"><h4><a href="projects/#project-{p["id"]}">{esc(p["title"])}</a></h4><p>{esc(p["summary"])}</p></div>' for p in projects)
         logo={'skt-current':'skt.png','skt-previous':'skt.png','hyundai':'hyundai.png','lg':'lg.jpg','tmax':'tmax.png'}.get(job['id'])
         image=f'<img class="company-logo" src="assets/companies/{logo}" alt="" width="36" height="36">' if logo else ''
         mark=f'<span class="company-avatar" aria-hidden="true">{image}</span>' if logo else ''
@@ -157,6 +169,13 @@ def render_projects(data):
     return template('projects.html',values)
 
 
+def render_blog(data):
+    validate(data)
+    values=base(data,prefix='../',title=f'{data["name"]} | Blog',route='blog/')
+    values['policy']=esc("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src https://y9yk.bearblog.dev; base-uri 'none'; form-action 'none'")
+    return template('blog.html',values)
+
+
 def main():
     data=json.loads((ROOT/'content/profile.json').read_text());validate(data)
     output=ROOT/'dist'
@@ -164,6 +183,8 @@ def main():
     output.mkdir();(output/'index.html').write_text(render(data))
     (output/'projects').mkdir()
     (output/'projects/index.html').write_text(render_projects(data))
+    (output/'blog').mkdir()
+    (output/'blog/index.html').write_text(render_blog(data))
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')

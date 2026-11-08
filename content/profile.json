@@ -20,10 +20,6 @@
     {
       "label": "LinkedIn",
       "url": "https://www.linkedin.com/in/yongki-lee-752b4680/"
-    },
-    {
-      "label": "Blog",
-      "url": "https://y9yk.bearblog.dev/"
     }
   ],
   "career": [
@@ -34,10 +30,10 @@
       "role": "AI Service Developer",
       "id": "skt-current",
       "bullets": [
-        "Backend engineering for customer conversation search (상담 검색 서비스).",
-        "AI and backend engineering for SmartBee, a RAG chatbot service with an embeddable widget.",
+        "Service planning, backend architecture, and development for Marketing AX Workspace.",
         "Service planning, backend architecture, and development for Polaris Studio.",
-        "Service planning, backend architecture, and development for Marketing AX Workspace."
+        "AI and backend engineering for SmartBee, a RAG chatbot service with an embeddable widget.",
+        "Backend engineering for customer conversation search (상담 검색 서비스)."
       ]
     },
     {
