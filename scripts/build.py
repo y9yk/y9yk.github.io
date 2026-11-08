@@ -8,7 +8,7 @@ import shutil
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
-PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief', 'resources'}
+PROJECT_FIELDS = {'id', 'title', 'context', 'career_id', 'layers', 'summary', 'brief', 'resources', 'collaborators'}
 BRIEF_FIELDS = {'problem', 'role', 'challenge', 'approach'}
 PROJECT_PREVIEWS = {
     'review-analytics': ('assets/projects/review-widget.png', 'Review widgets installed in storefronts', 'Storefront widget examples · SeoulTech lecture', 3468, 1212),
@@ -68,6 +68,8 @@ def validate(data):
     for project in data['projects']:
         if set(project) != PROJECT_FIELDS:
             raise ValueError('Only approved public project summary fields are allowed')
+        if project['collaborators'] != sorted(set(project['collaborators'])) or any(not isinstance(name,str) or not name.strip() for name in project['collaborators']):
+            raise ValueError('Collaborator names must be unique and sorted')
         for resource in project['resources']:
             if set(resource) != {'label','url'}:
                 raise ValueError('Only public resource labels and URLs are allowed')
@@ -101,7 +103,8 @@ def cards(data):
         if p['id'] in PROJECT_PREVIEWS:
             src,alt,caption,width,height=PROJECT_PREVIEWS[p['id']]
             media=f'<figure class="project-list-preview"><img src="../{src}" alt="{esc(alt)}" width="{width}" height="{height}" loading="lazy" decoding="async"><figcaption>{esc(caption)}</figcaption></figure>'
-        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3>{media}<p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}</article>')
+        people='<div class="project-collaborators"><p>Collaborators</p><ul>'+''.join(f'<li>{esc(name)}</li>' for name in p['collaborators'])+'</ul></div>' if p['collaborators'] else ''
+        result.append(f'<article class="project" id="project-{p["id"]}"><p class="project-context">{esc(p["context"])}</p><h3>{esc(p["title"])}</h3>{media}<p>{esc(p["summary"])}</p><dl class="project-brief">{brief}</dl>{talk_link}{resources}{people}</article>')
     return '<div class="project-grid">'+''.join(result)+'</div>'
 
 

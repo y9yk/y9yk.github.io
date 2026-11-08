@@ -257,6 +257,14 @@
           "label": "Yonhap coverage",
           "url": "https://www.yna.co.kr/view/AKR20240127027000017"
         }
+      ],
+      "collaborators": [
+        "강민구",
+        "계상우",
+        "김은정",
+        "박성훈",
+        "오종해",
+        "유성현"
       ]
     },
     {
@@ -281,6 +289,14 @@
           "label": "Watch widget guide",
           "url": "https://www.youtube.com/watch?v=B1QARo421XA"
         }
+      ],
+      "collaborators": [
+        "강민구",
+        "계상우",
+        "고은산",
+        "송의석",
+        "오종해",
+        "유성현"
       ]
     },
     {
@@ -300,7 +316,16 @@
         "challenge": "Workflows need to accommodate different departmental data sources and services.",
         "approach": "Planned the service workflows and designed and implemented the backend supporting them."
       },
-      "resources": []
+      "resources": [],
+      "collaborators": [
+        "계상우",
+        "김은정",
+        "김태욱",
+        "박승렬",
+        "송의석",
+        "오종해",
+        "유성현"
+      ]
     },
     {
       "id": "marketing-ax-workspace",
@@ -319,7 +344,18 @@
         "challenge": "Support varied user requests across existing data and service interfaces.",
         "approach": "Planned the workspace experience and designed and implemented the backend for its service flows."
       },
-      "resources": []
+      "resources": [],
+      "collaborators": [
+        "강민구",
+        "계상우",
+        "김은정",
+        "김태욱",
+        "박승렬",
+        "송의석",
+        "오종해",
+        "유성현",
+        "이재환"
+      ]
     },
     {
       "id": "review-analytics",
@@ -339,7 +375,11 @@
         "challenge": "Handle informal review language and multiple topics within a single review.",
         "approach": "Combined review collection and preprocessing with topic analysis and a storefront review widget."
       },
-      "resources": []
+      "resources": [],
+      "collaborators": [
+        "한송원",
+        "황윤교"
+      ]
     },
     {
       "id": "reviewro",
@@ -359,7 +399,11 @@
         "challenge": "Support review-based discovery alongside commerce workflows.",
         "approach": "Built the backend connecting product and review data with the app’s commerce features."
       },
-      "resources": []
+      "resources": [],
+      "collaborators": [
+        "한송원",
+        "황윤교"
+      ]
     },
     {
       "id": "aias",
@@ -378,7 +422,8 @@
         "challenge": "Make network-quality and location data usable in a map-based service.",
         "approach": "Built analytics data marts and backend APIs for exploring network quality."
       },
-      "resources": []
+      "resources": [],
+      "collaborators": []
     },
     {
       "id": "targeting",
@@ -397,7 +442,8 @@
         "challenge": "Connect analytical customer profiles with operational marketing services.",
         "approach": "Developed customer feature matrices and a targeting backend used for Biz-RCS."
       },
-      "resources": []
+      "resources": [],
+      "collaborators": []
     }
   ],
   "talks": [

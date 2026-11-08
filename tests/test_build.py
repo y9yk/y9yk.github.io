@@ -139,6 +139,16 @@ class PublicBuildTests(unittest.TestCase):
         self.assertIn('frame-src https://y9yk.bearblog.dev',blog)
         self.assertIn('href="../blog/">Blog</a>',blog)
 
+    def test_confirmed_collaborators_are_sorted_and_exclude_the_owner(self):
+        projects={p['id']:p for p in self.data['projects']}
+        self.assertEqual(projects['reviewro']['collaborators'],['한송원','황윤교'])
+        for id in ['counseling-search','smartbee','polaris-studio','marketing-ax-workspace']:
+            names=projects[id]['collaborators']
+            self.assertEqual(names,sorted(set(names)))
+            self.assertIn('유성현',names)
+            self.assertNotIn('이용기',names)
+        self.assertEqual(self.build.render_projects(self.data).count('class="project-collaborators"'),6)
+
     def test_public_project_summaries_keep_the_approved_names(self):
         html=self.build.render(self.data)
         self.assertIn('빌리뷰',html);self.assertNotIn('BeReview',html)
