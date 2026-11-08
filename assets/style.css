@@ -17,7 +17,8 @@
 
 .project-list-preview{margin:20px 0 24px}.project-list-preview img{display:block;width:100%;height:auto;max-height:330px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff}.project-list-preview figcaption{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.7}
 
-.blog-shell{max-width:960px;margin:auto;padding:16px 36px 0}.blog-frame{display:block;width:100%;height:calc(100svh - var(--site-header-height) - 16px);min-height:440px;border:0;background:#fff}.blog-direct{font-size:12px;text-align:right;padding:8px 0 12px;margin:0}@media(max-width:700px){.blog-shell{padding:12px 24px 0}.blog-frame{height:calc(100svh - var(--site-header-height) - 12px)}}@media(max-width:460px){.blog-shell{padding:8px 12px 0}.blog-frame{height:calc(100svh - var(--site-header-height) - 8px)}}
+.blog-page{height:100svh;overflow:hidden}.blog-shell{max-width:960px;margin:auto;padding:16px 36px 0}.blog-viewport{height:calc(100svh - var(--site-header-height) - 16px);overflow:hidden}/* Keep native frame scrolling; the cross-origin scrollbar rail is clipped by its viewport. */
+.blog-frame{display:block;width:calc(100% + 18px);height:100%;min-height:0;border:0;background:#fff}@media(max-width:700px){.blog-shell{padding:12px 24px 0}.blog-viewport{height:calc(100svh - var(--site-header-height) - 12px)}}@media(max-width:460px){.blog-shell{padding:8px 12px 0}.blog-viewport{height:calc(100svh - var(--site-header-height) - 8px)}}
 
 .project-collaborators{margin:8px 0 18px;color:var(--muted)}.project-collaborators ul{list-style:none;padding:0;margin:0;font-size:13px;line-height:1.8}.project-collaborators li{display:inline;padding:0;margin:0;white-space:nowrap}.project-collaborators li:not(:last-child)::after{content:","}
 

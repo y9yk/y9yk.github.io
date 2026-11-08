@@ -140,6 +140,9 @@ class PublicBuildTests(unittest.TestCase):
         self.assertIn('src="https://y9yk.bearblog.dev/blog/"',blog)
         self.assertIn('frame-src https://y9yk.bearblog.dev',blog)
         self.assertIn('href="../blog/">Blog</a>',blog)
+        self.assertIn('class="blog-viewport"',blog)
+        self.assertNotIn('blog-direct',blog)
+        self.assertNotIn('scrolling="no"',blog)
 
     def test_confirmed_collaborators_are_sorted_and_exclude_the_owner(self):
         projects={p['id']:p for p in self.data['projects']}

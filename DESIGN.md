@@ -17,3 +17,5 @@
 - Projects representatives must be actual service interfaces, never video thumbnails or architecture slides. Omit the preview when no publishable service screen exists. Video thumbnails remain valid only within Talks.
 
 - Projects display newest-first: Marketing AX, Polaris, SmartBee, conversation search, REVIEWRO, review analytics, AIAS, targeting. Exactly six service previews are selected; Polaris and Marketing AX are text-only.
+
+- Blog uses one viewport-height frame without an outer footer/min-height overflow. Its right scrollbar rail is clipped by a wrapper; native inner scrolling remains enabled for long posts.
