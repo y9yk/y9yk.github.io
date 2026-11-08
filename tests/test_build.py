@@ -151,7 +151,7 @@ class PublicBuildTests(unittest.TestCase):
         projects={p['id']:p for p in self.data['projects']}
         self.assertEqual(projects['reviewro']['collaborators'],['한송원','황윤교'])
         self.assertEqual(projects['aias']['collaborators'],['유근국'])
-        self.assertEqual(projects['targeting']['collaborators'],['김찬호','박인범','임헌정','황윤교'])
+        self.assertEqual(projects['targeting']['collaborators'],['박인범'])
         for id in ['counseling-search','smartbee','polaris-studio','marketing-ax-workspace']:
             names=projects[id]['collaborators']
             self.assertEqual(names,sorted(set(names)))
