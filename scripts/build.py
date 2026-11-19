@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
+import sys
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -186,16 +188,15 @@ def main():
     output.mkdir();(output/'index.html').write_text(render(data))
     (output/'projects').mkdir()
     (output/'projects/index.html').write_text(render_projects(data))
-    # The CMU catalog is an approved standalone public page, not a project-detail export.
-    catalog_source=ROOT/'public/cmu-learn'
-    catalog_output=output/'projects/cmu-learn'
-    catalog_output.mkdir()
-    for name in ('index.html','study.js','style.css'):
-        shutil.copyfile(catalog_source/name,catalog_output/name)
-    legacy_catalog=output/'projects/cmu-cs-learn'
-    legacy_catalog.mkdir()
-    for name in ('index.html','redirect.js'):
-        shutil.copyfile(ROOT/'src/cmu-legacy-redirect'/name,legacy_catalog/name)
+    # Standalone learning module; never export private portfolio details.
+    guide=ROOT/'learning/cmu-cs-learn/build.py'
+    subprocess.run([sys.executable,str(guide),'--output',str(output/'learning/cmu-cs-learn')],check=True)
+    redirect_source=ROOT/'src/cmu-legacy-redirect'
+    for route in ('projects/cmu-learn','projects/cmu-cs-learn','cmu-cs-learn'):
+        legacy_catalog=output/route
+        legacy_catalog.mkdir()
+        for name in ('index.html','redirect.js'):
+            shutil.copyfile(redirect_source/name,legacy_catalog/name)
     (output/'blog').mkdir()
     (output/'blog/index.html').write_text(render_blog(data))
     shutil.copytree(ROOT/'assets',output/'assets')

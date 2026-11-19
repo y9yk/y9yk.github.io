@@ -61,23 +61,9 @@ function nextAction(courses,state) {
   return {id:course.id,step:STEPS.find(s=>!state.steps[course.id]?.includes(s)),resume:Boolean(last)};
 }
 
-// This repository's standalone GitHub Pages used to serve the root project path.
-// Modern deployment serves the app under /projects/ and avoids redirecting local builds.
-function legacyDestination({protocol,hostname,pathname,search,hash}) {
-  if(protocol!=='https:' || !['yongkilee.com','y9yk.github.io'].includes(hostname) ||
-      !/^\/cmu-cs-learn\/?$/.test(pathname)) return null;
-  return 'https://yongkilee.com/projects/cmu-learn/' + search + hash;
-}
+if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount,videoEmbedUrl};
 
-if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount,legacyDestination,videoEmbedUrl};
-function redirectLegacy(loc) {
-  const destination=legacyDestination(loc);
-  if(!destination) return false;
-  loc.replace(destination);
-  return true;
-}
-
-if (typeof document!=='undefined' && !redirectLegacy(window.location)) {
+if (typeof document!=='undefined') {
   const get=id=>document.getElementById(id);
   const form=get('filters'), fields=form.elements;
   const cards=[...document.querySelectorAll('[data-course]')];

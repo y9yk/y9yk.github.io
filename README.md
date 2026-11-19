@@ -19,6 +19,8 @@ This repository contains only approved public profile information and brief proj
 - `guides/analytics.md`: metric definitions and collector operations.
 - `DESIGN.md`: typography and interaction rules.
 
+- `learning/cmu-cs-learn/`: public course catalog, learner notes, and page generator for [/learning/cmu-cs-learn/](https://yongkilee.com/learning/cmu-cs-learn/). The former CMU paths redirect here.
+
 ## Publication state
 
 Home keeps career-linked project summaries. The Projects header opens a separate list at /projects/. Detail articles remain in the private local review library and are not published here. Stats, its public API, and new browser collection are paused pending a research-backed design review; existing aggregates remain on the collector volume. Empty For fun content is hidden.

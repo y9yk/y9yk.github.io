@@ -1,0 +1,148 @@
+[
+  {
+    "course": "10-605",
+    "video": "TJ6qYAaGRZ8",
+    "title": "CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 1: Overview",
+    "summary": "대규모 데이터가 머신러닝의 문제 설정을 어떻게 바꾸는지 소개합니다. 공개 강의 자료는 빅데이터와 ML의 발전을 돌아보고, 알고리즘의 점근적 복잡도와 실제 연산 비용을 함께 살펴보는 관점을 제시합니다.",
+    "highlights": [
+      {
+        "text": "빅데이터와 머신러닝의 역사적 맥락을 짚습니다."
+      },
+      {
+        "text": "입력 크기에 따른 비용 증가를 복잡도 관점에서 봅니다."
+      },
+      {
+        "text": "알고리즘의 수식뿐 아니라 실제 연산의 비용도 고려합니다."
+      }
+    ],
+    "evidence": [
+      {
+        "label": "Fall 2026 Overview 공식 일정",
+        "url": "https://10605.github.io/schedule.html"
+      },
+      {
+        "label": "해당 강의 공개 슬라이드",
+        "url": "https://docs.google.com/presentation/d/1GK3GPVxBXY5JYcSaeqqh_xR2iIekVCLQ/htmlpresent"
+      }
+    ],
+    "references": [
+      {
+        "label": "과목 개요와 선수 지식",
+        "url": "https://10605.github.io/"
+      }
+    ],
+    "basis": "공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음."
+  },
+  {
+    "course": "10-605",
+    "video": "KQUtNJEzUxU",
+    "title": "CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 2: Map-Reduce and Spark",
+    "summary": "계산량만으로 설명되지 않는 대규모 데이터 처리 비용을 살펴봅니다. 메모리·디스크·네트워크 접근을 구분하고, 순차 처리와 MapReduce, Spark·Polars의 데이터 흐름 방식으로 연결합니다.",
+    "highlights": [
+      {
+        "text": "점근적 분석이 놓치는 상수와 수렴 비용은 실험으로 확인합니다."
+      },
+      {
+        "text": "디스크 탐색과 순차 읽기는 다른 비용을 가집니다."
+      },
+      {
+        "text": "Unix 파이프와 정렬을 메모리 효율적인 처리의 출발점으로 봅니다."
+      },
+      {
+        "text": "MapReduce와 Spark·Polars를 데이터 흐름 관점에서 비교합니다."
+      }
+    ],
+    "evidence": [
+      {
+        "label": "Fall 2026 Map-Reduce and Spark 일정",
+        "url": "https://10605.github.io/schedule.html"
+      },
+      {
+        "label": "해당 강의 공개 슬라이드",
+        "url": "https://docs.google.com/presentation/d/1D7GrpfH2ciFQtF14x6MImid4dy9m4FgB/htmlpresent"
+      }
+    ],
+    "references": [
+      {
+        "label": "공식 일정에 지정된 원 논문: MapReduce",
+        "url": "https://storage.googleapis.com/gweb-research2023-media/pubtools/4449.pdf"
+      }
+    ],
+    "basis": "공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음."
+  },
+  {
+    "course": "10-605",
+    "video": "xd7fZ5QpezY",
+    "title": "CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 3: Workflows for Map-Reduce Systems",
+    "summary": "단일 집계를 넘어 여러 단계의 데이터 처리와 반복 계산을 구성합니다. MapReduce·Spark·Polars를 복습한 뒤, 여러 빈도 통계를 결합하는 구절 추출과 반복 갱신이 필요한 k-means를 예제로 사용합니다.",
+    "highlights": [
+      {
+        "text": "정렬된 키와 지연 순회로 집계의 메모리 사용을 줄이는 구조를 봅니다."
+      },
+      {
+        "text": "여러 카운트를 결합하는 구절 추출 워크플로를 살펴봅니다."
+      },
+      {
+        "text": "k-means를 반복이 필요한 워크플로의 사례로 다룹니다."
+      }
+    ],
+    "evidence": [
+      {
+        "label": "Fall 2026 Workflows 공식 일정",
+        "url": "https://10605.github.io/schedule.html"
+      },
+      {
+        "label": "해당 강의 공개 슬라이드",
+        "url": "https://docs.google.com/presentation/d/1yk0LLc-7ueqPwU6Flk4777m2qE4sTyxj/htmlpresent"
+      }
+    ],
+    "references": [
+      {
+        "label": "공식 강의 예제 코드: 구절 추출",
+        "url": "https://github.com/10605/LectureSampleCode/blob/main/polars_workflows/phrases.py"
+      },
+      {
+        "label": "공식 강의 예제 코드: k-means",
+        "url": "https://github.com/10605/LectureSampleCode/blob/main/polars_workflows/kmeans.py"
+      }
+    ],
+    "basis": "공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음."
+  },
+  {
+    "course": "17-645",
+    "video": "vFJCgzuEkmY",
+    "title": "CMU Machine Learning in Production (Fall 2026) | Lecture 1: Correctness and Risk",
+    "summary": "모델의 높은 정확도가 제품의 올바른 동작을 보장하지 않는 이유를 다룹니다. 잘못된 출력을 전제로 위험을 식별하고, 발생 가능성과 피해의 심각도에 따라 예방·감시·복구 장치를 설계하는 관점입니다.",
+    "highlights": [
+      {
+        "text": "정확도와 올바름을 구분하고 SQL injection과 prompt injection 사례를 비교합니다."
+      },
+      {
+        "text": "위험의 크기와 허용 가능한 위험의 판단을 구분합니다."
+      },
+      {
+        "text": "사람의 감독, 안전장치, 조기 발견, 롤백을 완화 수단으로 봅니다."
+      },
+      {
+        "text": "위험 분석으로 배포 전 문제를 구조적으로 찾아냅니다."
+      }
+    ],
+    "evidence": [
+      {
+        "label": "Fall 2026 Correctness and Risk 공식 일정",
+        "url": "https://mlip-cmu.github.io/f2026/"
+      },
+      {
+        "label": "해당 학기 공개 슬라이드: Correctness and Risk",
+        "url": "https://docs.google.com/presentation/d/1GfH7wYM833xKFKmkrYqHWyUgctuaSFD6ACBbwu0O3jw/htmlpresent"
+      }
+    ],
+    "references": [
+      {
+        "label": "교수진 공개 교재 · 보충 읽기",
+        "url": "https://mlip-cmu.github.io/book/"
+      }
+    ],
+    "basis": "공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음."
+  }
+]

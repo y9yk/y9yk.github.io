@@ -1,0 +1,350 @@
+[
+  {
+    "course": "15-110",
+    "video": "oPSMMckx3eY",
+    "title": "CMU Principles of Computing (Spring 2026) | Lecture 1: Programming Basics",
+    "summary": "파이썬의 자료형과 연산, 변수 대입을 익히는 입문 강의다. Thonny 편집기와 셸을 구분하고 오류 메시지를 읽으며 실행 중 값이 바뀌는 과정을 추적한다.",
+    "highlights": [
+      {
+        "text": "정수·실수·문자열·불리언의 연산을 구분한다.",
+        "at": 382
+      },
+      {
+        "text": "변수에 값을 대입하고 갱신 순서를 추적한다.",
+        "at": 2416
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=oPSMMckx3eY"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 일정",
+        "url": "https://www.cs.cmu.edu/~15110-s26/schedule.html"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "15-110",
+    "video": "0nmhvgc5XOI",
+    "title": "CMU Principles of Computing (Spring 2026) | Lecture 2: Data Representation",
+    "summary": "같은 정보가 서로 다른 표현을 가질 수 있다는 관점에서 이진수를 배운다. 비트와 바이트, 진법 변환을 거쳐 날짜·RGB 이미지·텍스트가 이진 데이터로 해석되는 추상화 계층을 연결한다.",
+    "highlights": [
+      {
+        "text": "이진수와 십진수 사이의 변환을 연습한다.",
+        "at": 1140
+      },
+      {
+        "text": "이진 데이터의 의미는 해석 맥락에 달려 있다.",
+        "at": 2216
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=0nmhvgc5XOI"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 일정",
+        "url": "https://www.cs.cmu.edu/~15110-s26/schedule.html"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "15-110",
+    "video": "vh3oVBcWG0A",
+    "title": "CMU Principles of Computing (Spring 2026) | Lecture 3: Function Calls",
+    "summary": "반복되는 알고리즘을 함수 호출로 재사용하는 방법을 다룬다. 인자와 반환값, 중첩 호출, 화면 출력 같은 부수효과를 구별하고 내장 함수 및 라이브러리를 사용한다.",
+    "highlights": [
+      {
+        "text": "인자와 반환값을 구별한다.",
+        "at": 600
+      },
+      {
+        "text": "부수효과와 반환값 None을 혼동하지 않는다.",
+        "at": 1161
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=vh3oVBcWG0A"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 일정",
+        "url": "https://www.cs.cmu.edu/~15110-s26/schedule.html"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-214",
+    "video": "N7V5hsQeGVM",
+    "title": "CMU Principles of Software Construction (Spring 2026) | Lecture 1: Introduction and Overview",
+    "summary": "현대 소프트웨어가 기존 라이브러리와 의존성을 조합해 만들어진다는 점에서 출발한다. 재사용의 복잡성과 위험을 살펴보고 설계 목표, 품질 속성, 트레이드오프를 과목의 중심 문제로 제시한다.",
+    "highlights": [
+      {
+        "text": "의존성 트리는 통합 복잡성을 만든다.",
+        "at": 413
+      },
+      {
+        "text": "설계 대안을 품질 속성 관점에서 비교한다.",
+        "at": 1576
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=N7V5hsQeGVM"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 과목 사이트",
+        "url": "https://cmu-17-214.github.io/s2026/"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-214",
+    "video": "2Sgd3efXKGg",
+    "title": "CMU Principles of Software Construction (Spring 2026) | Lecture 2: Starting with Objects",
+    "summary": "Java와 TypeScript의 객체를 변화에 대응하는 설계 수단으로 소개한다. 참조형, 인터페이스, 하위 타입 다형성과 동적 디스패치를 연결하고 접근 제한자와 클로저를 통한 정보 은닉을 다룬다.",
+    "highlights": [
+      {
+        "text": "구체 구현보다 인터페이스를 기준으로 프로그래밍한다.",
+        "at": 1879
+      },
+      {
+        "text": "캡슐화와 정보 은닉을 검토한다.",
+        "at": 2971
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=2Sgd3efXKGg"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 과목 사이트",
+        "url": "https://cmu-17-214.github.io/s2026/"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-214",
+    "video": "P_33xayi9J8",
+    "title": "CMU Principles of Software Construction (Spring 2026) | Lecture 3: OO Analysis and UML",
+    "summary": "도서관 시스템 요구사항을 이용해 객체지향 분석을 진행한다. 문제 영역과 해결 영역을 구분하고 명사·동사, 공통 용어집을 통해 UML 도메인 모델을 만든 뒤 시스템 시퀀스와 행동 계약으로 확장한다.",
+    "highlights": [
+      {
+        "text": "요구사항의 모호한 용어를 공통 용어집으로 정리한다.",
+        "at": 1370
+      },
+      {
+        "text": "시스템 시퀀스 다이어그램으로 상호작용을 살펴본다.",
+        "at": 2293
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=P_33xayi9J8"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 과목 사이트",
+        "url": "https://cmu-17-214.github.io/s2026/"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-635",
+    "video": "1DvaPZ_4sh0",
+    "title": "CMU Software Architectures (Spring 2026) | Lecture 1: Course Introduction",
+    "summary": "비즈니스 요구와 품질 속성이 시스템 구조 선택에 영향을 주는 이유를 소개한다. 아키텍처의 정적·동적·배포 구조, 구조 간 트레이드오프와 아키텍트의 활동을 과목 전체의 틀로 연결한다.",
+    "highlights": [
+      {
+        "text": "설계를 비즈니스 요구에 맞추는 관점을 다룬다.",
+        "at": 1221
+      },
+      {
+        "text": "소프트웨어 아키텍처의 정의를 확인한다.",
+        "at": 2880
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=1DvaPZ_4sh0"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 강의계획서",
+        "url": "https://mse.s3d.cmu.edu/0_documents/syllabi/17635-software-architectures-2026-syllabus-v1.0.pdf"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-635",
+    "video": "Y4Q2V6MI1oA",
+    "title": "CMU Software Architectures (Spring 2026) | Lecture 2: Setting The Context",
+    "summary": "시스템 내부 설계에 앞서 범위와 외부 관계를 정하는 강의다. 호출 서비스 예시의 컨텍스트 다이어그램을 출발점으로 품질 속성과 제약을 끌어내고 유스케이스·이벤트 모델 및 검증 활동을 연결한다.",
+    "highlights": [
+      {
+        "text": "컨텍스트 다이어그램이 표현할 경계를 확인한다.",
+        "at": 244
+      },
+      {
+        "text": "아키텍처를 테스트로 검증하는 활동을 연결한다.",
+        "at": 2668
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=Y4Q2V6MI1oA"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 강의계획서",
+        "url": "https://mse.s3d.cmu.edu/0_documents/syllabi/17635-software-architectures-2026-syllabus-v1.0.pdf"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-635",
+    "video": "XTRyyqbo4cw",
+    "title": "CMU Software Architectures (Spring 2026) | Lecture 3: Architectural Requirements",
+    "summary": "기능 요구사항, 제약, 품질 속성을 아키텍처를 이끄는 세 요소로 구분한다. 모호한 품질 요구를 여섯 부분의 시나리오로 구체화하고 보안·성능·변경 용이성 사례를 통해 구조적 선택의 상충관계를 살펴본다.",
+    "highlights": [
+      {
+        "text": "아키텍처를 이끄는 세 요소를 구분한다.",
+        "at": 1463
+      },
+      {
+        "text": "품질 속성을 여섯 부분의 시나리오로 기술한다.",
+        "at": 2805
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=XTRyyqbo4cw"
+      }
+    ],
+    "references": [
+      {
+        "label": "Spring 2026 공식 강의계획서",
+        "url": "https://mse.s3d.cmu.edu/0_documents/syllabi/17635-software-architectures-2026-syllabus-v1.0.pdf"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-643",
+    "video": "CV-H1MynwNg",
+    "title": "CMU Quality Management (Spring 2026) | Lecture 1: Introduction",
+    "summary": "품질 관리를 현실의 제약 속 의사결정으로 소개하며 품질 보증과 구분한다. 개발 초반의 예방과 운영 이후 관찰을 함께 다루고 Tartan Tickets 프로젝트의 세 단계와 실습 운영 방식을 안내한다.",
+    "highlights": [
+      {
+        "text": "품질 관리와 품질 보증의 차이를 살펴본다.",
+        "at": 0
+      },
+      {
+        "text": "개발 속도와 위험 사이의 트레이드오프를 검토한다.",
+        "at": 712
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=CV-H1MynwNg"
+      }
+    ],
+    "references": [
+      {
+        "label": "공식 과목 소개",
+        "url": "https://mse.s3d.cmu.edu/applicants/course-offerings.html"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-643",
+    "video": "c-fD7vM0Qj8",
+    "title": "CMU Quality Management (Spring 2026) | Lecture 2: Metrics and Measurement",
+    "summary": "측정을 불확실성을 줄이는 활동으로 보고 대상·속성·지표의 관계와 GQM을 다룬다. 허영 지표와 지표의 목표화가 만드는 왜곡을 경계하며 수집한 지표를 판단과 행동으로 연결하는 방법을 살펴본다.",
+    "highlights": [
+      {
+        "text": "목표에서 질문을 도출하고 필요한 지표를 정한다.",
+        "at": 914
+      },
+      {
+        "text": "Prometheus·Loki·Grafana 기반 관찰 가능성 구성을 소개한다.",
+        "at": 2882
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=c-fD7vM0Qj8"
+      }
+    ],
+    "references": [
+      {
+        "label": "공식 과목 소개",
+        "url": "https://mse.s3d.cmu.edu/applicants/course-offerings.html"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  },
+  {
+    "course": "17-643",
+    "video": "f8jUgfO-Aik",
+    "title": "CMU Quality Management (Spring 2026) | Lecture 3: Quality in the Modern SDLC",
+    "summary": "폭포수·나선형·V/W 모델과 애자일을 품질 활동 관점에서 비교한다. 자동화 테스트, CI/CD, 회귀 테스트와 TDD를 연결하고 AI 에이전트 워크플로에서의 TDD도 다룬다.",
+    "highlights": [
+      {
+        "text": "개발 프로세스 안에서 품질 활동의 위치를 비교한다.",
+        "at": 1182
+      },
+      {
+        "text": "TDD와 AI 에이전트 워크플로를 연결한다.",
+        "at": 4273
+      }
+    ],
+    "evidence": [
+      {
+        "label": "공식 영상 설명 및 게시자 제공 챕터",
+        "url": "https://www.youtube.com/watch?v=f8jUgfO-Aik"
+      }
+    ],
+    "references": [
+      {
+        "label": "공식 과목 소개",
+        "url": "https://mse.s3d.cmu.edu/applicants/course-offerings.html"
+      }
+    ],
+    "basis": "공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다."
+  }
+]

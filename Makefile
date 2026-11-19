@@ -10,6 +10,8 @@ check:
 	$(PYTHON) -m unittest discover -s tests -v
 	node --check assets/site.js
 	node --test tests/*.test.cjs
+	cd learning/cmu-cs-learn && $(PYTHON) -m unittest discover -s tests -v
+	cd learning/cmu-cs-learn && node --check assets/study.js && node --test tests/*.test.cjs
 serve: build
 	@printf '\nPreview: http://127.0.0.1:$(PORT)\nStop with Ctrl+C.\n\n'
 	$(PYTHON) -m http.server $(PORT) --bind 127.0.0.1 --directory dist

@@ -1,2 +1,2 @@
 'use strict';
-location.replace('../cmu-learn/' + location.search + location.hash);
+location.replace('/learning/cmu-cs-learn/' + location.search + location.hash);
