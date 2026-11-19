@@ -37,8 +37,8 @@ class PublicBuildTests(unittest.TestCase):
         subprocess.run([sys.executable,str(ROOT/'scripts/build.py')],check=True,cwd=ROOT,capture_output=True)
         output=ROOT/'dist'
         self.assertTrue((output/'projects/index.html').is_file())
-        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html','cmu-cs-learn'})
-        guide=output/'projects/cmu-cs-learn'
+        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html','cmu-learn','cmu-cs-learn'})
+        guide=output/'projects/cmu-learn'
         filenames={'index.html','study.js','style.css'}
         self.assertEqual({p.name for p in guide.iterdir()},filenames)
         for name in filenames:
@@ -49,6 +49,12 @@ class PublicBuildTests(unittest.TestCase):
         self.assertIn('src="./study.js"',content)
         self.assertIn('href="./style.css"',content)
         self.assertNotIn('http-equiv="refresh"',content.lower())
+        self.assertIn('id="study-next"',content)
+        self.assertEqual(content.count('data-play='),8)
+        legacy=output/'projects/cmu-cs-learn'
+        self.assertEqual({p.name for p in legacy.iterdir()},{'index.html','redirect.js'})
+        self.assertIn('href="../cmu-learn/"',(legacy/'index.html').read_text())
+        self.assertIn('location.search + location.hash',(legacy/'redirect.js').read_text())
         self.assertFalse((output/'talks').exists());self.assertFalse((output/'demos').exists())
         self.assertFalse((output/'stats').exists());self.assertFalse((output/'for-fun').exists())
         for file in output.rglob('*.html'):

@@ -1,61 +1,175 @@
 'use strict';
+
+const STEPS=['watch','practice','reflect'];
+const LABELS={watch:'공식 강의 보기',practice:'미니 실습',reflect:'복습 노트'};
+const OLD_KEY='cmu-cs-study:completed:v1';
+const STUDY_KEY='cmu-cs-study:workspace:v2';
+
 function normalize(input) {
   return String(input ?? '').normalize('NFKC').toLowerCase().replace(/[‐‑‒–—−-]/g,' ').replace(/\s+/g,' ').trim();
 }
-function matches(course,{q='',track='all',status='all',progress='all',seen=new Set()}={}) {
+
+function matches(course,{q='',track='all',status='all',progress='all',seen=new Set(),started=new Set()}={}) {
   const done=seen.has(course.id);
   if (track!=='all' && course.track!==track) return false;
   if (status!=='all' && course.status!==status) return false;
-  if ((progress==='done' && !done) || (progress==='open' && done)) return false;
-  const hay=normalize(course.keywords);
-  return normalize(q).split(' ').filter(Boolean).every(word=>hay.includes(word));
+  if ((progress==='done' && !done) || (progress==='open' && done) ||
+      (progress==='started' && (!started.has(course.id) || done))) return false;
+  return normalize(q).split(' ').filter(Boolean).every(word=>normalize(course.keywords).includes(word));
 }
-if (typeof module!=='undefined') module.exports={matches,normalize};
+
+function loadStudy(legacy, raw, courses) {
+  const available=new Set(courses.filter(c=>c.status==='available').map(c=>c.id));
+  const steps=Object.create(null), notes=Object.create(null);
+  const legacyDone=new Set(Array.isArray(legacy)?legacy:[]);
+  for (const id of available) {
+    const src=raw?.steps?.[id];
+    if (Array.isArray(src)) steps[id]=STEPS.filter(s=>src.includes(s));
+    else if(legacyDone.has(id)) steps[id]=[...STEPS];
+    const note=raw?.notes?.[id];
+    if(typeof note==='string') notes[id]=note.slice(0,2000);
+  }
+  return {steps,notes,last:available.has(raw?.last)?raw.last:null};
+}
+
+function courseCount(state, course) {
+  return course.status==='available'?(state.steps[course.id]?.length??0):0;
+}
+
+function toggleStep(state, course, step) {
+  if (course.status!=='available' || !STEPS.includes(step)) return false;
+  const values=new Set(state.steps[course.id]??[]);
+  if(values.has(step)) values.delete(step); else values.add(step);
+  state.steps[course.id]=STEPS.filter(s=>values.has(s));
+  state.last=course.id;
+  return true;
+}
+
+function nextAction(courses,state) {
+  const active=courses.filter(c=>c.status==='available' && courseCount(state,c)<STEPS.length);
+  const last=active.find(c=>c.id===state.last);
+  const course=last??active[0];
+  if(!course) return null;
+  return {id:course.id,step:STEPS.find(s=>!state.steps[course.id]?.includes(s)),resume:Boolean(last)};
+}
+
+if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount};
+
 if (typeof document!=='undefined') {
-  const key='cmu-cs-study:completed:v1';
-  const form=document.querySelector('#filters');
-  const fields=form.elements;
+  const get=id=>document.getElementById(id);
+  const form=get('filters'), fields=form.elements;
   const cards=[...document.querySelectorAll('[data-course]')];
-  const validIds=new Set(cards.map(card=>card.dataset.id));
-  let seen=new Set();
-  try {
-    const saved=JSON.parse(localStorage.getItem(key) || '[]');
-    if (Array.isArray(saved)) seen=new Set(saved.filter(id=>validIds.has(id)));
-  } catch {}
+  const courses=cards.map(c=>c.dataset);
+  const byId=new Map(cards.map(card=>[card.dataset.id,card]));
+  function read(key) {
+    try {return JSON.parse(localStorage.getItem(key));} catch {return null;}
+  }
+  const legacy=read(OLD_KEY);
+  const state=loadStudy(legacy,read(STUDY_KEY),courses);
+  const released=courses.filter(c=>c.status==='available');
+  function save() {
+    try {
+      localStorage.setItem(STUDY_KEY,JSON.stringify(state));
+      const future=(Array.isArray(legacy)?legacy:[]).filter(id=>byId.get(id)?.dataset.status==='planned');
+      localStorage.setItem(OLD_KEY,JSON.stringify([...released.filter(c=>courseCount(state,c)===3).map(c=>c.id),...future]));
+    } catch {get('storage-note').hidden=false;}
+  }
+
   function render() {
-    let count=0;
-    for (const card of cards) {
-      const show=matches(card.dataset,{q:fields.q.value,track:fields.track.value,status:fields.status.value,progress:fields.progress.value,seen});
+    const seen=new Set(released.filter(c=>courseCount(state,c)===3).map(c=>c.id));
+    const started=new Set(released.filter(c=>courseCount(state,c)>0 || state.last===c.id || state.notes[c.id]).map(c=>c.id));
+    let visible=0;
+    for(const card of cards) {
+      const c=card.dataset;
+      const show=matches(c,{q:fields.q.value,track:fields.track.value,status:fields.status.value,progress:fields.progress.value,seen,started});
       card.hidden=!show;
-      if (show) count++;
-      const mark=card.querySelector('button[data-mark]');
-      mark.setAttribute('aria-pressed',String(seen.has(card.dataset.id)));
-      mark.textContent=seen.has(card.dataset.id)?'✓ 완료':'완료로 표시';
+      if(show) visible++;
+      if(c.status!=='available') continue;
+      card.querySelector('[data-course-progress]').textContent=`${courseCount(state,c)}/3 단계`;
+      card.querySelectorAll('button[data-step-key]').forEach(button=>{
+        const done=Boolean(state.steps[c.id]?.includes(button.dataset.stepKey));
+        button.setAttribute('aria-pressed',String(done));
+        button.textContent=done?'완료 ✓':'완료 표시';
+      });
     }
-    document.querySelector('#result-count').textContent=`${count}개 과목 · 완료 ${seen.size}/${cards.length}`;
-    document.querySelector('#empty').hidden=count>0;
+    get('result-count').textContent=`${visible}개 과목`;
+    get('empty').hidden=visible>0;
+    const count=released.reduce((sum,c)=>sum+courseCount(state,c),0);
+    get('study-progress').textContent=`${count} / ${released.length*3}단계`;
+    get('study-meter').value=count;
+    get('study-count').textContent=`완료한 공개 과목 ${seen.size} / ${released.length}`;
+    const action=nextAction(courses,state), target=get('next-cta');
+    if(!action) {
+      get('next-label').textContent='공개 과목 완료';
+      get('next-title').textContent='공개된 모든 과목을 마쳤어요.';
+      get('next-step').textContent='노트를 다시 열거나 공개 예정 과목을 확인해 보세요.';
+      target.href='#library';target.textContent='과목 라이브러리 보기';
+    } else {
+      const c=byId.get(action.id).dataset;
+      get('next-label').textContent=action.resume?'이어서 학습':'추천 시작 과목';
+      get('next-title').textContent=c.title;
+      get('next-step').textContent=`${c.id} · 다음: ${LABELS[action.step]}`;
+      target.href=`#step-${action.id}-${action.step}`;
+      target.textContent=action.resume?'이어서 공부하기 →':'공부 시작하기 →';
+    }
   }
-  for (const card of cards) {
-    card.querySelector('button[data-mark]').addEventListener('click',()=>{
-      if (seen.has(card.dataset.id)) seen.delete(card.dataset.id);
-      else seen.add(card.dataset.id);
-      try {localStorage.setItem(key,JSON.stringify([...seen]));}
-      catch {document.querySelector('#storage-note').hidden=false;}
-      render();
-      if(card.hidden) fields.progress.focus();
+
+  function selectTarget(hash) {
+    const target=get(hash.slice(1));
+    if(!target || !target.closest('[data-course]')) return;
+    const card=target.closest('[data-course]');
+    form.reset();
+    card.querySelector('[data-workspace]').open=true;
+    if(card.dataset.status==='available') {state.last=card.dataset.id;save();}
+    render();
+    // Focus after content is unfiltered and expanded; native anchors retain meaningful URLs.
+    target.focus({preventScroll:true});
+    target.scrollIntoView({block:'start'});
+  }
+
+  for(const card of cards) {
+    const c=card.dataset, workspace=card.querySelector('[data-workspace]');
+    if(c.status!=='available') continue;
+    workspace.addEventListener('toggle',()=>{
+      if(workspace.open) {state.last=c.id;save();render();}
     });
+    card.querySelectorAll('button[data-step-key]').forEach(button=>button.addEventListener('click',()=>{
+      if(toggleStep(state,c,button.dataset.stepKey)) {save();render();if(card.hidden)fields.progress.focus();}
+    }));
+    const note=card.querySelector('textarea');
+    note.value=state.notes[c.id]??'';
+    note.addEventListener('input',()=>{
+      if(note.value) state.notes[c.id]=note.value;else delete state.notes[c.id];
+      state.last=c.id;save();render();
+    });
+    const load=card.querySelector('button[data-play]');
+    load?.addEventListener('click',()=>{
+      if(!/^PL[A-Za-z0-9_-]{8,60}$/.test(load.dataset.play)) return;
+      const player=document.createElement('iframe');
+      player.title=`${c.title} 공식 YouTube 재생목록`;
+      player.src=`https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(load.dataset.play)}&playsinline=1`;
+      player.allow='encrypted-media; picture-in-picture; fullscreen';
+      player.referrerPolicy='strict-origin-when-cross-origin';
+      player.allowFullscreen=true;
+      card.querySelector('[data-player]').replaceChildren(player);
+      player.focus();
+      state.last=c.id;save();render();
+    },{once:true});
   }
-  function reset() {form.reset();render();}
+  function reset(){form.reset();render();}
   form.addEventListener('submit',evt=>{evt.preventDefault();render();});
   form.addEventListener('input',render);
   form.addEventListener('change',render);
   document.querySelectorAll('[data-reset]').forEach(button=>button.addEventListener('click',()=>{reset();fields.q.focus();}));
-  document.querySelectorAll('a[data-route-course]').forEach(link=> {
-    link.addEventListener('click',()=>{
-      reset();
-      document.getElementById(link.hash.slice(1))?.focus({preventScroll:true});
-    });
+  get('next-cta').addEventListener('click',evt=>{
+    const hash=evt.currentTarget.hash;
+    if(hash.startsWith('#step-')){evt.preventDefault();history.pushState(null,'',hash);selectTarget(hash);}
   });
+  document.querySelectorAll('a[data-route-course]').forEach(link=>link.addEventListener('click',evt=>{
+    evt.preventDefault();history.pushState(null,'',link.hash);selectTarget(link.hash);
+  }));
+  window.addEventListener('hashchange',()=>selectTarget(location.hash));
   document.documentElement.classList.add('is-enhanced');
   render();
+  selectTarget(location.hash);
 }
