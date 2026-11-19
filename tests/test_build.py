@@ -33,11 +33,22 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('<script>alert',self.build.render(data))
         data=copy.deepcopy(self.data);data['links'][0]['url']='javascript:alert(1)'
         with self.assertRaises(ValueError):self.build.render(data)
-    def test_no_detail_routes_or_detail_links_are_published(self):
+    def test_only_the_approved_cmu_route_is_published_beside_the_projects_index(self):
         subprocess.run([sys.executable,str(ROOT/'scripts/build.py')],check=True,cwd=ROOT,capture_output=True)
         output=ROOT/'dist'
         self.assertTrue((output/'projects/index.html').is_file())
-        self.assertEqual(list((output/'projects').iterdir()),[output/'projects/index.html'])
+        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html','cmu-cs-learn'})
+        guide=output/'projects/cmu-cs-learn'
+        filenames={'index.html','study.js','style.css'}
+        self.assertEqual({p.name for p in guide.iterdir()},filenames)
+        for name in filenames:
+            self.assertEqual((guide/name).read_bytes(),(ROOT/'public/cmu-cs-learn'/name).read_bytes())
+        content=(guide/'index.html').read_text(encoding='utf-8')
+        self.assertIn('CMU CS Learn · 한국어 독학 가이드',content)
+        self.assertEqual(content.count('data-course data-id='),13)
+        self.assertIn('src="./study.js"',content)
+        self.assertIn('href="./style.css"',content)
+        self.assertNotIn('http-equiv="refresh"',content.lower())
         self.assertFalse((output/'talks').exists());self.assertFalse((output/'demos').exists())
         self.assertFalse((output/'stats').exists());self.assertFalse((output/'for-fun').exists())
         for file in output.rglob('*.html'):

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="카네기멜론 CS Learn 공개 강의를 찾아보고 AI 에이전트, ML 시스템, 소프트웨어 설계, 컴퓨팅 기초를 공부하는 한국어 길잡이.">
+  <meta name="theme-color" content="#132b28">
+  <title>CMU CS Learn · 한국어 독학 가이드</title>
+  <link rel="stylesheet" href="./style.css">
+  <script defer src="./study.js"></script>
+</head>
+<body>
+  <a class="skip" href="#library">과목 목록으로 건너뛰기</a>
+  <header class="mast">
+    <div class="shell topbar">
+      <a href="./" class="brand" aria-label="CS Learn 독학 가이드 홈"><span class="brand-icon" aria-hidden="true">⌘</span> CS Learn <span class="brand-note">독학 가이드</span></a>
+      <nav aria-label="페이지"><a href="#paths">학습 경로</a><a href="#library">과목 검색</a></nav>
+    </div>
+    <div class="shell hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="signal"></span> Carnegie Mellon University · 비공식 학습 인덱스</p>
+        <h1>CMU 컴퓨터과학,<br><span>관심 있는 과목부터.</span></h1>
+        <p>강의는 CMU 원본에서, 학습 순서와 실습 아이디어는 여기서. 공개 강의와 공개 예정 과목을 한국어로 찾아보세요.</p>
+        <div class="hero-actions"><a class="cta" href="#library">과목 찾아보기 <span aria-hidden="true">↓</span></a><a class="official" href="https://www.cs.cmu.edu/learn/">CMU 공식 강의 목록 <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <aside class="snapshot" aria-label="과목 공개 현황">
+        <span class="eyebrow">공개 현황</span>
+        <dl><div><dt>YouTube 공개</dt><dd>08</dd></div>
+        <div><dt>2027년 1월 예정</dt><dd>05</dd></div>
+        <div><dt>추천 학습 경로</dt><dd>03</dd></div></dl>
+        <p>공식 목록 확인 · <time datetime="2026-11-19">2026-11-19</time></p>
+      </aside>
+    </div>
+  </header>
+  <main class="shell">
+    <section id="paths" aria-labelledby="paths-title">
+      <div class="section-title"><p class="eyebrow">01 / ROADMAP</p><h2 id="paths-title">어디부터 볼까요?</h2><p>목표에 맞는 첫 과목을 고르세요. 순서는 학습용 추천이며 CMU의 공식 선수과목이 아닙니다.</p></div>
+      <div class="routes"><article class="route"><p class="eyebrow">실무 추천</p><h3>AI 에이전트 → 운영 → 성능</h3><p>도구를 쓰는 루프부터 평가와 운영까지. 마지막엔 서빙 병목을 직접 재봅니다.</p><ol><li><a href="#course-11-768" data-route-course><span>11-768</span> AI 에이전트</a></li><li><a href="#course-17-645" data-route-course><span>17-645</span> 프로덕션 머신러닝</a></li><li><a href="#course-15-442" data-route-course><span>15-442</span> 머신러닝 시스템</a></li></ol><p class="route-goal"><strong>남길 결과물</strong> 동일한 평가 세트의 성공률·p95 지연과 실패 원인을 한 장에 비교하세요.</p></article><article class="route"><p class="eyebrow">백엔드·테크 리드</p><h3>설계 → 아키텍처 → 품질</h3><p>코드의 책임 분리에서 팀의 설계 결정, 품질 기준으로 시야를 넓힙니다.</p><ol><li><a href="#course-17-214" data-route-course><span>17-214</span> 소프트웨어 구축 원리</a></li><li><a href="#course-17-635" data-route-course><span>17-635</span> 소프트웨어 아키텍처</a></li><li><a href="#course-17-643" data-route-course><span>17-643</span> 소프트웨어 품질 관리</a></li></ol><p class="route-goal"><strong>남길 결과물</strong> 기존 프로젝트를 골라 아키텍처 결정 기록과 릴리스 점검표를 작성하세요.</p></article><article class="route"><p class="eyebrow">기초부터</p><h3>컴퓨팅 → 확률 → 머신러닝</h3><p>Python과 문제 해결에서 시작해 확률과 모델 평가를 연결합니다. 확률·ML 과목은 1월 공개 예정입니다.</p><ol><li><a href="#course-15-110" data-route-course><span>15-110</span> 컴퓨팅 원리</a></li><li><a href="#course-15-259" data-route-course><span>15-259</span> 확률과 컴퓨팅 <small>예정</small></a></li><li><a href="#course-07-280" data-route-course><span>07-280</span> AI와 머신러닝 I <small>예정</small></a></li><li><a href="#course-10-605" data-route-course><span>10-605</span> 대규모 데이터 머신러닝</a></li></ol><p class="route-goal"><strong>남길 결과물</strong> 작은 정형 데이터로 기준 모델을 만들고 검증 결과를 재현하세요.</p></article></div>
+    </section>
+    <section id="library" aria-labelledby="library-title">
+      <div class="section-title"><p class="eyebrow">02 / CATALOG</p><h2 id="library-title">과목 라이브러리</h2><p>한·영 과목명, 코드, 교수진, 주제 키워드로 검색하세요.</p></div>
+      <form id="filters" class="requires-js" role="search" aria-label="과목 검색 및 필터">
+        <label class="search">과목 검색<input type="search" name="q" placeholder="예: 11-768, 서빙, software" autocomplete="off"></label>
+        <label>주제<select name="track"><option value="all">전체</option><option value="agents">AI·에이전트</option><option value="systems">ML 시스템</option><option value="software">소프트웨어 설계</option><option value="foundations">CS·수학 기초</option><option value="product">제품·임베디드</option></select></label>
+        <label>공개 상태<select name="status"><option value="all">전체</option><option value="available">YouTube 공개</option><option value="planned">공개 예정</option></select></label>
+        <label>학습 상태<select name="progress"><option value="all">전체</option><option value="open">미완료</option><option value="done">완료</option></select></label>
+        <button class="clear" type="button" data-reset>초기화</button>
+      </form>
+      <p id="result-count" aria-live="polite">13개 과목</p>
+      <p id="storage-note" hidden>이 브라우저가 저장 공간에 접근할 수 없어 체크 표시를 새로고침 후에는 유지할 수 없습니다.</p>
+      <p class="storage requires-js">완료 체크는 이 브라우저에만 저장되며 외부로 전송되지 않아요.</p>
+      <noscript><p>이 환경에서는 검색과 완료 체크를 쓸 수 없지만, 아래 전체 목록과 강의 링크는 그대로 이용할 수 있어요.</p></noscript>
+      <div class="empty" id="empty" hidden><h3>검색 결과가 없어요</h3><p>키워드를 줄이거나 필터를 초기화해 보세요.</p><button class="clear" type="button" data-reset>검색·필터 초기화</button></div>
+      <div class="courses">
+    <article id="course-11-768" class="course" tabindex="-1" aria-labelledby="course-11-768-title"
+      data-course data-id="11-768" data-track="agents" data-status="available" data-keywords="11-768 11768 AI Agents AI 에이전트 Daniel Fried · Graham Neubig 심화 AI·에이전트 LLM이 도구를 호출하고 여러 단계의 상태를 관리하는 과정을 살펴봅니다. 도구 실행 루프와 결과 평가를 나눠 공부하기 좋습니다. Python, LLM API, 간단한 도구 호출 경험 agent harness 도구 호출 tool use 메모리 memory eval 평가 planning 신뢰성">
+      <div class="course-meta"><span class="course-id">11-768</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-11-768-title">AI 에이전트</h3>
+      <p class="en" lang="en">AI Agents</p>
+      <p class="byline">Daniel Fried · Graham Neubig</p>
+      <p class="summary">LLM이 도구를 호출하고 여러 단계의 상태를 관리하는 과정을 살펴봅니다. 도구 실행 루프와 결과 평가를 나눠 공부하기 좋습니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">심화</li><li>agent harness</li><li>도구 호출 tool use</li><li>메모리 memory</li><li>eval 평가</li><li>planning</li><li>신뢰성</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>Python, LLM API, 간단한 도구 호출 경험</dd>
+      <dt>미니 실습</dt><dd>읽기 전용 문서 검색 도구 하나를 붙인 에이전트를 만들고, 10개 과업에서 성공·실패 사유를 분류하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cmu-agents.com/">강의진 공식 사이트 · 일정·자료 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.youtube.com/watch?v=UwfjzyLnvMg">강의진 공개 영상 · 에이전트 입문 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.youtube.com/watch?v=6zigF2a-2Pw">강의진 공개 영상 · 메모리와 스킬 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-17-645" class="course" tabindex="-1" aria-labelledby="course-17-645-title"
+      data-course data-id="17-645" data-track="systems" data-status="available" data-keywords="17-645 17645 Machine Learning in Production 프로덕션 머신러닝 Christian Kästner · Bogdan Vasilescu 중급 ML 시스템 모델을 실제 제품에 넣을 때 생기는 설계·검증·운영 문제를 다룹니다. 모델 정확도와 제품 품질을 서로 다른 관점으로 점검합니다. 기본 ML 평가 지표와 API 배포 경험 MLOps 배포 deployment 모니터링 monitoring 데이터 드리프트 drift 롤백">
+      <div class="course-meta"><span class="course-id">17-645</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-17-645-title">프로덕션 머신러닝</h3>
+      <p class="en" lang="en">Machine Learning in Production</p>
+      <p class="byline">Christian Kästner · Bogdan Vasilescu</p>
+      <p class="summary">모델을 실제 제품에 넣을 때 생기는 설계·검증·운영 문제를 다룹니다. 모델 정확도와 제품 품질을 서로 다른 관점으로 점검합니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">중급</li><li>MLOps</li><li>배포 deployment</li><li>모니터링 monitoring</li><li>데이터 드리프트 drift</li><li>롤백</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>기본 ML 평가 지표와 API 배포 경험</dd>
+      <dt>미니 실습</dt><dd>기존 ML API 하나에 품질 지표와 롤백 조건을 정의하고, 놓치기 쉬운 운영 실패 3가지를 적으세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://mlip-cmu.github.io/">강의진 공식 사이트 · 강의·교재 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-15-442" class="course" tabindex="-1" aria-labelledby="course-15-442-title"
+      data-course data-id="15-442" data-track="systems" data-status="available" data-keywords="15-442 15442 Machine Learning Systems 머신러닝 시스템 Tianqi Chen · Zhihao Jia 심화 ML 시스템 모델 학습과 추론을 떠받치는 프레임워크를 시스템 관점에서 봅니다. 연산·메모리·통신이 성능에 미치는 영향을 비교합니다. PyTorch 실습, 텐서 연산, 컴퓨터 시스템 기초 GPU LLM serving 서빙 분산 학습 추론 inference 배치 batching 메모리">
+      <div class="course-meta"><span class="course-id">15-442</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-15-442-title">머신러닝 시스템</h3>
+      <p class="en" lang="en">Machine Learning Systems</p>
+      <p class="byline">Tianqi Chen · Zhihao Jia</p>
+      <p class="summary">모델 학습과 추론을 떠받치는 프레임워크를 시스템 관점에서 봅니다. 연산·메모리·통신이 성능에 미치는 영향을 비교합니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">심화</li><li>GPU</li><li>LLM serving 서빙</li><li>분산 학습</li><li>추론 inference</li><li>배치 batching</li><li>메모리</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>PyTorch 실습, 텐서 연산, 컴퓨터 시스템 기초</dd>
+      <dt>미니 실습</dt><dd>같은 모델의 배치 크기 두 가지를 비교해 처리량, p95 지연, 최대 메모리를 기록하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://mlsyscourse.org/">강의진 공식 사이트 · 과목 안내 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-17-635" class="course" tabindex="-1" aria-labelledby="course-17-635-title"
+      data-course data-id="17-635" data-track="software" data-status="available" data-keywords="17-635 17635 Software Architectures 소프트웨어 아키텍처 Swarnalatha Ashok · Scott Pavetti 중급 소프트웨어 설계 시스템 구조 후보를 비교하고, 요구사항에 따라 어떤 선택이 나은지 근거를 적는 데 초점을 둡니다. 서비스 구조 또는 API 설계 경험 architecture ADR 시스템 설계 품질 속성 quality attributes 트레이드오프">
+      <div class="course-meta"><span class="course-id">17-635</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-17-635-title">소프트웨어 아키텍처</h3>
+      <p class="en" lang="en">Software Architectures</p>
+      <p class="byline">Swarnalatha Ashok · Scott Pavetti</p>
+      <p class="summary">시스템 구조 후보를 비교하고, 요구사항에 따라 어떤 선택이 나은지 근거를 적는 데 초점을 둡니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">중급</li><li>architecture</li><li>ADR</li><li>시스템 설계</li><li>품질 속성 quality attributes</li><li>트레이드오프</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>서비스 구조 또는 API 설계 경험</dd>
+      <dt>미니 실습</dt><dd>한 서비스의 모듈형 단일 구조와 이벤트 기반 구조를 변경 용이성·장애 격리·운영 비용으로 비교하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-17-214" class="course" tabindex="-1" aria-labelledby="course-17-214-title"
+      data-course data-id="17-214" data-track="software" data-status="available" data-keywords="17-214 17214 Principles of Software Construction 소프트웨어 구축 원리 Hammad Ahmad 중급 소프트웨어 설계 객체 설계, API 경계, 테스트와 동시성처럼 코드를 수정하고 검증하기 쉽게 만드는 방법을 연결합니다. 자료구조 기초와 객체지향 언어 사용 경험 객체지향 OOP design patterns 디자인 패턴 refactoring unit test 동시성 concurrency">
+      <div class="course-meta"><span class="course-id">17-214</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-17-214-title">소프트웨어 구축 원리</h3>
+      <p class="en" lang="en">Principles of Software Construction</p>
+      <p class="byline">Hammad Ahmad</p>
+      <p class="summary">객체 설계, API 경계, 테스트와 동시성처럼 코드를 수정하고 검증하기 쉽게 만드는 방법을 연결합니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">중급</li><li>객체지향 OOP</li><li>design patterns 디자인 패턴</li><li>refactoring</li><li>unit test</li><li>동시성 concurrency</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>자료구조 기초와 객체지향 언어 사용 경험</dd>
+      <dt>미니 실습</dt><dd>작은 서비스를 골라 변경 전 단위 테스트를 작성한 뒤 I/O와 비즈니스 로직을 분리하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://cmu-17-214.github.io/s2026/">강의진 보충 자료 · 2026년 봄 학기 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-17-643" class="course" tabindex="-1" aria-labelledby="course-17-643-title"
+      data-course data-id="17-643" data-track="software" data-status="available" data-keywords="17-643 17643 Quality Management 소프트웨어 품질 관리 Jeffrey Gennari · Christopher Timperley 중급 소프트웨어 설계 테스트 건수뿐 아니라 어떤 결함을 예방하고 어떻게 품질을 관리할지 팀 관점에서 공부하기 좋은 과목입니다. 소프트웨어 변경·릴리스 과정에 대한 기본 이해 quality assurance QA 검증 validation 결함 defects 품질 지표 release">
+      <div class="course-meta"><span class="course-id">17-643</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-17-643-title">소프트웨어 품질 관리</h3>
+      <p class="en" lang="en">Quality Management</p>
+      <p class="byline">Jeffrey Gennari · Christopher Timperley</p>
+      <p class="summary">테스트 건수뿐 아니라 어떤 결함을 예방하고 어떻게 품질을 관리할지 팀 관점에서 공부하기 좋은 과목입니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">중급</li><li>quality assurance QA</li><li>검증 validation</li><li>결함 defects</li><li>품질 지표</li><li>release</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>소프트웨어 변경·릴리스 과정에 대한 기본 이해</dd>
+      <dt>미니 실습</dt><dd>최근에 겪은 품질 문제를 하나 골라 출고 전 검증 기준과 배포 후 감지·복구 기준을 정하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-10-605" class="course" tabindex="-1" aria-labelledby="course-10-605-title"
+      data-course data-id="10-605" data-track="systems" data-status="available" data-keywords="10-605 10605 Machine Learning with Large Datasets 대규모 데이터 머신러닝 William Cohen 심화 ML 시스템 데이터가 메모리에 전부 들어가지 않을 때 전처리·학습의 병목이 어떻게 바뀌는지 살펴봅니다. Python, 기본 ML, 자료구조 및 복잡도 large datasets 빅데이터 streaming 스트리밍 병렬 처리 분산 feature hashing">
+      <div class="course-meta"><span class="course-id">10-605</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-10-605-title">대규모 데이터 머신러닝</h3>
+      <p class="en" lang="en">Machine Learning with Large Datasets</p>
+      <p class="byline">William Cohen</p>
+      <p class="summary">데이터가 메모리에 전부 들어가지 않을 때 전처리·학습의 병목이 어떻게 바뀌는지 살펴봅니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">심화</li><li>large datasets 빅데이터</li><li>streaming 스트리밍</li><li>병렬 처리</li><li>분산</li><li>feature hashing</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>Python, 기본 ML, 자료구조 및 복잡도</dd>
+      <dt>미니 실습</dt><dd>전체 로딩과 청크 처리로 같은 집계를 구현하고 데이터 크기별 시간·최대 메모리를 비교하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://10605.github.io/">강의진 공식 사이트 · 2026년 가을 학기 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-15-110" class="course" tabindex="-1" aria-labelledby="course-15-110-title"
+      data-course data-id="15-110" data-track="foundations" data-status="available" data-keywords="15-110 15110 Principles of Computing 컴퓨팅 원리 Franceska Xhakaj 입문 CS·수학 기초 문제를 작은 단계로 나누어 코드로 표현하고, 입력에 따라 결과가 달라지는 과정을 추적합니다. 프로그래밍 경험 없이 시작 가능 Python 프로그래밍 입문 programming 알고리즘 algorithms 문제 해결">
+      <div class="course-meta"><span class="course-id">15-110</span><span class="badge available">YouTube 공개</span></div>
+      <h3 id="course-15-110-title">컴퓨팅 원리</h3>
+      <p class="en" lang="en">Principles of Computing</p>
+      <p class="byline">Franceska Xhakaj</p>
+      <p class="summary">문제를 작은 단계로 나누어 코드로 표현하고, 입력에 따라 결과가 달라지는 과정을 추적합니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">입문</li><li>Python</li><li>프로그래밍 입문 programming</li><li>알고리즘 algorithms</li><li>문제 해결</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>프로그래밍 경험 없이 시작 가능</dd>
+      <dt>미니 실습</dt><dd>텍스트에 나온 단어를 세는 프로그램을 만들고 빈 입력과 중복 입력을 따로 시험하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CS Learn에서 강의 찾기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/~15110/syllabus.html">CMU 강의계획서 · 보충 자료 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-15-259" class="course" tabindex="-1" aria-labelledby="course-15-259-title"
+      data-course data-id="15-259" data-track="foundations" data-status="planned" data-keywords="15-259 15259 Probability and Computing 확률과 컴퓨팅 Mor Harchol-Balter · Weina Wang · Feras Saad 중급 CS·수학 기초 확률을 이용해 계산 과정과 시스템의 불확실성을 설명하는 연습에 연결하기 좋습니다. 기초 대수, 집합, 간단한 Python 실험 probability 확률분포 randomized 무작위 기댓값 시뮬레이션">
+      <div class="course-meta"><span class="course-id">15-259</span><span class="badge planned">2027년 1월 예정</span></div>
+      <h3 id="course-15-259-title">확률과 컴퓨팅</h3>
+      <p class="en" lang="en">Probability and Computing</p>
+      <p class="byline">Mor Harchol-Balter · Weina Wang · Feras Saad</p>
+      <p class="summary">확률을 이용해 계산 과정과 시스템의 불확실성을 설명하는 연습에 연결하기 좋습니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">중급</li><li>probability</li><li>확률분포</li><li>randomized 무작위</li><li>기댓값</li><li>시뮬레이션</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>기초 대수, 집합, 간단한 Python 실험</dd>
+      <dt>미니 실습</dt><dd>요청 간격을 바꿔 간단한 대기열을 시뮬레이션하고 평균과 상위 백분위가 다르게 움직이는지 확인하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공개 일정 확인 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-11-777" class="course" tabindex="-1" aria-labelledby="course-11-777-title"
+      data-course data-id="11-777" data-track="agents" data-status="planned" data-keywords="11-777 11777 Multimodal Machine Learning 멀티모달 머신러닝 Louis-Philippe Morency 심화 AI·에이전트 텍스트·이미지·음성처럼 서로 다른 입력을 표현하고 결합하는 모델을 공부하기 좋은 과목입니다. 딥러닝, 임베딩, 기본 선형대수 multimodal vision 이미지 audio 음성 fusion 결합 embeddings">
+      <div class="course-meta"><span class="course-id">11-777</span><span class="badge planned">2027년 1월 예정</span></div>
+      <h3 id="course-11-777-title">멀티모달 머신러닝</h3>
+      <p class="en" lang="en">Multimodal Machine Learning</p>
+      <p class="byline">Louis-Philippe Morency</p>
+      <p class="summary">텍스트·이미지·음성처럼 서로 다른 입력을 표현하고 결합하는 모델을 공부하기 좋은 과목입니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">심화</li><li>multimodal</li><li>vision 이미지</li><li>audio 음성</li><li>fusion 결합</li><li>embeddings</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>딥러닝, 임베딩, 기본 선형대수</dd>
+      <dt>미니 실습</dt><dd>이미지+텍스트 분류에서 한 입력을 가렸을 때 결과가 어떻게 바뀌는지 예시 10개로 비교하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공개 일정 확인 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://multicomp.cs.cmu.edu/mmml-course/fall2026/">강의진 보충 자료 · 2026년 가을 학기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-07-280" class="course" tabindex="-1" aria-labelledby="course-07-280-title"
+      data-course data-id="07-280" data-track="foundations" data-status="planned" data-keywords="07-280 07280 AI and Machine Learning I AI와 머신러닝 I Nihar Shah 입문 CS·수학 기초 처음 AI와 머신러닝을 공부할 때 과제 설정, 데이터 분할과 모델 평가를 함께 익히기 좋은 출발점입니다. 기초 프로그래밍과 확률·선형대수 복습 권장 AI 입문 ML 기초 train test split classification 분류 평가">
+      <div class="course-meta"><span class="course-id">07-280</span><span class="badge planned">2027년 1월 예정</span></div>
+      <h3 id="course-07-280-title">AI와 머신러닝 I</h3>
+      <p class="en" lang="en">AI and Machine Learning I</p>
+      <p class="byline">Nihar Shah</p>
+      <p class="summary">처음 AI와 머신러닝을 공부할 때 과제 설정, 데이터 분할과 모델 평가를 함께 익히기 좋은 출발점입니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">입문</li><li>AI 입문</li><li>ML 기초</li><li>train test split</li><li>classification 분류</li><li>평가</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>기초 프로그래밍과 확률·선형대수 복습 권장</dd>
+      <dt>미니 실습</dt><dd>작은 분류 데이터에서 다수 클래스 기준 모델과 간단한 학습 모델을 같은 검증 세트에서 비교하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공개 일정 확인 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-17-619" class="course" tabindex="-1" aria-labelledby="course-17-619-title"
+      data-course data-id="17-619" data-track="product" data-status="planned" data-keywords="17-619 17619 Product Management Essentials 제품 관리 핵심 Jim Berardone 입문 제품·임베디드 제품의 목표와 사용자 문제를 먼저 정의하고, 어떤 기준으로 기능의 우선순위를 정할지 연습하기 좋습니다. 개선하고 싶은 제품 사례 하나 product management PM 제품 기획 가설 실험 우선순위 지표 metrics">
+      <div class="course-meta"><span class="course-id">17-619</span><span class="badge planned">2027년 1월 예정</span></div>
+      <h3 id="course-17-619-title">제품 관리 핵심</h3>
+      <p class="en" lang="en">Product Management Essentials</p>
+      <p class="byline">Jim Berardone</p>
+      <p class="summary">제품의 목표와 사용자 문제를 먼저 정의하고, 어떤 기준으로 기능의 우선순위를 정할지 연습하기 좋습니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">입문</li><li>product management PM</li><li>제품 기획</li><li>가설 실험</li><li>우선순위</li><li>지표 metrics</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>개선하고 싶은 제품 사례 하나</dd>
+      <dt>미니 실습</dt><dd>한 기능의 타깃 사용자, 문제 가설, 성공 지표, 실험 계획을 한 페이지로 작성하세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공개 일정 확인 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article>
+    <article id="course-17-627" class="course" tabindex="-1" aria-labelledby="course-17-627-title"
+      data-course data-id="17-627" data-track="product" data-status="planned" data-keywords="17-627 17627 Requirements for Embedded Systems 임베디드 시스템 요구사항 Scott Pavetti 중급 제품·임베디드 시간, 전력, 환경 등 제약이 있는 시스템에서 요구사항을 구현과 검증에 이어 붙이는 연습에 적합합니다. 임베디드 시스템 또는 소프트웨어 요구사항에 대한 기본 이해 embedded 요구사항 requirements 실시간 real-time 추적성 traceability hardware">
+      <div class="course-meta"><span class="course-id">17-627</span><span class="badge planned">2027년 1월 예정</span></div>
+      <h3 id="course-17-627-title">임베디드 시스템 요구사항</h3>
+      <p class="en" lang="en">Requirements for Embedded Systems</p>
+      <p class="byline">Scott Pavetti</p>
+      <p class="summary">시간, 전력, 환경 등 제약이 있는 시스템에서 요구사항을 구현과 검증에 이어 붙이는 연습에 적합합니다.</p>
+      <ul class="tags" aria-label="주제"><li class="level">중급</li><li>embedded</li><li>요구사항 requirements</li><li>실시간 real-time</li><li>추적성 traceability</li><li>hardware</li></ul>
+      <details><summary>독학 준비와 실습</summary><dl><dt>준비</dt><dd>임베디드 시스템 또는 소프트웨어 요구사항에 대한 기본 이해</dd>
+      <dt>미니 실습</dt><dd>센서 장치의 응답 시간·전력·센서 오류에 대해 측정 가능한 합격 기준을 하나씩 쓰세요.</dd></dl></details>
+      <ul class="links" aria-label="강의 자료"><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공개 일정 확인 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li></ul>
+      <button class="mark requires-js" type="button" data-mark aria-pressed="false">완료로 표시</button>
+    </article></div>
+    </section>
+  </main>
+  <footer><div class="shell footer-inner">
+    <div><strong>CMU CS Learn · 한국어 독학 가이드</strong><p>CMU와 별개인 비공식 정리입니다. 소개·준비·실습은 독학용 제안이며 강의 영상·슬라이드·자막은 재배포하지 않습니다. CMU의 자가 학습 교재와 AI 튜터는 공식 안내상 별도 공개 예정입니다.</p></div>
+    <div class="foot-links"><a class="official" href="https://www.cs.cmu.edu/learn/">CMU 공식 강의 목록 <span aria-hidden="true">↗</span></a><a class="" href="https://www.cmu.edu/news/stories/archives/2026/november/cmu-opens-access-to-top-computer-science-classes-through-free-cs-learn-platform">CMU 출시 공지 <span aria-hidden="true">↗</span></a><a href="#library">과목 목록 ↑</a></div>
+  </div></footer>
+</body>
+</html>

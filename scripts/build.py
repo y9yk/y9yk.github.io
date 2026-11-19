@@ -186,12 +186,18 @@ def main():
     output.mkdir();(output/'index.html').write_text(render(data))
     (output/'projects').mkdir()
     (output/'projects/index.html').write_text(render_projects(data))
+    # The CMU catalog is an approved standalone public page, not a project-detail export.
+    catalog_source=ROOT/'public/cmu-cs-learn'
+    catalog_output=output/'projects/cmu-cs-learn'
+    catalog_output.mkdir()
+    for name in ('index.html','study.js','style.css'):
+        shutil.copyfile(catalog_source/name,catalog_output/name)
     (output/'blog').mkdir()
     (output/'blog/index.html').write_text(render_blog(data))
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')
-    print('Built the approved public homepage. Projects summary index generated; detail and statistics pages remain unpublished.')
+    print('Built the approved public homepage. Projects summary index and CMU study catalog generated; private details and statistics remain unpublished.')
 
 
 if __name__=='__main__':main()
