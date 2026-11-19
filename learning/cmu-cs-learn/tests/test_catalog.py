@@ -76,3 +76,19 @@ class CatalogTest(unittest.TestCase):
   premieres=[v for rows in videos.values() for v in rows if v['availability']=='premiere']
   self.assertEqual(len(captions),19)
   self.assertEqual(len(premieres),2)
+ def test_feed_links_all_video_cards_to_details_and_has_one_queue_per_course(self):
+  from html.parser import HTMLParser
+  class Inventory(HTMLParser):
+   def __init__(self,text):
+    super().__init__(); self.feed_ids=[]; self.anchors=[]; self.queues=0; self.feed(text)
+   def handle_starttag(self,tag,attrs):
+    a=dict(attrs)
+    if 'data-feed-video' in a: self.feed_ids.append(a['data-feed-video'])
+    if 'data-video-notes' in a: self.anchors.append(a.get('id'))
+    if 'data-course-queue' in a: self.queues+=1
+  parsed=Inventory(self.html)
+  self.assertEqual(len(set(parsed.feed_ids)),21)
+  self.assertEqual({f'video-{v}' for v in parsed.feed_ids},set(parsed.anchors))
+  self.assertEqual(parsed.queues,8)
+  self.assertIn('id="header-search"',self.html)
+  self.assertNotIn('<iframe',self.html)

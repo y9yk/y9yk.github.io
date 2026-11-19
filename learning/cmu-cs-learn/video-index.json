@@ -4,25 +4,33 @@
       "id": "WqBTJeFJ-FA",
       "title": "Welcome to CMU Machine Learning with Large Datasets (Fall 2026) with William Cohen",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 52,
+      "thumbnail": true
     },
     {
       "id": "TJ6qYAaGRZ8",
       "title": "CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 1: Overview",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3130,
+      "thumbnail": true
     },
     {
       "id": "KQUtNJEzUxU",
       "title": "CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 2: Map-Reduce and Spark",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 4351,
+      "thumbnail": true
     },
     {
       "id": "xd7fZ5QpezY",
       "title": "CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 3: Workflows for Map-Reduce Systems",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 4650,
+      "thumbnail": true
     }
   ],
   "11-768": [
@@ -30,7 +38,8 @@
       "id": "w05Mk2tjl_U",
       "title": "CMU AI Agents (Fall 2026) | Lecture 1: What Are Agents? And How Do They Work?",
       "availability": "premiere",
-      "english_cc": "not-confirmed"
+      "english_cc": "not-confirmed",
+      "thumbnail": true
     }
   ],
   "15-110": [
@@ -38,19 +47,25 @@
       "id": "oPSMMckx3eY",
       "title": "CMU Principles of Computing (Spring 2026) | Lecture 1: Programming Basics",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 2715,
+      "thumbnail": true
     },
     {
       "id": "0nmhvgc5XOI",
       "title": "CMU Principles of Computing (Spring 2026) | Lecture 2: Data Representation",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 2591,
+      "thumbnail": true
     },
     {
       "id": "vh3oVBcWG0A",
       "title": "CMU Principles of Computing (Spring 2026) | Lecture 3: Function Calls",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 2499,
+      "thumbnail": true
     }
   ],
   "15-442": [
@@ -58,19 +73,25 @@
       "id": "3TmIRW4N3zo",
       "title": "CMU Machine Learning Systems (Spring 2026) | Lecture 1: Introduction",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 2389,
+      "thumbnail": true
     },
     {
       "id": "nbBCi6SZ8hE",
       "title": "CMU Machine Learning Systems (Spring 2026) | Lecture 2: Overview of Machine Learning Systems",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3601,
+      "thumbnail": true
     },
     {
       "id": "f-uQBacLc2E",
       "title": "CMU Machine Learning Systems (Spring 2026) | Lecture 3: Deep Learning and Programming Abstraction",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3547,
+      "thumbnail": true
     }
   ],
   "17-214": [
@@ -78,19 +99,25 @@
       "id": "N7V5hsQeGVM",
       "title": "CMU Principles of Software Construction (Spring 2026) | Lecture 1: Introduction and Overview",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 2812,
+      "thumbnail": true
     },
     {
       "id": "2Sgd3efXKGg",
       "title": "CMU Principles of Software Construction (Spring 2026) | Lecture 2: Starting with Objects",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3906,
+      "thumbnail": true
     },
     {
       "id": "P_33xayi9J8",
       "title": "CMU Principles of Software Construction (Spring 2026) | Lecture 3: OO Analysis and UML",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 2887,
+      "thumbnail": true
     }
   ],
   "17-635": [
@@ -98,19 +125,25 @@
       "id": "1DvaPZ_4sh0",
       "title": "CMU Software Architectures (Spring 2026) | Lecture 1: Course Introduction",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3726,
+      "thumbnail": true
     },
     {
       "id": "Y4Q2V6MI1oA",
       "title": "CMU Software Architectures (Spring 2026) | Lecture 2: Setting The Context",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3021,
+      "thumbnail": true
     },
     {
       "id": "XTRyyqbo4cw",
       "title": "CMU Software Architectures (Spring 2026) | Lecture 3: Architectural Requirements",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 4247,
+      "thumbnail": true
     }
   ],
   "17-643": [
@@ -118,19 +151,25 @@
       "id": "CV-H1MynwNg",
       "title": "CMU Quality Management (Spring 2026) | Lecture 1: Introduction",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 1757,
+      "thumbnail": true
     },
     {
       "id": "c-fD7vM0Qj8",
       "title": "CMU Quality Management (Spring 2026) | Lecture 2: Metrics and Measurement",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 3542,
+      "thumbnail": true
     },
     {
       "id": "f8jUgfO-Aik",
       "title": "CMU Quality Management (Spring 2026) | Lecture 3: Quality in the Modern SDLC",
       "availability": "available",
-      "english_cc": "confirmed"
+      "english_cc": "confirmed",
+      "duration_s": 4679,
+      "thumbnail": true
     }
   ],
   "17-645": [
@@ -138,7 +177,8 @@
       "id": "vFJCgzuEkmY",
       "title": "CMU Machine Learning in Production (Fall 2026) | Lecture 1: Correctness and Risk",
       "availability": "premiere",
-      "english_cc": "not-confirmed"
+      "english_cc": "not-confirmed",
+      "thumbnail": true
     }
   ]
 }

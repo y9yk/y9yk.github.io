@@ -66,3 +66,9 @@ test('개별 영상은 올바른 ID와 공식 CC 파라미터만 허용한다',(
  assert.equal(videoEmbedUrl('../escaped'),null);
  assert.equal(new URL(videoEmbedUrl('w05Mk2tjl_U',-1)).searchParams.has('start'),false);
 });
+const {videoIdFromHash}=require('../assets/study.js');
+test('영상 위치의 링크만 정확한 ID로 파싱하고 과목 주소를 보존한다',()=>{
+ assert.equal(videoIdFromHash('#video-w05Mk2tjl_U'),'w05Mk2tjl_U');
+ assert.equal(videoIdFromHash('#course-11-768'),null);
+ assert.equal(videoIdFromHash('#video-../outside'),null);
+});
