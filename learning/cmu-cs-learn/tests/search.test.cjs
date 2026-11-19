@@ -72,3 +72,13 @@ test('영상 위치의 링크만 정확한 ID로 파싱하고 과목 주소를 �
  assert.equal(videoIdFromHash('#course-11-768'),null);
  assert.equal(videoIdFromHash('#video-../outside'),null);
 });
+test('공식 플레이어 구간을 시작과 종료 모두로 제한한다',()=>{
+ const bounded=new URL(videoEmbedUrl('0nmhvgc5XOI',0,300));
+ assert.equal(bounded.searchParams.get('start'),'0');
+ assert.equal(bounded.searchParams.get('end'),'300');
+ assert.equal(bounded.searchParams.get('autoplay'),'1');
+ assert.equal(videoEmbedUrl('0nmhvgc5XOI',300,300),null);
+ assert.equal(videoEmbedUrl('0nmhvgc5XOI',300,280),null);
+ assert.equal(videoEmbedUrl('0nmhvgc5XOI',-1,280),null);
+ assert.equal(new URL(videoEmbedUrl('0nmhvgc5XOI',300)).searchParams.has('end'),false);
+});

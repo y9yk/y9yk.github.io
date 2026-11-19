@@ -22,10 +22,13 @@ function videoIdFromHash(hash) {
   return /^#video-([A-Za-z0-9_-]{11})$/.exec(hash)?.[1]??null;
 }
 
-function videoEmbedUrl(vid, at=0) {
+function videoEmbedUrl(vid, at=0, end=null) {
   if(!/^[A-Za-z0-9_-]{11}$/.test(vid)) return null;
   const q=new URLSearchParams({playsinline:'1',cc_load_policy:'1',cc_lang_pref:'en',hl:'ko'});
-  if(Number.isInteger(at) && at>0) q.set('start',String(at));
+  if(end!==null) {
+    if(!Number.isSafeInteger(at) || !Number.isSafeInteger(end) || at<0 || end<=at) return null;
+    q.set('start',String(at));q.set('end',String(end));q.set('autoplay','1');
+  } else if(Number.isSafeInteger(at) && at>0) q.set('start',String(at));
   return `https://www.youtube-nocookie.com/embed/${vid}?${q}`;
 }
 
@@ -218,6 +221,15 @@ if (typeof document!=='undefined') {
     const playerBox=card.querySelector('[data-player]');
     const placeholder=playerBox.firstElementChild.cloneNode(true);
     const notes=[...card.querySelectorAll('[data-video-notes]')];
+    const briefings=[...card.querySelectorAll('[data-video-brief]')];
+    const clipButtons=[...card.querySelectorAll('[data-clip-start]')];
+    const clipStatus=card.querySelector('[data-active-clip]');
+    const fullVideo=card.querySelector('[data-full-video]');
+    function renderClip(button=null) {
+      clipButtons.forEach(b=>b.setAttribute('aria-pressed',String(button===b)));
+      clipStatus.hidden=fullVideo.hidden=!button;
+      clipStatus.textContent=button?`재생 요청 · ${button.dataset.clipTitle} · ${button.dataset.clipLabel}`:'';
+    }
     function renderVideo() {
       const option=select.selectedOptions[0];
       const frame=playerBox.querySelector('iframe');
@@ -229,23 +241,25 @@ if (typeof document!=='undefined') {
       });
       if(frame) frame.title=`${option.dataset.title} · CMU 공식 영상`;
       notes.forEach(n=>{n.hidden=n.dataset.videoNotes!==select.value;});
+      briefings.forEach(n=>{n.hidden=n.dataset.videoBrief!==select.value;});
       const caption=card.querySelector('[data-cc-status]');
       caption.textContent = option.dataset.availability==='premiere'
         ? '확인 당시 첫 공개 대기 · 자막 미확인'
         : option.dataset.cc==='confirmed' ? '영어 CC 확인' : '자막 제공 여부 미확인';
     }
-    function loadVideo(at=0, moveFocus=false) {
-      const url=videoEmbedUrl(select.value,at);
+    function loadVideo(at=0, moveFocus=false, end=null, clipButton=null) {
+      const url=videoEmbedUrl(select.value,at,end);
       if(!url) return;
       let player=playerBox.querySelector('iframe');
       const isNew=!player;
       if(isNew) player=document.createElement('iframe');
       player.title=`${select.selectedOptions[0].dataset.title} · CMU 공식 영상`;
-      player.allow='encrypted-media; picture-in-picture; fullscreen';
+      player.allow=(end===null?'':'autoplay; ')+'encrypted-media; picture-in-picture; fullscreen';
       player.referrerPolicy='strict-origin-when-cross-origin';
       player.allowFullscreen=true;
       player.src=url;
       if(isNew) playerBox.replaceChildren(player);
+      renderClip(clipButton);
       if(moveFocus) player.focus();
       state.last=c.id;state.videos[c.id]=select.value;save();render();
     }
@@ -264,12 +278,19 @@ if (typeof document!=='undefined') {
     videoPicker.set(card,{choose,stop:()=>{
       if(playerBox.querySelector('iframe')) {
         playerBox.replaceChildren(placeholder.cloneNode(true));
-        renderVideo();
+        renderClip();renderVideo();
       }
     }});
     select.addEventListener('change',()=>active?.card===card?go('#video-'+select.value):choose(select.value));
     playerBox.addEventListener('click',event=>{if(event.target.closest('button[data-play]')) loadVideo(0,true);});
     card.querySelectorAll('[data-timestamp]').forEach(button=>button.addEventListener('click',()=>loadVideo(Number(button.dataset.timestamp),true)));
+    clipButtons.forEach(button=>button.addEventListener('click',()=>{
+      const panel=button.closest('[data-video-brief]');
+      if(panel.dataset.videoBrief!==select.value) return;
+      loadVideo(Number(button.dataset.clipStart),true,Number(button.dataset.clipEnd),button);
+      playerBox.scrollIntoView({block:'start'});
+    }));
+    fullVideo.addEventListener('click',()=>loadVideo(0,true));
   }
   function reset(){form.reset();render();}
   function runHeaderSearch(scroll) {

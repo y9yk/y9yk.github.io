@@ -92,3 +92,21 @@ class CatalogTest(unittest.TestCase):
   self.assertEqual(parsed.queues,8)
   self.assertIn('id="header-search"',self.html)
   self.assertNotIn('<iframe',self.html)
+ def test_briefing_fallbacks_are_available_for_every_video_and_do_not_fake_clip_bounds(self):
+  self.assertEqual(len(set(re.findall(r'data-video-brief="([^"]+)"',self.html))),21)
+  self.assertIn('학습 브리핑',self.html)
+  self.assertNotIn('<iframe',self.html)
+ def test_invalid_clips_are_rejected(self):
+  import build
+  row={'title':'Example','context':'context','evidence':{'label':'verified','url':'https://www.youtube.com/watch?v=oPSMMckx3eY'},'start':30,'end':80}
+  build.validate_clip(row,100)
+  for bad in [{**row,'start':81},{**row,'end':110},{**row,'end':'80'},{**row,'evidence':{'label':'unverified','url':'javascript:alert(1)'}}]:
+   with self.assertRaises(ValueError): build.validate_clip(bad,100)
+ def test_curated_clip_keys_counts_and_core_limit(self):
+  import build
+  videos,_=build.read_lessons()
+  briefs=build.read_briefings(videos)
+  self.assertEqual(len(briefs),5)
+  self.assertEqual(sum(len(x['clips']) for x in briefs.values()),49)
+  self.assertEqual(len(re.findall(r'data-clip-start="\d+" data-clip-end="\d+"',self.html)),49)
+  self.assertEqual(self.html.count('class="more-clips"'),3)
