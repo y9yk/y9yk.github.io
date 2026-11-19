@@ -187,7 +187,7 @@ def main():
     (output/'projects').mkdir()
     (output/'projects/index.html').write_text(render_projects(data))
     # The CMU catalog is an approved standalone public page, not a project-detail export.
-    catalog_source=ROOT/'public/cmu-cs-learn'
+    catalog_source=ROOT/'public/cmu-learn'
     catalog_output=output/'projects/cmu-learn'
     catalog_output.mkdir()
     for name in ('index.html','study.js','style.css'):
@@ -195,7 +195,7 @@ def main():
     legacy_catalog=output/'projects/cmu-cs-learn'
     legacy_catalog.mkdir()
     for name in ('index.html','redirect.js'):
-        shutil.copyfile(ROOT/'public/cmu-legacy-redirect'/name,legacy_catalog/name)
+        shutil.copyfile(ROOT/'src/cmu-legacy-redirect'/name,legacy_catalog/name)
     (output/'blog').mkdir()
     (output/'blog/index.html').write_text(render_blog(data))
     shutil.copytree(ROOT/'assets',output/'assets')

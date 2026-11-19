@@ -18,9 +18,16 @@ function matches(course,{q='',track='all',status='all',progress='all',seen=new S
   return normalize(q).split(' ').filter(Boolean).every(word=>normalize(course.keywords).includes(word));
 }
 
+function videoEmbedUrl(vid, at=0) {
+  if(!/^[A-Za-z0-9_-]{11}$/.test(vid)) return null;
+  const q=new URLSearchParams({playsinline:'1',cc_load_policy:'1',cc_lang_pref:'en',hl:'ko'});
+  if(Number.isInteger(at) && at>0) q.set('start',String(at));
+  return `https://www.youtube-nocookie.com/embed/${vid}?${q}`;
+}
+
 function loadStudy(legacy, raw, courses) {
   const available=new Set(courses.filter(c=>c.status==='available').map(c=>c.id));
-  const steps=Object.create(null), notes=Object.create(null);
+  const steps=Object.create(null), notes=Object.create(null), videos=Object.create(null);
   const legacyDone=new Set(Array.isArray(legacy)?legacy:[]);
   for (const id of available) {
     const src=raw?.steps?.[id];
@@ -28,8 +35,9 @@ function loadStudy(legacy, raw, courses) {
     else if(legacyDone.has(id)) steps[id]=[...STEPS];
     const note=raw?.notes?.[id];
     if(typeof note==='string') notes[id]=note.slice(0,2000);
+    if(/^[A-Za-z0-9_-]{11}$/.test(raw?.videos?.[id]??'')) videos[id]=raw.videos[id];
   }
-  return {steps,notes,last:available.has(raw?.last)?raw.last:null};
+  return {steps,notes,videos,last:available.has(raw?.last)?raw.last:null};
 }
 
 function courseCount(state, course) {
@@ -53,9 +61,23 @@ function nextAction(courses,state) {
   return {id:course.id,step:STEPS.find(s=>!state.steps[course.id]?.includes(s)),resume:Boolean(last)};
 }
 
-if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount};
+// This repository's standalone GitHub Pages used to serve the root project path.
+// Modern deployment serves the app under /projects/ and avoids redirecting local builds.
+function legacyDestination({protocol,hostname,pathname,search,hash}) {
+  if(protocol!=='https:' || !['yongkilee.com','y9yk.github.io'].includes(hostname) ||
+      !/^\/cmu-cs-learn\/?$/.test(pathname)) return null;
+  return 'https://yongkilee.com/projects/cmu-learn/' + search + hash;
+}
 
-if (typeof document!=='undefined') {
+if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount,legacyDestination,videoEmbedUrl};
+function redirectLegacy(loc) {
+  const destination=legacyDestination(loc);
+  if(!destination) return false;
+  loc.replace(destination);
+  return true;
+}
+
+if (typeof document!=='undefined' && !redirectLegacy(window.location)) {
   const get=id=>document.getElementById(id);
   const form=get('filters'), fields=form.elements;
   const cards=[...document.querySelectorAll('[data-course]')];
@@ -143,18 +165,45 @@ if (typeof document!=='undefined') {
       state.last=c.id;save();render();
     });
     const load=card.querySelector('button[data-play]');
-    load?.addEventListener('click',()=>{
-      if(!/^PL[A-Za-z0-9_-]{8,60}$/.test(load.dataset.play)) return;
-      const player=document.createElement('iframe');
-      player.title=`${c.title} 공식 YouTube 재생목록`;
-      player.src=`https://www.youtube-nocookie.com/embed/videoseries?list=${encodeURIComponent(load.dataset.play)}&playsinline=1`;
+    const select=card.querySelector('select[data-video-select]');
+    const playerBox=card.querySelector('[data-player]');
+    const notes=[...card.querySelectorAll('[data-video-notes]')];
+    function renderVideo() {
+      const option=select.selectedOptions[0];
+      const frame=playerBox.querySelector('iframe');
+      playerBox.querySelector('[data-video-title]')?.replaceChildren(option.dataset.title);
+      if(frame) frame.title=`${option.dataset.title} · CMU 공식 영상`;
+      notes.forEach(n=>{n.hidden=n.dataset.videoNotes!==select.value;});
+      const caption=card.querySelector('[data-cc-status]');
+      caption.textContent = option.dataset.availability==='premiere'
+        ? '확인 당시 첫 공개 대기 · 자막 미확인'
+        : option.dataset.cc==='confirmed' ? '영어 CC 확인' : '자막 제공 여부 미확인';
+    }
+    function loadVideo(at=0, moveFocus=false) {
+      const url=videoEmbedUrl(select.value,at);
+      if(!url) return;
+      let player=playerBox.querySelector('iframe');
+      const isNew=!player;
+      if(isNew) player=document.createElement('iframe');
+      player.title=`${select.selectedOptions[0].dataset.title} · CMU 공식 영상`;
       player.allow='encrypted-media; picture-in-picture; fullscreen';
       player.referrerPolicy='strict-origin-when-cross-origin';
       player.allowFullscreen=true;
-      card.querySelector('[data-player]').replaceChildren(player);
-      player.focus();
-      state.last=c.id;save();render();
-    },{once:true});
+      player.src=url;
+      if(isNew) playerBox.replaceChildren(player);
+      if(moveFocus) player.focus();
+      state.last=c.id;state.videos[c.id]=select.value;save();render();
+    }
+    if([...select.options].some(o=>o.value===state.videos[c.id])) select.value=state.videos[c.id];
+    renderVideo();
+    select.addEventListener('change',()=>{
+      state.last=c.id;state.videos[c.id]=select.value;save();
+      renderVideo();
+      if(playerBox.querySelector('iframe')) loadVideo();
+      render();
+    });
+    load?.addEventListener('click',()=>loadVideo(0,true),{once:true});
+    card.querySelectorAll('[data-timestamp]').forEach(button=>button.addEventListener('click',()=>loadVideo(Number(button.dataset.timestamp),true)));
   }
   function reset(){form.reset();render();}
   form.addEventListener('submit',evt=>{evt.preventDefault();render();});

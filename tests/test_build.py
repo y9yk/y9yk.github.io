@@ -38,19 +38,23 @@ class PublicBuildTests(unittest.TestCase):
         output=ROOT/'dist'
         self.assertTrue((output/'projects/index.html').is_file())
         self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html','cmu-learn','cmu-cs-learn'})
+        self.assertEqual({p.name for p in (ROOT/'public').iterdir()},{'cmu-learn'})
         guide=output/'projects/cmu-learn'
         filenames={'index.html','study.js','style.css'}
         self.assertEqual({p.name for p in guide.iterdir()},filenames)
         for name in filenames:
-            self.assertEqual((guide/name).read_bytes(),(ROOT/'public/cmu-cs-learn'/name).read_bytes())
+            self.assertEqual((guide/name).read_bytes(),(ROOT/'public/cmu-learn'/name).read_bytes())
         content=(guide/'index.html').read_text(encoding='utf-8')
         self.assertIn('CMU CS Learn · 한국어 독학 가이드',content)
         self.assertEqual(content.count('data-course data-id='),13)
-        self.assertIn('src="./study.js"',content)
-        self.assertIn('href="./style.css"',content)
+        self.assertRegex(content,r'src="[.]\/study[.]js(?:[?]v=\d+)?"')
+        self.assertRegex(content,r'href="[.]\/style[.]css(?:[?]v=\d+)?"')
         self.assertNotIn('http-equiv="refresh"',content.lower())
         self.assertIn('id="study-next"',content)
         self.assertEqual(content.count('data-play='),8)
+        self.assertEqual(content.count('data-video-option='),21)
+        self.assertEqual(content.count('data-video-notes='),21)
+        self.assertNotIn('<iframe',content)
         legacy=output/'projects/cmu-cs-learn'
         self.assertEqual({p.name for p in legacy.iterdir()},{'index.html','redirect.js'})
         self.assertIn('href="../cmu-learn/"',(legacy/'index.html').read_text())

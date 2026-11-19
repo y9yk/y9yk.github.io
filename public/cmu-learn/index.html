@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="카네기멜론 CS Learn 공개 강의를 찾아보고 AI 에이전트, ML 시스템, 소프트웨어 설계, 컴퓨팅 기초를 공부하는 한국어 길잡이.">
+  <meta name="theme-color" content="#ffffff">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; frame-src https://www.youtube-nocookie.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>CMU CS Learn · 한국어 독학 가이드</title>
+  <link rel="canonical" href="https://yongkilee.com/projects/cmu-learn/">
+  <link rel="stylesheet" href="./style.css?v=2">
+  <script defer src="./study.js?v=2"></script>
+</head>
+<body>
+  <a class="skip" href="#library">과목 목록으로 건너뛰기</a>
+  <header class="mast">
+    <div class="shell topbar">
+      <a href="./" class="brand" aria-label="CS Learn 독학 가이드 홈"><span class="brand-icon" aria-hidden="true">⌘</span> CS Learn <span class="brand-note">독학 가이드</span></a>
+      <nav aria-label="페이지"><a href="#study-next">내 학습</a><a href="#library">과목 검색</a><a href="#paths">학습 경로</a></nav>
+    </div>
+    <div class="shell hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="signal"></span> Carnegie Mellon University · 비공식 학습 가이드</p>
+        <h1>CMU 컴퓨터과학 <span>학습실</span></h1>
+        <p>개별 강의 영상과 검증된 요약을 나란히 보고, 실습과 복습까지 이어가세요.</p>
+      </div>
+    </div>
+  </header>
+  <main class="shell">
+    <section id="study-next" class="study-grid" aria-label="내 학습">
+      <article class="next-sheet">
+        <p class="eyebrow" id="next-label">추천 시작 과목</p>
+        <h2 id="next-title">AI 에이전트</h2>
+        <p id="next-step">11-768 · 다음: 공식 강의 보기</p>
+        <a class="cta" id="next-cta" href="#course-11-768">공부 시작하기 →</a>
+      </article>
+      <aside class="progress-sheet" aria-label="내 학습 진도">
+        <p class="eyebrow">MY PROGRESS</p>
+        <h2 id="study-progress">0 / 24단계</h2>
+        <progress id="study-meter" value="0" max="24" aria-label="완료한 독학 단계"></progress>
+        <p id="study-count">완료한 공개 과목 0 / 8</p>
+        <p id="storage-note" hidden>현재 브라우저에서 저장할 수 없어 새로고침하면 진도가 초기화됩니다.</p>
+        <p class="local-note">진도와 노트는 이 브라우저에만 남습니다.</p>
+      </aside>
+    </section>
+    <section id="library" aria-labelledby="library-title">
+      <div class="section-title"><p class="eyebrow">01 / CATALOG</p><h2 id="library-title">과목 라이브러리</h2><p>공개 8개 · 공개 예정 5개. 검색하거나 과목을 열어 바로 공부하세요.</p></div>
+      <form id="filters" class="requires-js" role="search" aria-label="과목 검색 및 필터">
+        <label class="search">과목 검색<input type="search" name="q" placeholder="예: 11-768, 서빙, software" autocomplete="off"></label>
+        <label>주제<select name="track"><option value="all">전체</option><option value="agents">AI·에이전트</option><option value="systems">ML 시스템</option><option value="software">소프트웨어 설계</option><option value="foundations">CS·수학 기초</option><option value="product">제품·임베디드</option></select></label>
+        <label>공개 상태<select name="status"><option value="all">전체</option><option value="available">YouTube 공개</option><option value="planned">공개 예정</option></select></label>
+        <label>학습 상태<select name="progress"><option value="all">전체</option><option value="started">학습 중</option><option value="open">미완료</option><option value="done">완료</option></select></label>
+        <button class="clear" type="button" data-reset>초기화</button>
+      </form>
+      <p id="result-count" aria-live="polite">13개 과목</p>
+      <p class="storage">세 단계 체크리스트는 독학용입니다. CMU 공식 커리큘럼이나 수료 기준이 아닙니다.</p>
+      <noscript><p>이 환경에서는 검색, 내장 플레이어, 진도 저장이 꺼져 있습니다. 아래 과목을 펼쳐 강의 링크와 실습을 볼 수 있습니다.</p></noscript>
+      <div class="empty" id="empty" hidden><h3>검색 결과가 없어요</h3><p>키워드를 줄이거나 필터를 초기화해 보세요.</p><button class="clear" type="button" data-reset>검색·필터 초기화</button></div>
+      <div class="courses">
+    <article id="course-11-768" class="course" tabindex="-1" aria-labelledby="course-11-768-title"
+      data-course data-id="11-768" data-title="AI 에이전트" data-track="agents" data-status="available" data-keywords="11-768 11768 AI Agents AI 에이전트 Daniel Fried · Graham Neubig 심화 AI·에이전트 LLM이 도구를 호출하고 여러 단계의 상태를 관리하는 과정을 살펴봅니다. 도구 실행 루프와 결과 평가를 나눠 공부하기 좋습니다. Python, LLM API, 간단한 도구 호출 경험 agent harness 도구 호출 tool use 메모리 memory eval 평가 planning 신뢰성 CMU AI Agents (Fall 2026) | Lecture 1: What Are Agents? And How Do They Work?">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">11-768</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-11-768-title">AI 에이전트</h3><p class="en" lang="en">AI Agents</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Daniel Fried · Graham Neubig</p><p class="summary">LLM이 도구를 호출하고 여러 단계의 상태를 관리하는 과정을 살펴봅니다. 도구 실행 루프와 결과 평가를 나눠 공부하기 좋습니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">심화</li><li>agent harness</li><li>도구 호출 tool use</li><li>메모리 memory</li><li>eval 평가</li><li>planning</li><li>신뢰성</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> Python, LLM API, 간단한 도구 호출 경험</p><section id="step-11-768-watch" class="step" tabindex="-1" aria-labelledby="step-11-768-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-11-768-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-11-768">강의 영상 선택</label>
+      <select id="videos-11-768" data-video-select><option value="w05Mk2tjl_U" data-video-option="w05Mk2tjl_U" data-title="Lecture 1: What Are Agents? And How Do They Work?" data-availability="premiere" data-cc="not-confirmed">01 · Lecture 1: What Are Agents? And How Do They Work?</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: What Are Agents? And How Do They Work?</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLf0BEPn2BGr0"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLf0BEPn2BGr0">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 1/1편</p>
+          <section class="video-note" data-video-notes="w05Mk2tjl_U" aria-labelledby="lesson-w05Mk2tjl_U"><h5 id="lesson-w05Mk2tjl_U">Lecture 1: What Are Agents? And How Do They Work?</h5><p class="note-basis">동일 회차 강의진 공개 슬라이드 기반. CS Learn 편집본 직접 시청 아님.</p><h6>요약</h6><p>첫 강의는 답변을 생성하는 언어 모델과 실제 환경에 조치를 취하는 에이전트를 구분한다. 모델이 도구 사용을 제안하면 실행을 관리하는 프로그램이 입력을 확인하고 결과를 돌려준다. 모델이 그 결과를 바탕으로 다음 행동을 고르는 반복이 에이전트의 기본 구조다. 강의는 신뢰성을 높이는 두 방법으로 모델 자체를 훈련하는 것과 실행 환경에 검증·메모리·안전 규칙을 설계하는 것을 비교한다.</p><h6>핵심 포인트</h6><ul><li>도구 호출은 모델이 생성한 요청이고, 실제 실행과 입력 검증은 모델 바깥에서 이루어진다.</li><li>도구를 한 번 호출하는 기능과, 결과를 보고 작업을 이어가는 반복 구조를 구분한다.</li><li>정확한 도구 사용뿐 아니라 긴 작업의 맥락 유지, 환경 이해와 안전도 설계해야 한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.cmu-agents.com/slides/lecture-01-agents.pdf">강의진 자료 9, 11–15, 17–18쪽: 에이전트의 정의, 도구 실행과 역량 설계 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://arxiv.org/abs/2210.03629">ReAct 원 논문: 추론과 환경 행동을 번갈아 수행하는 방식 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.youtube.com/watch?v=UwfjzyLnvMg">강의진이 공개한 동일 회차 별도 녹화본 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=w05Mk2tjl_U">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-11-768-practice" class="step" tabindex="-1" aria-labelledby="step-11-768-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-11-768-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>읽기 전용 문서 검색 도구 하나를 붙인 에이전트를 만들고, 10개 과업에서 성공·실패 사유를 분류하세요.</p></div></section><section id="step-11-768-reflect" class="step" tabindex="-1" aria-labelledby="step-11-768-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-11-768-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-11-768">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-11-768" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://www.cmu-agents.com/">강의진 공식 사이트 · 일정·자료 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.youtube.com/watch?v=UwfjzyLnvMg">강의진 공개 영상 · 에이전트 입문 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.youtube.com/watch?v=6zigF2a-2Pw">강의진 공개 영상 · 메모리와 스킬 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-17-645" class="course" tabindex="-1" aria-labelledby="course-17-645-title"
+      data-course data-id="17-645" data-title="프로덕션 머신러닝" data-track="systems" data-status="available" data-keywords="17-645 17645 Machine Learning in Production 프로덕션 머신러닝 Christian Kästner · Bogdan Vasilescu 중급 ML 시스템 모델을 실제 제품에 넣을 때 생기는 설계·검증·운영 문제를 다룹니다. 모델 정확도와 제품 품질을 서로 다른 관점으로 점검합니다. 기본 ML 평가 지표와 API 배포 경험 MLOps 배포 deployment 모니터링 monitoring 데이터 드리프트 drift 롤백 CMU Machine Learning in Production (Fall 2026) | Lecture 1: Correctness and Risk">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">17-645</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-17-645-title">프로덕션 머신러닝</h3><p class="en" lang="en">Machine Learning in Production</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Christian Kästner · Bogdan Vasilescu</p><p class="summary">모델을 실제 제품에 넣을 때 생기는 설계·검증·운영 문제를 다룹니다. 모델 정확도와 제품 품질을 서로 다른 관점으로 점검합니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">중급</li><li>MLOps</li><li>배포 deployment</li><li>모니터링 monitoring</li><li>데이터 드리프트 drift</li><li>롤백</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 기본 ML 평가 지표와 API 배포 경험</p><section id="step-17-645-watch" class="step" tabindex="-1" aria-labelledby="step-17-645-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-17-645-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-17-645">강의 영상 선택</label>
+      <select id="videos-17-645" data-video-select><option value="vFJCgzuEkmY" data-video-option="vFJCgzuEkmY" data-title="Lecture 1: Correctness and Risk" data-availability="premiere" data-cc="not-confirmed">01 · Lecture 1: Correctness and Risk</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: Correctness and Risk</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLDOc_XHH9ABE"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLDOc_XHH9ABE">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 1/1편</p>
+          <section class="video-note" data-video-notes="vFJCgzuEkmY" aria-labelledby="lesson-vFJCgzuEkmY"><h5 id="lesson-vFJCgzuEkmY">Lecture 1: Correctness and Risk</h5><p class="note-basis">공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음.</p><h6>요약</h6><p>모델의 높은 정확도가 제품의 올바른 동작을 보장하지 않는 이유를 다룹니다. 잘못된 출력을 전제로 위험을 식별하고, 발생 가능성과 피해의 심각도에 따라 예방·감시·복구 장치를 설계하는 관점입니다.</p><h6>핵심 포인트</h6><ul><li>정확도와 올바름을 구분하고 SQL injection과 prompt injection 사례를 비교합니다.</li><li>위험의 크기와 허용 가능한 위험의 판단을 구분합니다.</li><li>사람의 감독, 안전장치, 조기 발견, 롤백을 완화 수단으로 봅니다.</li><li>위험 분석으로 배포 전 문제를 구조적으로 찾아냅니다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://mlip-cmu.github.io/f2026/">Fall 2026 Correctness and Risk 공식 일정 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://docs.google.com/presentation/d/1GfH7wYM833xKFKmkrYqHWyUgctuaSFD6ACBbwu0O3jw/htmlpresent">해당 학기 공개 슬라이드: Correctness and Risk <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mlip-cmu.github.io/book/">교수진 공개 교재 · 보충 읽기 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=vFJCgzuEkmY">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-17-645-practice" class="step" tabindex="-1" aria-labelledby="step-17-645-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-17-645-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>기존 ML API 하나에 품질 지표와 롤백 조건을 정의하고, 놓치기 쉬운 운영 실패 3가지를 적으세요.</p></div></section><section id="step-17-645-reflect" class="step" tabindex="-1" aria-labelledby="step-17-645-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-17-645-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-17-645">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-17-645" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://mlip-cmu.github.io/">강의진 공식 사이트 · 강의·교재 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-15-442" class="course" tabindex="-1" aria-labelledby="course-15-442-title"
+      data-course data-id="15-442" data-title="머신러닝 시스템" data-track="systems" data-status="available" data-keywords="15-442 15442 Machine Learning Systems 머신러닝 시스템 Tianqi Chen · Zhihao Jia 심화 ML 시스템 모델 학습과 추론을 떠받치는 프레임워크를 시스템 관점에서 봅니다. 연산·메모리·통신이 성능에 미치는 영향을 비교합니다. PyTorch 실습, 텐서 연산, 컴퓨터 시스템 기초 GPU LLM serving 서빙 분산 학습 추론 inference 배치 batching 메모리 CMU Machine Learning Systems (Spring 2026) | Lecture 1: Introduction CMU Machine Learning Systems (Spring 2026) | Lecture 2: Overview of Machine Learning Systems CMU Machine Learning Systems (Spring 2026) | Lecture 3: Deep Learning and Programming Abstraction">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">15-442</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-15-442-title">머신러닝 시스템</h3><p class="en" lang="en">Machine Learning Systems</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Tianqi Chen · Zhihao Jia</p><p class="summary">모델 학습과 추론을 떠받치는 프레임워크를 시스템 관점에서 봅니다. 연산·메모리·통신이 성능에 미치는 영향을 비교합니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">심화</li><li>GPU</li><li>LLM serving 서빙</li><li>분산 학습</li><li>추론 inference</li><li>배치 batching</li><li>메모리</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> PyTorch 실습, 텐서 연산, 컴퓨터 시스템 기초</p><section id="step-15-442-watch" class="step" tabindex="-1" aria-labelledby="step-15-442-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-15-442-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-15-442">강의 영상 선택</label>
+      <select id="videos-15-442" data-video-select><option value="3TmIRW4N3zo" data-video-option="3TmIRW4N3zo" data-title="Lecture 1: Introduction" data-availability="available" data-cc="confirmed">01 · Lecture 1: Introduction</option><option value="nbBCi6SZ8hE" data-video-option="nbBCi6SZ8hE" data-title="Lecture 2: Overview of Machine Learning Systems" data-availability="available" data-cc="confirmed">02 · Lecture 2: Overview of Machine Learning Systems</option><option value="f-uQBacLc2E" data-video-option="f-uQBacLc2E" data-title="Lecture 3: Deep Learning and Programming Abstraction" data-availability="available" data-cc="confirmed">03 · Lecture 3: Deep Learning and Programming Abstraction</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: Introduction</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLSH_5v_OOfP8"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLSH_5v_OOfP8">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 3/3편</p>
+          <section class="video-note" data-video-notes="3TmIRW4N3zo" aria-labelledby="lesson-3TmIRW4N3zo"><h5 id="lesson-3TmIRW4N3zo">Lecture 1: Introduction</h5><p class="note-basis">같은 학기·회차 강의진 공개 슬라이드 기반. 편집 영상의 직접 시청이나 시간 확인은 하지 않았습니다.</p><h6>요약</h6><p>머신러닝 시스템을 왜 공부해야 하는지 설명하는 첫 강의다. 모델 성능은 알고리즘만의 결과가 아니라 데이터와 계산 자원, 둘을 연결하는 시스템의 영향을 받는다. 같은 정확도와 응답시간 목표도 모델을 가볍게 만드는 방법과 실행 엔진을 개선하는 방법을 함께 살펴볼 때 새로운 해법을 찾을 수 있다.</p><h6>핵심 포인트</h6><ul><li>AlexNet 사례를 모델 설계·데이터·계산 자원이 함께 뒷받침한 결과로 본다.</li><li>프레임워크는 연구자가 세부 커널과 하드웨어를 매번 직접 다루지 않게 해준다.</li><li>정확도와 지연시간의 절충은 모델과 실행 환경을 함께 바꿔 볼 문제다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://mlsyscourse.org/slides/01-course-introduction.pdf">강의 자료 9–19쪽: 모델·데이터·계산과 시스템 설계 사례 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mlsyscourse.org/schedule">15-442/15-642 강의진 일정: Spring 2026 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.csd.cs.cmu.edu/course/15442/s26">카네기멜론 컴퓨터과학과 공식 과목 소개 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=3TmIRW4N3zo">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="nbBCi6SZ8hE" aria-labelledby="lesson-nbBCi6SZ8hE"><h5 id="lesson-nbBCi6SZ8hE">Lecture 2: Overview of Machine Learning Systems</h5><p class="note-basis">같은 학기·회차 강의진 공개 슬라이드 기반. 편집 영상의 직접 시청이나 시간 확인은 하지 않았습니다.</p><h6>요약</h6><p>사용자가 적은 모델 정의가 실제 CPU와 GPU에서 실행되기까지 어떤 층을 거치는지 살펴본다. 자동 미분은 역방향 계산을 만들고, 그래프 최적화는 여러 연산의 관계를 보고 불필요한 일을 줄인다. 이후 병렬화, 커널 생성, 메모리 최적화가 각각 실행 비용의 다른 부분을 다룬다.</p><h6>핵심 포인트</h6><ul><li>자동 미분은 사용자가 역방향 연산을 모두 손으로 적지 않아도 되도록 계산 구조를 만든다.</li><li>합성곱과 배치 정규화를 합치는 예시는 여러 연산을 함께 볼 때 생기는 최적화 기회를 보여준다.</li><li>그래프를 바꾸는 일과 계산을 여러 장치에 나누거나 메모리를 아끼는 일은 서로 다른 층의 결정이다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://mlsyscourse.org/slides/02-introduction-to-MLSys.pdf">강의 자료 3–9, 32–36쪽: 시스템 층과 그래프 연산 결합 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mlsyscourse.org/schedule">15-442/15-642 강의진 일정: Spring 2026 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.csd.cs.cmu.edu/course/15442/s26">카네기멜론 컴퓨터과학과 공식 과목 소개 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=nbBCi6SZ8hE">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="f-uQBacLc2E" aria-labelledby="lesson-f-uQBacLc2E"><h5 id="lesson-f-uQBacLc2E">Lecture 3: Deep Learning and Programming Abstraction</h5><p class="note-basis">같은 학기·회차 강의진 공개 슬라이드 기반. 편집 영상의 직접 시청이나 시간 확인은 하지 않았습니다.</p><h6>요약</h6><p>딥러닝을 여러 층의 함수를 결합한 모델로 바라보고, 모델 구조·손실 함수·최적화 방법의 역할을 나눈다. 이어서 여러 종류의 신경망이 공통으로 쓰는 다차원 배열과 연산을 프로그래밍에서 어떻게 표현하는지 다룬다. 모델이 원하는 계산과 시스템이 실제로 실행하는 구현을 구분하는 것이 핵심이다.</p><h6>핵심 포인트</h6><ul><li>모델, 손실 함수, 최적화 방법은 학습에서 서로 다른 역할을 맡는다.</li><li>딥러닝은 연결된 층의 매개변수를 함께 학습하는 점이 중요하다.</li><li>모델별 차이를 살피되, 텐서와 연산이라는 공통 표현이 왜 유용한지 생각해 본다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://mlsyscourse.org/slides/03-deep-learning-programming-abstraction.pdf">강의 자료 4–6쪽 및 프로그래밍 추상화 절: 모델 구조와 공통 계산 표현 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mlsyscourse.org/schedule">15-442/15-642 강의진 일정: Spring 2026 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.csd.cs.cmu.edu/course/15442/s26">카네기멜론 컴퓨터과학과 공식 과목 소개 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=f-uQBacLc2E">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-15-442-practice" class="step" tabindex="-1" aria-labelledby="step-15-442-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-15-442-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>같은 모델의 배치 크기 두 가지를 비교해 처리량, p95 지연, 최대 메모리를 기록하세요.</p></div></section><section id="step-15-442-reflect" class="step" tabindex="-1" aria-labelledby="step-15-442-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-15-442-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-15-442">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-15-442" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://mlsyscourse.org/">강의진 공식 사이트 · 과목 안내 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-17-635" class="course" tabindex="-1" aria-labelledby="course-17-635-title"
+      data-course data-id="17-635" data-title="소프트웨어 아키텍처" data-track="software" data-status="available" data-keywords="17-635 17635 Software Architectures 소프트웨어 아키텍처 Swarnalatha Ashok · Scott Pavetti 중급 소프트웨어 설계 시스템 구조 후보를 비교하고, 요구사항에 따라 어떤 선택이 나은지 근거를 적는 데 초점을 둡니다. 서비스 구조 또는 API 설계 경험 architecture ADR 시스템 설계 품질 속성 quality attributes 트레이드오프 CMU Software Architectures (Spring 2026) | Lecture 1: Course Introduction CMU Software Architectures (Spring 2026) | Lecture 2: Setting The Context CMU Software Architectures (Spring 2026) | Lecture 3: Architectural Requirements">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">17-635</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-17-635-title">소프트웨어 아키텍처</h3><p class="en" lang="en">Software Architectures</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Swarnalatha Ashok · Scott Pavetti</p><p class="summary">시스템 구조 후보를 비교하고, 요구사항에 따라 어떤 선택이 나은지 근거를 적는 데 초점을 둡니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">중급</li><li>architecture</li><li>ADR</li><li>시스템 설계</li><li>품질 속성 quality attributes</li><li>트레이드오프</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 서비스 구조 또는 API 설계 경험</p><section id="step-17-635-watch" class="step" tabindex="-1" aria-labelledby="step-17-635-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-17-635-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-17-635">강의 영상 선택</label>
+      <select id="videos-17-635" data-video-select><option value="1DvaPZ_4sh0" data-video-option="1DvaPZ_4sh0" data-title="Lecture 1: Course Introduction" data-availability="available" data-cc="confirmed">01 · Lecture 1: Course Introduction</option><option value="Y4Q2V6MI1oA" data-video-option="Y4Q2V6MI1oA" data-title="Lecture 2: Setting The Context" data-availability="available" data-cc="confirmed">02 · Lecture 2: Setting The Context</option><option value="XTRyyqbo4cw" data-video-option="XTRyyqbo4cw" data-title="Lecture 3: Architectural Requirements" data-availability="available" data-cc="confirmed">03 · Lecture 3: Architectural Requirements</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: Course Introduction</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLBXWgYnejeLU"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLBXWgYnejeLU">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 3/3편</p>
+          <section class="video-note" data-video-notes="1DvaPZ_4sh0" aria-labelledby="lesson-1DvaPZ_4sh0"><h5 id="lesson-1DvaPZ_4sh0">Lecture 1: Course Introduction</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>비즈니스 요구와 품질 속성이 시스템 구조 선택에 영향을 주는 이유를 소개한다. 아키텍처의 정적·동적·배포 구조, 구조 간 트레이드오프와 아키텍트의 활동을 과목 전체의 틀로 연결한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="1221" type="button" aria-label="20분 21초에서 재생">20:21</button> 설계를 비즈니스 요구에 맞추는 관점을 다룬다.</li><li><button class="timestamp requires-js" data-timestamp="2880" type="button" aria-label="48분 0초에서 재생">48:00</button> 소프트웨어 아키텍처의 정의를 확인한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=1DvaPZ_4sh0">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mse.s3d.cmu.edu/0_documents/syllabi/17635-software-architectures-2026-syllabus-v1.0.pdf">Spring 2026 공식 강의계획서 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=1DvaPZ_4sh0">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="Y4Q2V6MI1oA" aria-labelledby="lesson-Y4Q2V6MI1oA"><h5 id="lesson-Y4Q2V6MI1oA">Lecture 2: Setting The Context</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>시스템 내부 설계에 앞서 범위와 외부 관계를 정하는 강의다. 호출 서비스 예시의 컨텍스트 다이어그램을 출발점으로 품질 속성과 제약을 끌어내고 유스케이스·이벤트 모델 및 검증 활동을 연결한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="244" type="button" aria-label="4분 4초에서 재생">4:04</button> 컨텍스트 다이어그램이 표현할 경계를 확인한다.</li><li><button class="timestamp requires-js" data-timestamp="2668" type="button" aria-label="44분 28초에서 재생">44:28</button> 아키텍처를 테스트로 검증하는 활동을 연결한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=Y4Q2V6MI1oA">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mse.s3d.cmu.edu/0_documents/syllabi/17635-software-architectures-2026-syllabus-v1.0.pdf">Spring 2026 공식 강의계획서 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=Y4Q2V6MI1oA">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="XTRyyqbo4cw" aria-labelledby="lesson-XTRyyqbo4cw"><h5 id="lesson-XTRyyqbo4cw">Lecture 3: Architectural Requirements</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>기능 요구사항, 제약, 품질 속성을 아키텍처를 이끄는 세 요소로 구분한다. 모호한 품질 요구를 여섯 부분의 시나리오로 구체화하고 보안·성능·변경 용이성 사례를 통해 구조적 선택의 상충관계를 살펴본다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="1463" type="button" aria-label="24분 23초에서 재생">24:23</button> 아키텍처를 이끄는 세 요소를 구분한다.</li><li><button class="timestamp requires-js" data-timestamp="2805" type="button" aria-label="46분 45초에서 재생">46:45</button> 품질 속성을 여섯 부분의 시나리오로 기술한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=XTRyyqbo4cw">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mse.s3d.cmu.edu/0_documents/syllabi/17635-software-architectures-2026-syllabus-v1.0.pdf">Spring 2026 공식 강의계획서 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=XTRyyqbo4cw">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-17-635-practice" class="step" tabindex="-1" aria-labelledby="step-17-635-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-17-635-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>한 서비스의 모듈형 단일 구조와 이벤트 기반 구조를 변경 용이성·장애 격리·운영 비용으로 비교하세요.</p></div></section><section id="step-17-635-reflect" class="step" tabindex="-1" aria-labelledby="step-17-635-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-17-635-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-17-635">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-17-635" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-17-214" class="course" tabindex="-1" aria-labelledby="course-17-214-title"
+      data-course data-id="17-214" data-title="소프트웨어 구축 원리" data-track="software" data-status="available" data-keywords="17-214 17214 Principles of Software Construction 소프트웨어 구축 원리 Hammad Ahmad 중급 소프트웨어 설계 객체 설계, API 경계, 테스트와 동시성처럼 코드를 수정하고 검증하기 쉽게 만드는 방법을 연결합니다. 자료구조 기초와 객체지향 언어 사용 경험 객체지향 OOP design patterns 디자인 패턴 refactoring unit test 동시성 concurrency CMU Principles of Software Construction (Spring 2026) | Lecture 1: Introduction and Overview CMU Principles of Software Construction (Spring 2026) | Lecture 2: Starting with Objects CMU Principles of Software Construction (Spring 2026) | Lecture 3: OO Analysis and UML">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">17-214</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-17-214-title">소프트웨어 구축 원리</h3><p class="en" lang="en">Principles of Software Construction</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Hammad Ahmad</p><p class="summary">객체 설계, API 경계, 테스트와 동시성처럼 코드를 수정하고 검증하기 쉽게 만드는 방법을 연결합니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">중급</li><li>객체지향 OOP</li><li>design patterns 디자인 패턴</li><li>refactoring</li><li>unit test</li><li>동시성 concurrency</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 자료구조 기초와 객체지향 언어 사용 경험</p><section id="step-17-214-watch" class="step" tabindex="-1" aria-labelledby="step-17-214-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-17-214-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-17-214">강의 영상 선택</label>
+      <select id="videos-17-214" data-video-select><option value="N7V5hsQeGVM" data-video-option="N7V5hsQeGVM" data-title="Lecture 1: Introduction and Overview" data-availability="available" data-cc="confirmed">01 · Lecture 1: Introduction and Overview</option><option value="2Sgd3efXKGg" data-video-option="2Sgd3efXKGg" data-title="Lecture 2: Starting with Objects" data-availability="available" data-cc="confirmed">02 · Lecture 2: Starting with Objects</option><option value="P_33xayi9J8" data-video-option="P_33xayi9J8" data-title="Lecture 3: OO Analysis and UML" data-availability="available" data-cc="confirmed">03 · Lecture 3: OO Analysis and UML</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: Introduction and Overview</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLBDTyW_Uan_k"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLBDTyW_Uan_k">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 3/3편</p>
+          <section class="video-note" data-video-notes="N7V5hsQeGVM" aria-labelledby="lesson-N7V5hsQeGVM"><h5 id="lesson-N7V5hsQeGVM">Lecture 1: Introduction and Overview</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>현대 소프트웨어가 기존 라이브러리와 의존성을 조합해 만들어진다는 점에서 출발한다. 재사용의 복잡성과 위험을 살펴보고 설계 목표, 품질 속성, 트레이드오프를 과목의 중심 문제로 제시한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="413" type="button" aria-label="6분 53초에서 재생">6:53</button> 의존성 트리는 통합 복잡성을 만든다.</li><li><button class="timestamp requires-js" data-timestamp="1576" type="button" aria-label="26분 16초에서 재생">26:16</button> 설계 대안을 품질 속성 관점에서 비교한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=N7V5hsQeGVM">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://cmu-17-214.github.io/s2026/">Spring 2026 공식 과목 사이트 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=N7V5hsQeGVM">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="2Sgd3efXKGg" aria-labelledby="lesson-2Sgd3efXKGg"><h5 id="lesson-2Sgd3efXKGg">Lecture 2: Starting with Objects</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>Java와 TypeScript의 객체를 변화에 대응하는 설계 수단으로 소개한다. 참조형, 인터페이스, 하위 타입 다형성과 동적 디스패치를 연결하고 접근 제한자와 클로저를 통한 정보 은닉을 다룬다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="1879" type="button" aria-label="31분 19초에서 재생">31:19</button> 구체 구현보다 인터페이스를 기준으로 프로그래밍한다.</li><li><button class="timestamp requires-js" data-timestamp="2971" type="button" aria-label="49분 31초에서 재생">49:31</button> 캡슐화와 정보 은닉을 검토한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=2Sgd3efXKGg">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://cmu-17-214.github.io/s2026/">Spring 2026 공식 과목 사이트 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=2Sgd3efXKGg">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="P_33xayi9J8" aria-labelledby="lesson-P_33xayi9J8"><h5 id="lesson-P_33xayi9J8">Lecture 3: OO Analysis and UML</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>도서관 시스템 요구사항을 이용해 객체지향 분석을 진행한다. 문제 영역과 해결 영역을 구분하고 명사·동사, 공통 용어집을 통해 UML 도메인 모델을 만든 뒤 시스템 시퀀스와 행동 계약으로 확장한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="1370" type="button" aria-label="22분 50초에서 재생">22:50</button> 요구사항의 모호한 용어를 공통 용어집으로 정리한다.</li><li><button class="timestamp requires-js" data-timestamp="2293" type="button" aria-label="38분 13초에서 재생">38:13</button> 시스템 시퀀스 다이어그램으로 상호작용을 살펴본다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=P_33xayi9J8">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://cmu-17-214.github.io/s2026/">Spring 2026 공식 과목 사이트 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=P_33xayi9J8">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-17-214-practice" class="step" tabindex="-1" aria-labelledby="step-17-214-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-17-214-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>작은 서비스를 골라 변경 전 단위 테스트를 작성한 뒤 I/O와 비즈니스 로직을 분리하세요.</p></div></section><section id="step-17-214-reflect" class="step" tabindex="-1" aria-labelledby="step-17-214-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-17-214-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-17-214">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-17-214" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://cmu-17-214.github.io/s2026/">강의진 보충 자료 · 2026년 봄 학기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-17-643" class="course" tabindex="-1" aria-labelledby="course-17-643-title"
+      data-course data-id="17-643" data-title="소프트웨어 품질 관리" data-track="software" data-status="available" data-keywords="17-643 17643 Quality Management 소프트웨어 품질 관리 Jeffrey Gennari · Christopher Timperley 중급 소프트웨어 설계 테스트 건수뿐 아니라 어떤 결함을 예방하고 어떻게 품질을 관리할지 팀 관점에서 공부하기 좋은 과목입니다. 소프트웨어 변경·릴리스 과정에 대한 기본 이해 quality assurance QA 검증 validation 결함 defects 품질 지표 release CMU Quality Management (Spring 2026) | Lecture 1: Introduction CMU Quality Management (Spring 2026) | Lecture 2: Metrics and Measurement CMU Quality Management (Spring 2026) | Lecture 3: Quality in the Modern SDLC">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">17-643</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-17-643-title">소프트웨어 품질 관리</h3><p class="en" lang="en">Quality Management</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Jeffrey Gennari · Christopher Timperley</p><p class="summary">테스트 건수뿐 아니라 어떤 결함을 예방하고 어떻게 품질을 관리할지 팀 관점에서 공부하기 좋은 과목입니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">중급</li><li>quality assurance QA</li><li>검증 validation</li><li>결함 defects</li><li>품질 지표</li><li>release</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 소프트웨어 변경·릴리스 과정에 대한 기본 이해</p><section id="step-17-643-watch" class="step" tabindex="-1" aria-labelledby="step-17-643-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-17-643-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-17-643">강의 영상 선택</label>
+      <select id="videos-17-643" data-video-select><option value="CV-H1MynwNg" data-video-option="CV-H1MynwNg" data-title="Lecture 1: Introduction" data-availability="available" data-cc="confirmed">01 · Lecture 1: Introduction</option><option value="c-fD7vM0Qj8" data-video-option="c-fD7vM0Qj8" data-title="Lecture 2: Metrics and Measurement" data-availability="available" data-cc="confirmed">02 · Lecture 2: Metrics and Measurement</option><option value="f8jUgfO-Aik" data-video-option="f8jUgfO-Aik" data-title="Lecture 3: Quality in the Modern SDLC" data-availability="available" data-cc="confirmed">03 · Lecture 3: Quality in the Modern SDLC</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: Introduction</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLBAcFaUDLxMA"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLBAcFaUDLxMA">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 3/3편</p>
+          <section class="video-note" data-video-notes="CV-H1MynwNg" aria-labelledby="lesson-CV-H1MynwNg"><h5 id="lesson-CV-H1MynwNg">Lecture 1: Introduction</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>품질 관리를 현실의 제약 속 의사결정으로 소개하며 품질 보증과 구분한다. 개발 초반의 예방과 운영 이후 관찰을 함께 다루고 Tartan Tickets 프로젝트의 세 단계와 실습 운영 방식을 안내한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="0" type="button" aria-label="0분 0초에서 재생">0:00</button> 품질 관리와 품질 보증의 차이를 살펴본다.</li><li><button class="timestamp requires-js" data-timestamp="712" type="button" aria-label="11분 52초에서 재생">11:52</button> 개발 속도와 위험 사이의 트레이드오프를 검토한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=CV-H1MynwNg">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mse.s3d.cmu.edu/applicants/course-offerings.html">공식 과목 소개 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=CV-H1MynwNg">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="c-fD7vM0Qj8" aria-labelledby="lesson-c-fD7vM0Qj8"><h5 id="lesson-c-fD7vM0Qj8">Lecture 2: Metrics and Measurement</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>측정을 불확실성을 줄이는 활동으로 보고 대상·속성·지표의 관계와 GQM을 다룬다. 허영 지표와 지표의 목표화가 만드는 왜곡을 경계하며 수집한 지표를 판단과 행동으로 연결하는 방법을 살펴본다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="914" type="button" aria-label="15분 14초에서 재생">15:14</button> 목표에서 질문을 도출하고 필요한 지표를 정한다.</li><li><button class="timestamp requires-js" data-timestamp="2882" type="button" aria-label="48분 2초에서 재생">48:02</button> Prometheus·Loki·Grafana 기반 관찰 가능성 구성을 소개한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=c-fD7vM0Qj8">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mse.s3d.cmu.edu/applicants/course-offerings.html">공식 과목 소개 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=c-fD7vM0Qj8">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="f8jUgfO-Aik" aria-labelledby="lesson-f8jUgfO-Aik"><h5 id="lesson-f8jUgfO-Aik">Lecture 3: Quality in the Modern SDLC</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>폭포수·나선형·V/W 모델과 애자일을 품질 활동 관점에서 비교한다. 자동화 테스트, CI/CD, 회귀 테스트와 TDD를 연결하고 AI 에이전트 워크플로에서의 TDD도 다룬다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="1182" type="button" aria-label="19분 42초에서 재생">19:42</button> 개발 프로세스 안에서 품질 활동의 위치를 비교한다.</li><li><button class="timestamp requires-js" data-timestamp="4273" type="button" aria-label="71분 13초에서 재생">71:13</button> TDD와 AI 에이전트 워크플로를 연결한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=f8jUgfO-Aik">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://mse.s3d.cmu.edu/applicants/course-offerings.html">공식 과목 소개 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=f8jUgfO-Aik">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-17-643-practice" class="step" tabindex="-1" aria-labelledby="step-17-643-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-17-643-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>최근에 겪은 품질 문제를 하나 골라 출고 전 검증 기준과 배포 후 감지·복구 기준을 정하세요.</p></div></section><section id="step-17-643-reflect" class="step" tabindex="-1" aria-labelledby="step-17-643-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-17-643-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-17-643">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-17-643" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-10-605" class="course" tabindex="-1" aria-labelledby="course-10-605-title"
+      data-course data-id="10-605" data-title="대규모 데이터 머신러닝" data-track="systems" data-status="available" data-keywords="10-605 10605 Machine Learning with Large Datasets 대규모 데이터 머신러닝 William Cohen 심화 ML 시스템 데이터가 메모리에 전부 들어가지 않을 때 전처리·학습의 병목이 어떻게 바뀌는지 살펴봅니다. Python, 기본 ML, 자료구조 및 복잡도 large datasets 빅데이터 streaming 스트리밍 병렬 처리 분산 feature hashing Welcome to CMU Machine Learning with Large Datasets (Fall 2026) with William Cohen CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 1: Overview CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 2: Map-Reduce and Spark CMU Machine Learning with Large Datasets (Fall 2026) | Lecture 3: Workflows for Map-Reduce Systems">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">10-605</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-10-605-title">대규모 데이터 머신러닝</h3><p class="en" lang="en">Machine Learning with Large Datasets</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">William Cohen</p><p class="summary">데이터가 메모리에 전부 들어가지 않을 때 전처리·학습의 병목이 어떻게 바뀌는지 살펴봅니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">심화</li><li>large datasets 빅데이터</li><li>streaming 스트리밍</li><li>병렬 처리</li><li>분산</li><li>feature hashing</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> Python, 기본 ML, 자료구조 및 복잡도</p><section id="step-10-605-watch" class="step" tabindex="-1" aria-labelledby="step-10-605-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-10-605-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-10-605">강의 영상 선택</label>
+      <select id="videos-10-605" data-video-select><option value="WqBTJeFJ-FA" data-video-option="WqBTJeFJ-FA" data-title="Welcome to CMU Machine Learning with Large Datasets (Fall 2026) with William Cohen" data-availability="available" data-cc="confirmed">01 · Welcome to CMU Machine Learning with Large Datasets (Fall 2026) with William Cohen</option><option value="TJ6qYAaGRZ8" data-video-option="TJ6qYAaGRZ8" data-title="Lecture 1: Overview" data-availability="available" data-cc="confirmed">02 · Lecture 1: Overview</option><option value="KQUtNJEzUxU" data-video-option="KQUtNJEzUxU" data-title="Lecture 2: Map-Reduce and Spark" data-availability="available" data-cc="confirmed">03 · Lecture 2: Map-Reduce and Spark</option><option value="xd7fZ5QpezY" data-video-option="xd7fZ5QpezY" data-title="Lecture 3: Workflows for Map-Reduce Systems" data-availability="available" data-cc="confirmed">04 · Lecture 3: Workflows for Map-Reduce Systems</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Welcome to CMU Machine Learning with Large Datasets (Fall 2026) with William Cohen</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLOz411Ejgqdw"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLOz411Ejgqdw">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 3/4편</p>
+          <section class="video-note" data-video-notes="WqBTJeFJ-FA" aria-labelledby="lesson-WqBTJeFJ-FA"><h5 id="lesson-WqBTJeFJ-FA">Welcome to CMU Machine Learning with Large Datasets (Fall 2026) with William Cohen</h5><p class="note-basis">출처 확인 대기</p><p>이 영상은 공식 공개 목록에 있지만 개별 요약은 아직 확인되지 않았습니다.</p><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=WqBTJeFJ-FA">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="TJ6qYAaGRZ8" aria-labelledby="lesson-TJ6qYAaGRZ8"><h5 id="lesson-TJ6qYAaGRZ8">Lecture 1: Overview</h5><p class="note-basis">공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음.</p><h6>요약</h6><p>대규모 데이터가 머신러닝의 문제 설정을 어떻게 바꾸는지 소개합니다. 공개 강의 자료는 빅데이터와 ML의 발전을 돌아보고, 알고리즘의 점근적 복잡도와 실제 연산 비용을 함께 살펴보는 관점을 제시합니다.</p><h6>핵심 포인트</h6><ul><li>빅데이터와 머신러닝의 역사적 맥락을 짚습니다.</li><li>입력 크기에 따른 비용 증가를 복잡도 관점에서 봅니다.</li><li>알고리즘의 수식뿐 아니라 실제 연산의 비용도 고려합니다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://10605.github.io/schedule.html">Fall 2026 Overview 공식 일정 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://docs.google.com/presentation/d/1GK3GPVxBXY5JYcSaeqqh_xR2iIekVCLQ/htmlpresent">해당 강의 공개 슬라이드 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://10605.github.io/">과목 개요와 선수 지식 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=TJ6qYAaGRZ8">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="KQUtNJEzUxU" aria-labelledby="lesson-KQUtNJEzUxU"><h5 id="lesson-KQUtNJEzUxU">Lecture 2: Map-Reduce and Spark</h5><p class="note-basis">공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음.</p><h6>요약</h6><p>계산량만으로 설명되지 않는 대규모 데이터 처리 비용을 살펴봅니다. 메모리·디스크·네트워크 접근을 구분하고, 순차 처리와 MapReduce, Spark·Polars의 데이터 흐름 방식으로 연결합니다.</p><h6>핵심 포인트</h6><ul><li>점근적 분석이 놓치는 상수와 수렴 비용은 실험으로 확인합니다.</li><li>디스크 탐색과 순차 읽기는 다른 비용을 가집니다.</li><li>Unix 파이프와 정렬을 메모리 효율적인 처리의 출발점으로 봅니다.</li><li>MapReduce와 Spark·Polars를 데이터 흐름 관점에서 비교합니다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://10605.github.io/schedule.html">Fall 2026 Map-Reduce and Spark 일정 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://docs.google.com/presentation/d/1D7GrpfH2ciFQtF14x6MImid4dy9m4FgB/htmlpresent">해당 강의 공개 슬라이드 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://storage.googleapis.com/gweb-research2023-media/pubtools/4449.pdf">공식 일정에 지정된 원 논문: MapReduce <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=KQUtNJEzUxU">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="xd7fZ5QpezY" aria-labelledby="lesson-xd7fZ5QpezY"><h5 id="lesson-xd7fZ5QpezY">Lecture 3: Workflows for Map-Reduce Systems</h5><p class="note-basis">공개 슬라이드 기반 · 같은 학기·주제의 공식 일정과 대조. 영상 직접 시청·타임스탬프 검증은 하지 않음.</p><h6>요약</h6><p>단일 집계를 넘어 여러 단계의 데이터 처리와 반복 계산을 구성합니다. MapReduce·Spark·Polars를 복습한 뒤, 여러 빈도 통계를 결합하는 구절 추출과 반복 갱신이 필요한 k-means를 예제로 사용합니다.</p><h6>핵심 포인트</h6><ul><li>정렬된 키와 지연 순회로 집계의 메모리 사용을 줄이는 구조를 봅니다.</li><li>여러 카운트를 결합하는 구절 추출 워크플로를 살펴봅니다.</li><li>k-means를 반복이 필요한 워크플로의 사례로 다룹니다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://10605.github.io/schedule.html">Fall 2026 Workflows 공식 일정 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://docs.google.com/presentation/d/1yk0LLc-7ueqPwU6Flk4777m2qE4sTyxj/htmlpresent">해당 강의 공개 슬라이드 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://github.com/10605/LectureSampleCode/blob/main/polars_workflows/phrases.py">공식 강의 예제 코드: 구절 추출 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://github.com/10605/LectureSampleCode/blob/main/polars_workflows/kmeans.py">공식 강의 예제 코드: k-means <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=xd7fZ5QpezY">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-10-605-practice" class="step" tabindex="-1" aria-labelledby="step-10-605-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-10-605-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>전체 로딩과 청크 처리로 같은 집계를 구현하고 데이터 크기별 시간·최대 메모리를 비교하세요.</p></div></section><section id="step-10-605-reflect" class="step" tabindex="-1" aria-labelledby="step-10-605-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-10-605-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-10-605">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-10-605" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://10605.github.io/">강의진 공식 사이트 · 2026년 가을 학기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-15-110" class="course" tabindex="-1" aria-labelledby="course-15-110-title"
+      data-course data-id="15-110" data-title="컴퓨팅 원리" data-track="foundations" data-status="available" data-keywords="15-110 15110 Principles of Computing 컴퓨팅 원리 Franceska Xhakaj 입문 CS·수학 기초 문제를 작은 단계로 나누어 코드로 표현하고, 입력에 따라 결과가 달라지는 과정을 추적합니다. 프로그래밍 경험 없이 시작 가능 Python 프로그래밍 입문 programming 알고리즘 algorithms 문제 해결 CMU Principles of Computing (Spring 2026) | Lecture 1: Programming Basics CMU Principles of Computing (Spring 2026) | Lecture 2: Data Representation CMU Principles of Computing (Spring 2026) | Lecture 3: Function Calls">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">15-110</span><span class="badge available">YouTube 공개</span></div>
+          <div class="row-title"><h3 id="course-15-110-title">컴퓨팅 원리</h3><p class="en" lang="en">Principles of Computing</p></div>
+          <div class="row-cta"><span class="row-progress requires-js" data-course-progress>0/3 단계</span><span>학습 열기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Franceska Xhakaj</p><p class="summary">문제를 작은 단계로 나누어 코드로 표현하고, 입력에 따라 결과가 달라지는 과정을 추적합니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">입문</li><li>Python</li><li>프로그래밍 입문 programming</li><li>알고리즘 algorithms</li><li>문제 해결</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 프로그래밍 경험 없이 시작 가능</p><section id="step-15-110-watch" class="step" tabindex="-1" aria-labelledby="step-15-110-watch-title"><div class="step-head"><span class="step-number" aria-hidden="true">01</span><h4 id="step-15-110-watch-title">공식 강의 보기</h4><button class="mark requires-js" type="button" data-step-key="watch" aria-label="공식 강의 보기 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <div class="lesson-control requires-js"><label for="videos-15-110">강의 영상 선택</label>
+      <select id="videos-15-110" data-video-select><option value="oPSMMckx3eY" data-video-option="oPSMMckx3eY" data-title="Lecture 1: Programming Basics" data-availability="available" data-cc="confirmed">01 · Lecture 1: Programming Basics</option><option value="0nmhvgc5XOI" data-video-option="0nmhvgc5XOI" data-title="Lecture 2: Data Representation" data-availability="available" data-cc="confirmed">02 · Lecture 2: Data Representation</option><option value="vh3oVBcWG0A" data-video-option="vh3oVBcWG0A" data-title="Lecture 3: Function Calls" data-availability="available" data-cc="confirmed">03 · Lecture 3: Function Calls</option></select></div>
+      <div class="lesson-layout">
+        <div>
+          <div class="player" data-player>
+            <div class="player-placeholder"><p class="player-title" data-video-title>Lecture 1: Programming Basics</p>
+            <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
+            <button class="play requires-js" type="button" data-play="PLB27aM0tkAQs"><span aria-hidden="true">▶</span> 영상 열기</button></div>
+          </div>
+          <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
+          <p class="play-fallback"><a class="" href="https://www.youtube.com/playlist?list=PLB27aM0tkAQs">CMU 공식 재생목록 <span aria-hidden="true">↗</span></a> · 영상 시청 후 직접 완료를 표시하세요.</p>
+        </div>
+        <div class="lesson-notes">
+          <p class="eyebrow">VIDEO NOTES · 학습 노트 3/3편</p>
+          <section class="video-note" data-video-notes="oPSMMckx3eY" aria-labelledby="lesson-oPSMMckx3eY"><h5 id="lesson-oPSMMckx3eY">Lecture 1: Programming Basics</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>파이썬의 자료형과 연산, 변수 대입을 익히는 입문 강의다. Thonny 편집기와 셸을 구분하고 오류 메시지를 읽으며 실행 중 값이 바뀌는 과정을 추적한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="382" type="button" aria-label="6분 22초에서 재생">6:22</button> 정수·실수·문자열·불리언의 연산을 구분한다.</li><li><button class="timestamp requires-js" data-timestamp="2416" type="button" aria-label="40분 16초에서 재생">40:16</button> 변수에 값을 대입하고 갱신 순서를 추적한다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=oPSMMckx3eY">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://www.cs.cmu.edu/~15110-s26/schedule.html">Spring 2026 공식 일정 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=oPSMMckx3eY">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="0nmhvgc5XOI" aria-labelledby="lesson-0nmhvgc5XOI"><h5 id="lesson-0nmhvgc5XOI">Lecture 2: Data Representation</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>같은 정보가 서로 다른 표현을 가질 수 있다는 관점에서 이진수를 배운다. 비트와 바이트, 진법 변환을 거쳐 날짜·RGB 이미지·텍스트가 이진 데이터로 해석되는 추상화 계층을 연결한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="1140" type="button" aria-label="19분 0초에서 재생">19:00</button> 이진수와 십진수 사이의 변환을 연습한다.</li><li><button class="timestamp requires-js" data-timestamp="2216" type="button" aria-label="36분 56초에서 재생">36:56</button> 이진 데이터의 의미는 해석 맥락에 달려 있다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=0nmhvgc5XOI">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://www.cs.cmu.edu/~15110-s26/schedule.html">Spring 2026 공식 일정 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=0nmhvgc5XOI">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section><section class="video-note" data-video-notes="vh3oVBcWG0A" aria-labelledby="lesson-vh3oVBcWG0A"><h5 id="lesson-vh3oVBcWG0A">Lecture 3: Function Calls</h5><p class="note-basis">공식 YouTube 영상 설명과 게시자가 제공한 챕터 목록을 요약한 학습 안내. 영상 전체 시청·발화 검증·자막 요약은 하지 않았으며 시각은 게시자 챕터 시작점이다. 과목 사이트/강의계획서는 보조 맥락으로만 사용했다.</p><h6>요약</h6><p>반복되는 알고리즘을 함수 호출로 재사용하는 방법을 다룬다. 인자와 반환값, 중첩 호출, 화면 출력 같은 부수효과를 구별하고 내장 함수 및 라이브러리를 사용한다.</p><h6>핵심 포인트</h6><ul><li><button class="timestamp requires-js" data-timestamp="600" type="button" aria-label="10분 0초에서 재생">10:00</button> 인자와 반환값을 구별한다.</li><li><button class="timestamp requires-js" data-timestamp="1161" type="button" aria-label="19분 21초에서 재생">19:21</button> 부수효과와 반환값 None을 혼동하지 않는다.</li></ul><div class="note-sources"><div><h6>근거</h6><ul><li><a class="" href="https://www.youtube.com/watch?v=vh3oVBcWG0A">공식 영상 설명 및 게시자 제공 챕터 <span aria-hidden="true">↗</span></a></li></ul></div><div><h6>참고자료</h6><ul><li><a class="" href="https://www.cs.cmu.edu/~15110-s26/schedule.html">Spring 2026 공식 일정 <span aria-hidden="true">↗</span></a></li></ul></div></div><p class="video-source">재생 문제 발생 시 <a class="" href="https://www.youtube.com/watch?v=vh3oVBcWG0A">YouTube 원본 <span aria-hidden="true">↗</span></a></p></section>
+        </div>
+      </div></div></section><section id="step-15-110-practice" class="step" tabindex="-1" aria-labelledby="step-15-110-practice-title"><div class="step-head"><span class="step-number" aria-hidden="true">02</span><h4 id="step-15-110-practice-title">미니 실습</h4><button class="mark requires-js" type="button" data-step-key="practice" aria-label="미니 실습 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body"><p>텍스트에 나온 단어를 세는 프로그램을 만들고 빈 입력과 중복 입력을 따로 시험하세요.</p></div></section><section id="step-15-110-reflect" class="step" tabindex="-1" aria-labelledby="step-15-110-reflect-title"><div class="step-head"><span class="step-number" aria-hidden="true">03</span><h4 id="step-15-110-reflect-title">복습 노트</h4><button class="mark requires-js" type="button" data-step-key="reflect" aria-label="복습 노트 완료 여부" aria-pressed="false">완료 표시</button></div><div class="step-body">
+      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
+      <label class="note requires-js" for="note-15-110">나의 복습 노트</label>
+      <textarea class="requires-js" id="note-15-110" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea></div></section><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://www.cs.cmu.edu/~15110/syllabus.html">CMU 강의계획서 · 보충 자료 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-15-259" class="course" tabindex="-1" aria-labelledby="course-15-259-title"
+      data-course data-id="15-259" data-title="확률과 컴퓨팅" data-track="foundations" data-status="planned" data-keywords="15-259 15259 Probability and Computing 확률과 컴퓨팅 Mor Harchol-Balter · Weina Wang · Feras Saad 중급 CS·수학 기초 확률을 이용해 계산 과정과 시스템의 불확실성을 설명하는 연습에 연결하기 좋습니다. 기초 대수, 집합, 간단한 Python 실험 probability 확률분포 randomized 무작위 기댓값 시뮬레이션 ">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">15-259</span><span class="badge planned">2027년 1월 예정</span></div>
+          <div class="row-title"><h3 id="course-15-259-title">확률과 컴퓨팅</h3><p class="en" lang="en">Probability and Computing</p></div>
+          <div class="row-cta"><span>과목 미리보기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Mor Harchol-Balter · Weina Wang · Feras Saad</p><p class="summary">확률을 이용해 계산 과정과 시스템의 불확실성을 설명하는 연습에 연결하기 좋습니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">중급</li><li>probability</li><li>확률분포</li><li>randomized 무작위</li><li>기댓값</li><li>시뮬레이션</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 기초 대수, 집합, 간단한 Python 실험</p><p class="not-yet">CS Learn에서 공개되면 강의와 학습 체크리스트를 이용할 수 있습니다.</p><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-11-777" class="course" tabindex="-1" aria-labelledby="course-11-777-title"
+      data-course data-id="11-777" data-title="멀티모달 머신러닝" data-track="agents" data-status="planned" data-keywords="11-777 11777 Multimodal Machine Learning 멀티모달 머신러닝 Louis-Philippe Morency 심화 AI·에이전트 텍스트·이미지·음성처럼 서로 다른 입력을 표현하고 결합하는 모델을 공부하기 좋은 과목입니다. 딥러닝, 임베딩, 기본 선형대수 multimodal vision 이미지 audio 음성 fusion 결합 embeddings ">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">11-777</span><span class="badge planned">2027년 1월 예정</span></div>
+          <div class="row-title"><h3 id="course-11-777-title">멀티모달 머신러닝</h3><p class="en" lang="en">Multimodal Machine Learning</p></div>
+          <div class="row-cta"><span>과목 미리보기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Louis-Philippe Morency</p><p class="summary">텍스트·이미지·음성처럼 서로 다른 입력을 표현하고 결합하는 모델을 공부하기 좋은 과목입니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">심화</li><li>multimodal</li><li>vision 이미지</li><li>audio 음성</li><li>fusion 결합</li><li>embeddings</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 딥러닝, 임베딩, 기본 선형대수</p><p class="not-yet">CS Learn에서 공개되면 강의와 학습 체크리스트를 이용할 수 있습니다.</p><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://multicomp.cs.cmu.edu/mmml-course/fall2026/">강의진 보충 자료 · 2026년 가을 학기 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-07-280" class="course" tabindex="-1" aria-labelledby="course-07-280-title"
+      data-course data-id="07-280" data-title="AI와 머신러닝 I" data-track="foundations" data-status="planned" data-keywords="07-280 07280 AI and Machine Learning I AI와 머신러닝 I Nihar Shah 입문 CS·수학 기초 처음 AI와 머신러닝을 공부할 때 과제 설정, 데이터 분할과 모델 평가를 함께 익히기 좋은 출발점입니다. 기초 프로그래밍과 확률·선형대수 복습 권장 AI 입문 ML 기초 train test split classification 분류 평가 ">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">07-280</span><span class="badge planned">2027년 1월 예정</span></div>
+          <div class="row-title"><h3 id="course-07-280-title">AI와 머신러닝 I</h3><p class="en" lang="en">AI and Machine Learning I</p></div>
+          <div class="row-cta"><span>과목 미리보기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Nihar Shah</p><p class="summary">처음 AI와 머신러닝을 공부할 때 과제 설정, 데이터 분할과 모델 평가를 함께 익히기 좋은 출발점입니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">입문</li><li>AI 입문</li><li>ML 기초</li><li>train test split</li><li>classification 분류</li><li>평가</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 기초 프로그래밍과 확률·선형대수 복습 권장</p><p class="not-yet">CS Learn에서 공개되면 강의와 학습 체크리스트를 이용할 수 있습니다.</p><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-17-619" class="course" tabindex="-1" aria-labelledby="course-17-619-title"
+      data-course data-id="17-619" data-title="제품 관리 핵심" data-track="product" data-status="planned" data-keywords="17-619 17619 Product Management Essentials 제품 관리 핵심 Jim Berardone 입문 제품·임베디드 제품의 목표와 사용자 문제를 먼저 정의하고, 어떤 기준으로 기능의 우선순위를 정할지 연습하기 좋습니다. 개선하고 싶은 제품 사례 하나 product management PM 제품 기획 가설 실험 우선순위 지표 metrics ">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">17-619</span><span class="badge planned">2027년 1월 예정</span></div>
+          <div class="row-title"><h3 id="course-17-619-title">제품 관리 핵심</h3><p class="en" lang="en">Product Management Essentials</p></div>
+          <div class="row-cta"><span>과목 미리보기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Jim Berardone</p><p class="summary">제품의 목표와 사용자 문제를 먼저 정의하고, 어떤 기준으로 기능의 우선순위를 정할지 연습하기 좋습니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">입문</li><li>product management PM</li><li>제품 기획</li><li>가설 실험</li><li>우선순위</li><li>지표 metrics</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 개선하고 싶은 제품 사례 하나</p><p class="not-yet">CS Learn에서 공개되면 강의와 학습 체크리스트를 이용할 수 있습니다.</p><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article>
+    <article id="course-17-627" class="course" tabindex="-1" aria-labelledby="course-17-627-title"
+      data-course data-id="17-627" data-title="임베디드 시스템 요구사항" data-track="product" data-status="planned" data-keywords="17-627 17627 Requirements for Embedded Systems 임베디드 시스템 요구사항 Scott Pavetti 중급 제품·임베디드 시간, 전력, 환경 등 제약이 있는 시스템에서 요구사항을 구현과 검증에 이어 붙이는 연습에 적합합니다. 임베디드 시스템 또는 소프트웨어 요구사항에 대한 기본 이해 embedded 요구사항 requirements 실시간 real-time 추적성 traceability hardware ">
+      <details class="workspace" data-workspace>
+        <summary class="course-row">
+          <div class="row-code"><span class="course-id">17-627</span><span class="badge planned">2027년 1월 예정</span></div>
+          <div class="row-title"><h3 id="course-17-627-title">임베디드 시스템 요구사항</h3><p class="en" lang="en">Requirements for Embedded Systems</p></div>
+          <div class="row-cta"><span>과목 미리보기 <span aria-hidden="true" class="chevron">⌄</span></span></div>
+        </summary>
+        <div class="workspace-body">
+          <p class="byline">Scott Pavetti</p><p class="summary">시간, 전력, 환경 등 제약이 있는 시스템에서 요구사항을 구현과 검증에 이어 붙이는 연습에 적합합니다.</p>
+          <ul class="tags" aria-label="주제"><li class="level">중급</li><li>embedded</li><li>요구사항 requirements</li><li>실시간 real-time</li><li>추적성 traceability</li><li>hardware</li></ul>
+          <p class="prepare"><strong>이 과목을 보기 전에</strong> 임베디드 시스템 또는 소프트웨어 요구사항에 대한 기본 이해</p><p class="not-yet">CS Learn에서 공개되면 강의와 학습 체크리스트를 이용할 수 있습니다.</p><details class="sources"><summary>출처 및 보충 자료</summary><ul><li><a class="" href="https://coursecatalog.web.cmu.edu/schools-colleges/schoolofcomputerscience/courses/">CMU 정규 과목 카탈로그 <span aria-hidden="true">↗</span></a></li><li><a class="" href="https://www.cs.cmu.edu/learn/">CMU 공식 CS Learn <span aria-hidden="true">↗</span></a></li></ul></details>
+        </div>
+      </details>
+    </article></div>
+    </section>
+    <section id="paths" aria-labelledby="paths-title">
+      <div class="section-title"><p class="eyebrow">02 / ROADMAP</p><h2 id="paths-title">목표별 학습 경로</h2><p>독학용 추천 순서이며 공식 선수과목이 아닙니다.</p></div>
+      <div class="routes"><article class="route"><p class="eyebrow">실무 추천</p><h3>AI 에이전트 → 운영 → 성능</h3><p>도구를 쓰는 루프부터 평가와 운영까지. 마지막엔 서빙 병목을 직접 재봅니다.</p><ol><li><a href="#course-11-768" data-route-course><span>11-768</span> AI 에이전트</a></li><li><a href="#course-17-645" data-route-course><span>17-645</span> 프로덕션 머신러닝</a></li><li><a href="#course-15-442" data-route-course><span>15-442</span> 머신러닝 시스템</a></li></ol><p class="route-goal"><strong>남길 결과물</strong> 동일한 평가 세트의 성공률·p95 지연과 실패 원인을 한 장에 비교하세요.</p></article><article class="route"><p class="eyebrow">백엔드·테크 리드</p><h3>설계 → 아키텍처 → 품질</h3><p>코드의 책임 분리에서 팀의 설계 결정, 품질 기준으로 시야를 넓힙니다.</p><ol><li><a href="#course-17-214" data-route-course><span>17-214</span> 소프트웨어 구축 원리</a></li><li><a href="#course-17-635" data-route-course><span>17-635</span> 소프트웨어 아키텍처</a></li><li><a href="#course-17-643" data-route-course><span>17-643</span> 소프트웨어 품질 관리</a></li></ol><p class="route-goal"><strong>남길 결과물</strong> 기존 프로젝트를 골라 아키텍처 결정 기록과 릴리스 점검표를 작성하세요.</p></article><article class="route"><p class="eyebrow">기초부터</p><h3>컴퓨팅 → 확률 → 머신러닝</h3><p>Python과 문제 해결에서 시작해 확률과 모델 평가를 연결합니다. 확률·ML 과목은 1월 공개 예정입니다.</p><ol><li><a href="#course-15-110" data-route-course><span>15-110</span> 컴퓨팅 원리</a></li><li><a href="#course-15-259" data-route-course><span>15-259</span> 확률과 컴퓨팅 <small>예정</small></a></li><li><a href="#course-07-280" data-route-course><span>07-280</span> AI와 머신러닝 I <small>예정</small></a></li><li><a href="#course-10-605" data-route-course><span>10-605</span> 대규모 데이터 머신러닝</a></li></ol><p class="route-goal"><strong>남길 결과물</strong> 작은 정형 데이터로 기준 모델을 만들고 검증 결과를 재현하세요.</p></article></div>
+    </section>
+  </main>
+  <footer><div class="shell footer-inner">
+    <div><strong>CMU CS Learn · 한국어 독학 가이드</strong><p>CMU와 별개인 비공식 정리입니다. 소개·준비·실습은 독학용 제안이며 강의 영상·슬라이드·자막은 재배포하지 않습니다. CMU의 자가 학습 교재와 AI 튜터는 공식 안내상 별도 공개 예정입니다. 공식 목록 확인: <time datetime="2026-11-19">2026-11-19</time>.</p></div>
+    <div class="foot-links"><a class="official" href="https://www.cs.cmu.edu/learn/">CMU 공식 강의 목록 <span aria-hidden="true">↗</span></a><a class="" href="https://www.cmu.edu/news/stories/archives/2026/november/cmu-opens-access-to-top-computer-science-classes-through-free-cs-learn-platform">CMU 출시 공지 <span aria-hidden="true">↗</span></a><a href="#library">과목 목록 ↑</a></div>
+  </div></footer>
+</body>
+</html>
