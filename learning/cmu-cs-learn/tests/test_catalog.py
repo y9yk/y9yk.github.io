@@ -78,7 +78,7 @@ class CatalogTest(unittest.TestCase):
   captions=[v for rows in videos.values() for v in rows if v['english_cc']=='confirmed']
   premieres=[v for rows in videos.values() for v in rows if v['availability']=='premiere']
   self.assertEqual(len(captions),19)
-  self.assertEqual(len(premieres),2)
+  self.assertEqual(len(premieres),1)
  def test_feed_links_all_video_cards_to_details_and_has_one_queue_per_course(self):
   from html.parser import HTMLParser
   class Inventory(HTMLParser):
@@ -113,10 +113,10 @@ class CatalogTest(unittest.TestCase):
   import build
   videos,_=build.read_lessons()
   briefs=build.read_briefings(videos)
-  self.assertEqual(len(briefs),5)
-  self.assertEqual(sum(len(x['clips']) for x in briefs.values()),50)
-  self.assertEqual(len(re.findall(r'data-clip-start="\d+" data-clip-end="\d+"',self.html)),50)
-  self.assertEqual(self.html.count('class="more-clips"'),4)
+  self.assertEqual(len(briefs),6)
+  self.assertEqual(sum(len(x['clips']) for x in briefs.values()),56)
+  self.assertEqual(len(re.findall(r'data-clip-start="\d+" data-clip-end="\d+"',self.html)),56)
+  self.assertEqual(self.html.count('class="more-clips"'),5)
  def test_briefing_terms_and_clip_context_are_indexed(self):
   from html import unescape
   attrs=re.search(r'data-feed-video="KQUtNJEzUxU"[^>]+data-feed-keywords="([^"]+)"',self.html)
@@ -149,7 +149,7 @@ class CatalogTest(unittest.TestCase):
   self.assertIn('https://i.ytimg.com/vi/KQUtNJEzUxU/hq1.jpg',h)
   lead=re.search(r'<div class="feed-shelf leading-shelf".+?</div>\s*</div>',h,re.S).group()
   self.assertEqual(lead.count('data-feed-video='),8)
-  self.assertEqual(re.findall(r'data-feed-video="([^"]+)"',lead)[0],'KQUtNJEzUxU')
+  self.assertEqual(set(re.findall(r'data-feed-video="([^"]+)"',lead)[:2]),{'KQUtNJEzUxU','w05Mk2tjl_U'})
   self.assertGreaterEqual(len(set(re.findall(r'data-feed-course="([^"]+)"',lead))),6)
   self.assertIn('공식 확인 구간',h)
   self.assertEqual(h.count('class="watch-detail"'),8)
@@ -196,3 +196,9 @@ class CatalogTest(unittest.TestCase):
     self.assertTrue(set(ids.split())<=data['videos'].keys())
   self.assertIn('추천 보기',h)
   self.assertNotIn('<iframe',h)
+
+ def test_watch_poster_has_verified_hd_and_a_low_resolution_fallback(self):
+  self.assertIn('data-poster-hd="https://i.ytimg.com/vi/KQUtNJEzUxU/maxresdefault.jpg"',self.html)
+  self.assertIn('data-poster="https://i.ytimg.com/vi/KQUtNJEzUxU/hqdefault.jpg"',self.html)
+  self.assertNotRegex(self.html,r'<img[^>]+src="[^"]+/maxresdefault\.jpg"')
+  self.assertEqual(self.html.count('class="watch-byline"'),8)

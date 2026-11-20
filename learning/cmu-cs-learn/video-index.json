@@ -37,9 +37,10 @@
     {
       "id": "w05Mk2tjl_U",
       "title": "CMU AI Agents (Fall 2026) | Lecture 1: What Are Agents? And How Do They Work?",
-      "availability": "premiere",
+      "availability": "available",
       "english_cc": "not-confirmed",
-      "thumbnail": true
+      "thumbnail": true,
+      "duration_s": 3161
     }
   ],
   "15-110": [

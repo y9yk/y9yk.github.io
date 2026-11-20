@@ -119,6 +119,12 @@ if (typeof document!=='undefined') {
   let discovery=null;
   let showingResults=false;
   const videoPicker=new Map();
+  const watchRoutes=new Map([...document.querySelectorAll('[data-video-notes]')]
+    .map(note=>[note.dataset.videoNotes,note]));
+  // Keep hash destinations in static HTML for no-JS visitors, but give the
+  // enhanced router exclusive scroll ownership before native fragment seeking.
+  for(const note of watchRoutes.values()) note.removeAttribute('id');
+  document.querySelectorAll('[data-clip-start]').forEach(button=>button.closest('li')?.removeAttribute('id'));
   const clipPanels=new Map([...document.querySelectorAll('[data-video-brief]')].map(panel=>[
     panel.dataset.videoBrief,[...panel.querySelectorAll('[data-clip-start]')].map(button=>({
       start:button.dataset.clipStart,keywords:button.dataset.clipKeywords,button
@@ -251,7 +257,7 @@ if (typeof document!=='undefined') {
     const route=clipRoute(hash);
     const videoId=route?.id??videoIdFromHash(hash);
     const legacyId=legacyStepCourse(hash);
-    const target=get(videoId?`video-${videoId}`:legacyId?`course-${legacyId}`:hash.slice(1));
+    const target=videoId?watchRoutes.get(videoId):get(legacyId?`course-${legacyId}`:hash.slice(1));
     if(videoId && target) {
       const card=target.closest('[data-course]');
       const controls=videoPicker.get(card);
@@ -352,8 +358,15 @@ if (typeof document!=='undefined') {
       for(const group of card.querySelectorAll('[data-related-video],[data-video-tags],[data-video-editorial]'))
         group.hidden=(group.dataset.relatedVideo??group.dataset.videoTags??group.dataset.videoEditorial)!==select.value;
       const poster=playerBox.querySelector('.player-poster img');
-      if(poster && poster.getAttribute('src')!==option.dataset.poster && option.dataset.poster) {
-        poster.hidden=false;poster.src=option.dataset.poster;
+      const hd=active?.card===card?option.dataset.posterHd:'';
+      const desired=hd||option.dataset.poster;
+      if(poster && desired && poster.dataset.posterRequested!==desired) {
+        poster.dataset.posterRequested=desired;
+        poster.dataset.posterFallback=hd?option.dataset.poster:'';
+        poster.dataset.posterMin=hd?'960':'0';
+        if(active?.card===card) poster.loading='eager';
+        poster.hidden=false;
+        if(poster.getAttribute('src')!==desired) poster.src=desired;
       }
       card.querySelectorAll('[data-queue-video]').forEach(row=>{
         if(row.dataset.queueVideo===select.value) row.setAttribute('aria-current','true');
@@ -481,11 +494,21 @@ if (typeof document!=='undefined') {
     runHeaderSearch(true);
   }));
   // Failed posters fall back to the course badge. Alternate frames are fetched only on hover.
+  function missingPoster(img) {
+    if(img.dataset.posterFallback && img.getAttribute('src')!==img.dataset.posterFallback) {
+      img.dataset.posterMin='0';
+      img.src=img.dataset.posterFallback;
+    } else img.hidden=true;
+  }
   document.addEventListener('error',event=>{
-    if(event.target.matches?.('.video-thumb img')) event.target.hidden=true;
+    if(event.target.matches?.('.video-thumb img')) missingPoster(event.target);
+  },true);
+  document.addEventListener('load',event=>{
+    const img=event.target;
+    if(img.matches?.('.player-poster img') && img.naturalWidth<Number(img.dataset.posterMin||0)) missingPoster(img);
   },true);
   document.querySelectorAll('.video-thumb img').forEach(img=>{
-    if(img.complete && img.naturalWidth===0) img.hidden=true;
+    if(img.complete && img.naturalWidth===0) missingPoster(img);
   });
   for(const card of videoCards) {
     const thumb=card.querySelector('.video-thumb');

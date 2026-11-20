@@ -105,6 +105,7 @@ class FeedModelTest(unittest.TestCase):
         dates = [datetime.fromisoformat(row['published_at']) for row in rows]
         self.assertEqual(dates, sorted(dates, reverse=True))
         self.assertTrue(all(row['kind'] == 'lesson' and row['availability'] == 'available' for row in rows))
+        self.assertEqual(self.model['videos']['w05Mk2tjl_U']['duration_s'], 3161)
         self.assertIsNone(self.model['videos']['w05Mk2tjl_U']['published_date'])
 
     def test_provenance_keeps_citations_readable_and_scoped(self):

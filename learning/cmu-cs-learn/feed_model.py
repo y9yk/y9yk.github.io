@@ -61,6 +61,17 @@ VERIFIED_PREVIEWS = {
 }
 
 
+# Checked against decoded 1280×720 YouTube CDN images, not just HTTP 200.
+VERIFIED_HD_POSTERS = {
+    'WqBTJeFJ-FA', 'TJ6qYAaGRZ8', 'KQUtNJEzUxU', 'xd7fZ5QpezY',
+    'w05Mk2tjl_U', 'oPSMMckx3eY', '0nmhvgc5XOI', 'vh3oVBcWG0A',
+    '3TmIRW4N3zo', 'nbBCi6SZ8hE', 'f-uQBacLc2E', 'N7V5hsQeGVM',
+    '2Sgd3efXKGg', 'P_33xayi9J8', '1DvaPZ_4sh0', 'Y4Q2V6MI1oA',
+    'XTRyyqbo4cw', 'CV-H1MynwNg', 'c-fD7vM0Qj8', 'f8jUgfO-Aik',
+    'vFJCgzuEkmY',
+}
+
+
 def _key(value):
     return unicodedata.normalize('NFKC', value).strip().casefold()
 
@@ -162,13 +173,13 @@ def _relationship(current, candidate):
     return order, reason
 
 
-def build_feed_model(catalog, video_index, notes=None, briefs=None, editorials=None):
+def build_feed_model(catalog, video_index, notes=None, briefs=None, editorials=None, digests=None):
     """Build keyed topics/channels/courses/videos, plus editorial feed_ids.
 
     notes and briefs are optional dicts keyed by (course_id, video_id), as
     returned by the existing content loaders. No engagement data are generated.
     """
-    notes, briefs, editorials = notes or {}, briefs or {}, editorials or {}
+    notes, briefs, editorials, digests = notes or {}, briefs or {}, editorials or {}, digests or {}
     courses = {}
     videos = {}
     topics = {key: {'id': key, 'label': label, 'course_ids': [], 'video_ids': []}
@@ -200,10 +211,13 @@ def build_feed_model(catalog, video_index, notes=None, briefs=None, editorials=N
             pinned = SOURCE_SNAPSHOT['videos'].get(vid, {})
             published_at = pinned.get('published_at') if availability == 'available' else None
             video_url = 'https://www.youtube.com/watch?v=' + vid
-            lecture_tags = list(VIDEO_TAGS.get(vid, ()))
+            digest = digests.get(vid, {})
+            lecture_tags = list(dict.fromkeys([*digest.get('tags', ()), *VIDEO_TAGS.get(vid, ())]))
+            digest_terms = [x['term'] for x in digest.get('concepts', ())]
+            digest_topics = digest.get('topics', [])
             search_terms = list(dict.fromkeys([
                 short_title, key, course['title'], course['ko'], catalog['tracks'][topic],
-                *lecture_tags, *course.get('tags', ()), *([course['faculty']] if course.get('faculty') else ()),
+                *lecture_tags, *digest_terms, *digest_topics, *course.get('tags', ()), *([course['faculty']] if course.get('faculty') else ()),
             ]))
             editorial = editorials.get(vid, {})
             source_refs = _video_sources(video_url, pinned.get('published_chapters'), note, brief, course, editorial)
@@ -212,6 +226,7 @@ def build_feed_model(catalog, video_index, notes=None, briefs=None, editorials=N
             videos[vid] = dict(
                 id=vid, title=title, short_title=short_title, lesson_number=lesson_number,
                 kind='trailer' if is_trailer else 'lesson', poster_url=poster,
+                poster_hd_url=image_base+'maxresdefault.jpg' if poster and vid in VERIFIED_HD_POSTERS else None,
                 preview_thumbnails=[image_base + name + '.jpg' for name in ('hq1','hq2','hq3')]
                 if poster and vid in VERIFIED_PREVIEWS else [],
                 course_id=key, channel_id=CHANNEL_ID, topic_ids=[topic],
@@ -222,7 +237,7 @@ def build_feed_model(catalog, video_index, notes=None, briefs=None, editorials=N
                 english_cc=source.get('english_cc'), thumbnail=source.get('thumbnail', False),
                 signals={'notes': bool(note), 'clips': len(brief.get('clips', ())),
                          'sources': _source_count(note, brief, editorial)},
-                reason=note.get('summary') or None,
+                reason=digest.get('takeaway') or note.get('summary') or None,
             )
             topics[topic]['video_ids'].append(vid)
             courses[key]['video_ids'].append(vid)
