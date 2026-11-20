@@ -95,13 +95,13 @@ class CatalogTest(unittest.TestCase):
   self.assertEqual(parsed.queues,8)
   self.assertIn('id="header-search"',self.html)
   self.assertNotIn('<iframe',self.html)
-  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
+  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '세 단계 체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
    self.assertNotIn(removed,self.html)
  def test_briefing_fallbacks_are_available_for_every_video_and_do_not_fake_clip_bounds(self):
   self.assertEqual(len(set(re.findall(r'data-video-brief="([^"]+)"',self.html))),21)
   self.assertIn('학습 브리핑',self.html)
   self.assertNotIn('<iframe',self.html)
-  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
+  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '세 단계 체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
    self.assertNotIn(removed,self.html)
  def test_invalid_clips_are_rejected(self):
   import build
@@ -131,7 +131,7 @@ class CatalogTest(unittest.TestCase):
    self.assertIn(label,self.html)
   self.assertEqual(self.html.count('data-video-sources='),21)
   self.assertNotIn('<iframe',self.html)
-  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
+  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '세 단계 체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
    self.assertNotIn(removed,self.html)
 
  def test_course_discovery_and_verified_additional_readings(self):
@@ -144,7 +144,6 @@ class CatalogTest(unittest.TestCase):
  def test_video_feed_exposes_provenance_and_watch_page_prioritizes_player(self):
   h=self.html
   self.assertGreater(h.index('id="topics"'),h.index('data-feed-shelf'))
-  self.assertEqual(h.count('class="feed-signals"'),21)
   self.assertEqual(h.count('data-preview-frames="https://i.ytimg.com/vi/'),21)
   self.assertIn('data-poster="https://i.ytimg.com/vi/KQUtNJEzUxU/hqdefault.jpg"',h)
   self.assertIn('https://i.ytimg.com/vi/KQUtNJEzUxU/hq1.jpg',h)
@@ -160,3 +159,40 @@ class CatalogTest(unittest.TestCase):
   self.assertLess(detail.index('data-player'),detail.index('data-watch-title'))
   self.assertLess(detail.index('data-watch-title'),detail.index('data-study-tab'))
   self.assertLess(detail.index('data-study-tab'),detail.index('class="watch-rail"'))
+
+ def test_browse_hero_has_measured_content_hierarchy(self):
+  h=self.html
+  self.assertIn('class="feed-intro-copy"',h)
+  self.assertIn('class="feed-context-link"',h)
+  self.assertRegex(h,r'class="feed-context-link"><a href="#library"')
+  self.assertNotIn('class="feed-signals"',h)
+  self.assertEqual(h.count('class="feed-context"'),21)
+
+ def test_home_discovery_follows_reference_section_order(self):
+  h=self.html
+  blocks=('featured-title','for-you','topics','fresh','source-types','detail-topics')
+  offsets=[h.index(f'id="{name}"') for name in blocks]
+  self.assertEqual(offsets,sorted(offsets))
+  self.assertRegex(h,r'id="recommend-query"[^>]+maxlength="500"')
+  self.assertNotIn('type="file"',h)
+  self.assertIn('id="discovery-results"',h)
+
+ def test_home_facets_and_recent_shelf_use_real_distinct_video_ids(self):
+  h=self.html
+  starter=re.search(r'class="feed-shelf leading-shelf".+?</div>\s*</div>',h,re.S).group()
+  fresh=re.search(r'id="fresh"[^>]*>.*?</section>',h,re.S).group()
+  first=re.findall(r'data-feed-video="([^"]+)"',starter)
+  recent=re.findall(r'data-feed-video="([^"]+)"',fresh)
+  self.assertEqual(len(first),8)
+  self.assertEqual(len(recent),8)
+  self.assertFalse(set(first) & set(recent))
+  data=json.loads(re.search(r'id="recommend-data">(.+?)</script>',h).group(1))
+  self.assertEqual(set(data['videos']),set(re.findall(r'data-feed-video="([^"]+)"',h)))
+  for kind in ('topic','source','tag'):
+   pills=re.findall(rf'data-discovery-kind="{kind}"[^>]+data-discovery-ids="([^"]+)"[^>]+>[^<]+<span>(\d+)</span>',h)
+   self.assertTrue(pills)
+   for ids,count in pills:
+    self.assertEqual(len(set(ids.split())),int(count))
+    self.assertTrue(set(ids.split())<=data['videos'].keys())
+  self.assertIn('추천 보기',h)
+  self.assertNotIn('<iframe',h)

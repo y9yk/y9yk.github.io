@@ -85,3 +85,39 @@ class FeedModelTest(unittest.TestCase):
         ready_courses = {c for c, rows in self.video_index.items()
                          if any(v['availability'] == 'available' for v in rows)}
         self.assertEqual({model['videos'][vid]['course_id'] for vid in first}, ready_courses)
+
+    def test_facets_join_unique_real_video_ids(self):
+        for key in ('topics', 'tag_facets', 'source_types'):
+            for facet in self.model[key].values():
+                self.assertEqual(facet['video_count'], len(set(facet['video_ids'])))
+                for vid in facet['video_ids']:
+                    self.assertIn(vid, self.model['videos'])
+        self.assertEqual(sum(x['video_count'] for x in self.model['topics'].values()), len(self.model['videos']))
+        self.assertGreaterEqual(len(self.model['tag_facets']), 20)
+        self.assertEqual(self.model['source_types']['official-chapter']['video_count'], 20)
+        self.assertNotIn('WqBTJeFJ-FA', self.model['source_types']['official-chapter']['video_ids'])
+
+    def test_fresh_uses_official_publish_timestamp_and_no_premieres_or_trailers(self):
+        from datetime import datetime
+        fresh = self.model['shelves']['fresh']
+        self.assertGreaterEqual(len(fresh['video_ids']), 12)
+        rows = [self.model['videos'][vid] for vid in fresh['video_ids']]
+        dates = [datetime.fromisoformat(row['published_at']) for row in rows]
+        self.assertEqual(dates, sorted(dates, reverse=True))
+        self.assertTrue(all(row['kind'] == 'lesson' and row['availability'] == 'available' for row in rows))
+        self.assertIsNone(self.model['videos']['w05Mk2tjl_U']['published_date'])
+
+    def test_provenance_keeps_citations_readable_and_scoped(self):
+        key = ('10-605', 'KQUtNJEzUxU')
+        evidence = [
+            {'label':'공식 일정', 'url':'https://10605.github.io/schedule.html'},
+            {'label':'강의 슬라이드', 'url':'https://example.test/slides'},
+            {'label':'원 논문', 'url':'https://example.test/paper'},
+            {'label':'Spark 공식 문서', 'url':'https://spark.apache.org/docs/'},
+        ]
+        model = build_feed_model(self.catalog, self.video_index, {key:{'evidence':evidence}})
+        types = {ref['type']:ref for ref in model['videos'][key[1]]['source_refs']}
+        for type_id in ('official-video', 'official-chapter', 'course-page', 'lecture-notes', 'academic-paper', 'official-docs'):
+            self.assertIn(type_id, types)
+        self.assertEqual(types['academic-paper']['scope'], 'lesson')
+        self.assertIn(key[1], model['source_types']['academic-paper']['video_ids'])

@@ -112,7 +112,12 @@ if (typeof document!=='undefined') {
   const videoData=new Map(videoCards.map(card=>[card.dataset.feedVideo,{
     title:card.querySelector('h3').textContent,course:courseData.get(card.dataset.feedCourse)
   }]));
-  const topics=[...document.querySelectorAll('[data-topic]')];
+  const selectors=[...document.querySelectorAll('[data-discovery-kind]')];
+  const shelfCards=new Map(videoCards.map(card=>[card,card.parentElement]));
+  const discoveryGrid=get('discovery-grid');
+  const rankModel=JSON.parse(get('recommend-data').textContent);
+  let discovery=null;
+  let showingResults=false;
   const videoPicker=new Map();
   const clipPanels=new Map([...document.querySelectorAll('[data-video-brief]')].map(panel=>[
     panel.dataset.videoBrief,[...panel.querySelectorAll('[data-clip-start]')].map(button=>({
@@ -167,20 +172,40 @@ if (typeof document!=='undefined') {
     get('saved-videos').replaceChildren(...savedItems);
     get('saved-empty').hidden=Boolean(savedItems.length);
     let videoCount=0;
+    const resultMode=Boolean(normalize(filters.q))||filters.track!=='all'||Boolean(discovery);
+    if(!resultMode && showingResults) {
+      for(const card of videoCards) shelfCards.get(card).append(card);
+    }
+    const rank=discovery?new Map(discovery.ids.map((id,i)=>[id,i])):null;
+    const resultCards=[];
     for(const video of videoCards) {
       const course=byId.get(video.dataset.feedCourse).dataset;
-      video.hidden=!matches({...course,keywords:video.dataset.feedKeywords+' '+course.id+' '+course.id.replace('-','')},filters);
       const vid=video.dataset.feedVideo;
+      video.hidden=(rank&&!rank.has(vid)) || !matches({...course,keywords:video.dataset.feedKeywords+' '+course.id+' '+course.id.replace('-','')},filters);
       const clip=video.hidden?undefined:matchingClip(clipPanels.get(vid)??[],filters.q);
       video.querySelector('.video-card-link').hash=clip?`#video-${vid}-clip-${clip.start}`:`#video-${vid}`;
-      if(!video.hidden) videoCount++;
+      const reason=video.querySelector('.recommend-reason');
+      reason.textContent=discovery?.reasons?.[vid]??'';
+      reason.hidden=!reason.textContent;
+      if(!video.hidden) {
+        videoCount++;
+        if(resultMode) resultCards.push(video);
+      }
     }
-    document.querySelectorAll('[data-feed-shelf]').forEach(shelf=>{
-      shelf.hidden=!shelf.querySelector('[data-feed-video]:not([hidden])');
-    });
-    topics.forEach(chip=>chip.setAttribute('aria-pressed',String(chip.dataset.topic===fields.track.value)));
+    if(resultMode) {
+      if(rank) resultCards.sort((a,b)=>rank.get(a.dataset.feedVideo)-rank.get(b.dataset.feedVideo));
+      // Move the canonical cards; keep click handlers, hover state and duplicate-free counts.
+      if(resultCards.length!==discoveryGrid.children.length || resultCards.some((card,i)=>discoveryGrid.children[i]!==card))
+        discoveryGrid.replaceChildren(...resultCards);
+    }
+    showingResults=resultMode;
+    document.querySelectorAll('[data-feed-shelf],#fresh').forEach(shelf=>{shelf.hidden=resultMode;});
+    selectors.forEach(chip=>chip.setAttribute('aria-pressed',String(discovery?.chip===chip)));
+    get('discovery-results').hidden=!resultMode;
+    get('discovery-results-title').textContent=discovery?.label??'검색 결과';
     get('feed-empty').hidden=videoCount>0;
-    get('course-discovery').hidden=Boolean(normalize(filters.q)) || filters.track!=='all';
+    get('course-discovery').hidden=resultMode;
+    get('discovery-count').textContent=`${videoCount}개 영상`;
     get('feed-results').textContent=`강의 영상 ${videoCount}개`;
     get('video-query').value=fields.q.value;
     get('result-count').textContent=`${visible}개 과목`;
@@ -324,8 +349,8 @@ if (typeof document!=='undefined') {
       card.querySelector('[data-watch-title]').textContent=option.dataset.title;
       card.querySelector('[data-watch-duration]').textContent=option.dataset.duration?' · '+option.dataset.duration:'';
       card.querySelector('[data-video-original]').href='https://www.youtube.com/watch?v='+select.value;
-      for(const group of card.querySelectorAll('[data-related-video],[data-video-tags]'))
-        group.hidden=(group.dataset.relatedVideo??group.dataset.videoTags)!==select.value;
+      for(const group of card.querySelectorAll('[data-related-video],[data-video-tags],[data-video-editorial]'))
+        group.hidden=(group.dataset.relatedVideo??group.dataset.videoTags??group.dataset.videoEditorial)!==select.value;
       const poster=playerBox.querySelector('.player-poster img');
       if(poster && poster.getAttribute('src')!==option.dataset.poster && option.dataset.poster) {
         poster.hidden=false;poster.src=option.dataset.poster;
@@ -388,23 +413,41 @@ if (typeof document!=='undefined') {
     }));
     fullVideo.addEventListener('click',()=>loadVideo(0,true));
   }
-  function reset(){form.reset();render();}
+  function reset(){discovery=null;form.reset();render();}
+  function focusResults() {
+    get('discovery-results-title').focus({preventScroll:true});
+    get('discovery-results').scrollIntoView({block:'start'});
+  }
   function runHeaderSearch(scroll) {
+    discovery=null;
     fields.q.value=get('video-query').value;
     if(document.documentElement.dataset.topView!=='browse') go('#videos');
     render();
-    if(scroll) get('videos').scrollIntoView({block:'start'});
+    if(scroll && showingResults) focusResults();
   }
   get('header-search').addEventListener('submit',e=>{e.preventDefault();runHeaderSearch(true);});
   get('video-query').addEventListener('input',()=>runHeaderSearch(false));
-  topics.forEach(chip=>chip.addEventListener('click',()=>{
-    fields.track.value=chip.dataset.topic;
-    fields.status.value='all';
-    fields.progress.value='all';
-    render();
-    get('video-query').value=fields.q.value;
-    document.querySelector('.feed-shelf:not([hidden])')?.scrollIntoView({block:'start'});
+  selectors.forEach(chip=>chip.addEventListener('click',()=>{
+    const existing=discovery?.chip===chip;
+    reset();
+    if(!existing) {
+      discovery={chip,label:chip.dataset.discoveryLabel,ids:chip.dataset.discoveryIds.split(' ')};
+      render();focusResults();
+    }
   }));
+  get('clear-discovery').addEventListener('click',()=>{
+    reset();get('video-query').focus({preventScroll:true});
+    get('videos').scrollIntoView({block:'start'});
+  });
+  get('recommend-form').addEventListener('submit',event=>{
+    event.preventDefault();
+    const value=get('recommend-query').value.trim();
+    if(!value) {get('recommend-query').focus();return;}
+    const result=globalThis.CmuFeedRecommend.rank(rankModel,value);
+    reset();
+    discovery={label:'관심사에 맞는 강의',ids:result.video_ids,reasons:result.reasons};
+    render();focusResults();
+  });
   form.addEventListener('submit',evt=>{evt.preventDefault();render();});
   form.addEventListener('input',render);
   form.addEventListener('change',render);

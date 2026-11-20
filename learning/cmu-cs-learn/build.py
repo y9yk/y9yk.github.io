@@ -8,6 +8,7 @@ import shutil
 from urllib.parse import urlsplit
 
 from feed_model import build_feed_model
+from detail_editorial import read_editorial, render_editorial
 
 BASE = Path(__file__).resolve().parent
 
@@ -109,7 +110,7 @@ def briefing_html(c, video, note, brief, lesson_number, *, clips_only=False):
         label = f'{timecode(start)}–{timecode(end)}'
         reading = segment.get('reading')
         reading_link = f'<p>{link("함께 읽기: "+reading["label"], reading["url"], "clip-reading")}</p>' if reading else ''
-        return (f'<li><button type="button" class="clip-button requires-js" data-clip-start="{start}" data-clip-end="{end}" '
+        return (f'<li id="video-{vid}-clip-{start}"><button type="button" class="clip-button requires-js" data-clip-start="{start}" data-clip-end="{end}" '
                 f'data-clip-title="{title}" data-clip-keywords="{e(clip_keywords(segment))}" data-clip-label="{label}" aria-pressed="false" '
                 f'aria-label="{title} · {timecode(start)}에서 {timecode(end)}까지 재생">'
                 f'<span aria-hidden="true">▶</span> {label}</button>'
@@ -165,11 +166,14 @@ def video_card(c, v, note, brief, record, eager=False):
     vid = e(v['id'])
     context = record.get('reason') or (note['summary'] if note else '공식 과목 소개 영상')
     metrics = record['signals']
-    signals = ['한국어 노트'] if metrics['notes'] else ['공식 영상']
+    signals = []
     if metrics['clips']:
         signals.append(f'공식 확인 구간 {metrics["clips"]}개')
     if metrics['sources']:
         signals.append(f'출처 {metrics["sources"]}개')
+    if not signals and metrics["notes"]:
+        signals.append("한국어 노트")
+    summary_line = " · ".join([*signals, context])
     metadata = brief or {}
     concepts = [' '.join((x['term'], x['explanation'])) for x in metadata.get('concepts', [])]
     clips = [clip_keywords(x) for x in metadata.get('clips', [])]
@@ -182,19 +186,31 @@ def video_card(c, v, note, brief, record, eager=False):
       </a>
       <div class="feed-actions">{quick_action("save","◷","나중에 보기",vid)}{quick_action("watched","✓","시청 완료",vid)}</div>
       <p class="feed-meta">{e(c['faculty'])} · {e(c['id'])}</p>
-      <p class="feed-signals">{e(" · ".join(signals))}</p>
-      <p class="feed-context">{e(context)}</p>
+      <p class="feed-context">{e(summary_line)}</p>
+      <p class="recommend-reason" hidden></p>
     </article>"""
 
 
-def feed_html(courses, videos, notes, briefs, model, topic_chips):
+def discovery_pills(rows, facet):
+    return ''.join(
+        f'<button type="button" data-discovery-kind="{e(facet)}" data-discovery-key="{e(key)}" '
+        f'data-discovery-label="{e(row["label"])}" data-discovery-ids="{e(" ".join(row["video_ids"]))}" aria-pressed="false">'
+        f'{e(row["label"])} <span>{len(row["video_ids"])}</span></button>'
+        for key,row in rows.items() if row['video_ids'])
+
+
+def feed_html(courses, videos, notes, briefs, model):
     by_id = {c['id']:c for c in courses}
     lookup = {v['id']:(by_id[cid],v) for cid,rows in videos.items() for v in rows}
     records = model['videos']
     ordered = model['feed_ids']
-    # Interleaved ranking is supplied by the content model; each video is rendered once.
-    leads = ordered[:8]
-    rest = [vid for vid in ordered if vid not in leads]
+    shelves = model.get('shelves', {})
+    leads = shelves.get('featured',{}).get('video_ids',ordered[:8])[:8]
+    fresh = shelves.get('fresh', {})
+    fresh_ids = [vid for vid in fresh.get('video_ids',[]) if vid not in leads][:8]
+    rest = [vid for vid in ordered if vid not in leads and vid not in fresh_ids]
+    fresh_label = fresh.get('label', '새 공개 강의')
+    fresh_basis = fresh.get('basis', '') + ' · 위 추천에 없는 영상'
     def cards(ids, eager=False):
         rows = []
         for i,vid in enumerate(ids):
@@ -202,21 +218,45 @@ def feed_html(courses, videos, notes, briefs, model, topic_chips):
             key=(c['id'],vid)
             rows.append(video_card(c,v,notes.get(key),briefs.get(key),records[vid],eager and i<4))
         return ''.join(rows)
-    def shelf(title, name, description, ids):
-        return (f'<section class="feed-shelf editorial-shelf" data-feed-shelf aria-labelledby="{name}">'
-                f'<h2 id="{name}">{title}</h2><p>{description}</p><div class="video-grid">{cards(ids)}</div></section>')
     course_links=''.join(f'<a href="#course-{e(c["id"])}"><small>{e(c["id"])}</small><strong>{e(c["ko"])}</strong><span>{len(videos[c["id"]])}개 강의</span></a>'
                          for c in courses if videos.get(c['id']))
+    topic_chips=discovery_pills(model['topics'],'topic')
+    source_pills=discovery_pills(model.get('source_types',{}),'source')
+    tag_pills=discovery_pills(dict(list(model.get('tag_facets',{}).items())[:20]),'tag')
     return f"""<div class="feed-shelf leading-shelf" data-feed-shelf aria-labelledby="featured-title">
        <h2 class="visually-hidden" id="featured-title">추천 강의</h2>
        <div class="video-grid">{cards(leads,True)}</div>
      </div>
-     <section class="topic-section requires-js" id="topics" aria-labelledby="topic-title">
-       <h2 id="topic-title">관심 주제에서 골라보세요</h2>
-       <div class="topic-chips" aria-label="주제별 강의"><button type="button" data-topic="all" aria-pressed="true">전체</button>{topic_chips}</div>
+     <section class="discovery-section recommendation-box requires-js" id="for-you" aria-labelledby="for-you-title">
+       <h2 id="for-you-title">나에게 맞는 강의 찾기</h2>
+       <form id="recommend-form">
+         <label class="visually-hidden" for="recommend-query">관심사 또는 CMU YouTube 링크</label>
+         <input id="recommend-query" type="text" placeholder="예: 파이썬 입문, 분산 처리, 또는 CMU YouTube 링크" maxlength="500" required autocomplete="off" aria-describedby="recommend-help">
+         <button type="submit">추천 보기</button>
+       </form>
+       <p id="recommend-help">관심사를 한국어·영어로 적거나 목록에 있는 CMU YouTube 링크를 넣어보세요. 입력은 브라우저에서만 처리합니다.</p>
      </section>
-     {shelf("더 볼 강의","more-title","공식 목록에서 같은 주제와 다음 강의를 찾아보세요.",rest[:8])}
-     {shelf("다른 강의 둘러보기","further-title","공식 과목의 나머지 영상입니다.",rest[8:])}
+     <section class="discovery-section requires-js" id="topics" aria-labelledby="topic-title">
+       <h2 id="topic-title">관심 주제로 고르기</h2>
+       <div class="discovery-pills" aria-label="관심 주제">{topic_chips}</div>
+     </section>
+     <section class="feed-shelf discovery-section recent-shelf" id="fresh" data-feed-shelf aria-labelledby="fresh-title">
+       <div class="heading-with-count"><h2 id="fresh-title">{e(fresh_label)}</h2><span>{len(fresh_ids)}개 영상</span></div>
+       <p>{e(fresh_basis)}</p><div class="video-grid">{cards(fresh_ids)}</div>
+     </section>
+     <section class="discovery-section requires-js" id="source-types" aria-labelledby="source-types-title">
+       <h2 id="source-types-title">근거 자료별 탐색</h2>
+       <p>강의와 함께 확인할 수 있는 원본 자료로 고르세요.</p>
+       <div class="discovery-pills" aria-label="근거 자료 유형">{source_pills}</div>
+     </section>
+     <section class="discovery-section requires-js" id="detail-topics" aria-labelledby="detail-topics-title">
+       <h2 id="detail-topics-title">세부 주제별 탐색</h2>
+       <div class="discovery-pills detail-topic-pills" aria-label="세부 주제">{tag_pills}</div>
+     </section>
+     <section class="feed-shelf discovery-section archive-shelf" data-feed-shelf aria-labelledby="archive-title">
+       <div class="heading-with-count"><h2 id="archive-title">나머지 강의</h2><span>{len(rest)}개 영상</span></div>
+       <div class="video-grid">{cards(rest)}</div>
+     </section>
      <section class="catalog-shelf" id="course-discovery">
        <div><h2>과목 둘러보기</h2><a href="#library">전체 과목 보기 →</a></div>
        <nav aria-label="공개 과목">{course_links}</nav>
@@ -295,7 +335,7 @@ def learning_tabs(cid, panels):
             f'{"".join(learning_panel(cid,key,panels[key]) for key,_ in labels)}</div>')
 
 
-def lesson_html(c, video_rows, notes, model, lookup, briefs, official):
+def lesson_html(c, video_rows, notes, model, lookup, editorials, briefs, official):
     if not video_rows or any(not re.fullmatch(r'[A-Za-z0-9_-]{11}', row['id']) for row in video_rows):
         raise ValueError(f'Missing or invalid official videos: {c["id"]}')
     playlist = c['playlist']
@@ -312,6 +352,8 @@ def lesson_html(c, video_rows, notes, model, lookup, briefs, official):
         buttons=''.join(f'<a href="#topics" data-search-tag="{e(t)}">{e(t)}</a>' for t in tags)
         return f'<div class="watch-tags" data-video-tags="{e(v["id"])}" aria-label="강의 태그">{buttons}</div>'
     watch_tags=''.join(tags_for(v) for v in video_rows)
+    editor_html=''.join(render_editorial(v,model['videos'][v['id']],notes.get((c['id'],v['id'])),
+                              briefs.get((c['id'],v['id'])),editorials.get(v['id'])) for v in video_rows)
     panels = learning_tabs(cid, {'notes':overview+f'<div class="lesson-notes">{articles}</div>',
       'clips':clips, 'sources':sources})
     return f"""
@@ -338,6 +380,7 @@ def lesson_html(c, video_rows, notes, model, lookup, briefs, official):
           <details class="caption-help"><summary><strong data-cc-status>자막과 공식 재생목록</strong></summary>
           <p>플레이어의 CC 버튼과 설정에서 자막을 선택하세요. 영상에 따라 언어와 제공 여부가 달라집니다. {link('공식 재생목록',f'https://www.youtube.com/playlist?list={playlist}')}</p></details>
         </div>
+        {editor_html}
         {panels}
         </div>
         {queue_html(c,video_rows,model,lookup)}
@@ -345,7 +388,7 @@ def lesson_html(c, video_rows, notes, model, lookup, briefs, official):
       """
 
 
-def workspace_html(c, official, videos, notes, model, lookup, briefs):
+def workspace_html(c, official, videos, notes, model, lookup, editorials, briefs):
     fallback = ''.join(f'<li>{link(r["label"], r["url"])}</li>' for r in c['resources'])
     resources = f'<details class="sources"><summary>출처 및 보충 자료</summary><ul>{fallback}<li>{link("CMU 공식 CS Learn", official)}</li></ul></details>'
     prep = f'<p class="prepare"><strong>이 과목을 보기 전에</strong> {e(c["prepare"])}</p>'
@@ -354,11 +397,11 @@ def workspace_html(c, official, videos, notes, model, lookup, briefs):
     playlist = c.get('playlist', '')
     if not re.fullmatch(r'PL[A-Za-z0-9_-]{8,60}', playlist):
         raise ValueError(f'Invalid official playlist: {c["id"]}')
-    watch = lesson_html(c, videos.get(c['id'], []), notes, model, lookup, briefs, official)
+    watch = lesson_html(c, videos.get(c['id'], []), notes, model, lookup, editorials, briefs, official)
     return prep + f'<div class="official-watch">{watch}</div>' + resources
 
 
-def course_html(c, track, official, videos, notes, model, lookup, briefs):
+def course_html(c, track, official, videos, notes, model, lookup, editorials, briefs):
     key = ' '.join([c['id'], c['id'].replace('-', ''), c['title'], c['ko'], c['faculty'], c['level'],
                     track, c['summary'], c['prepare'], ' '.join(c['tags']), ' '.join(row['title'] for row in videos.get(c['id'], []))])
     status = 'YouTube 공개' if c['status'] == 'available' else '2027년 1월 예정'
@@ -366,7 +409,7 @@ def course_html(c, track, official, videos, notes, model, lookup, briefs):
     cid = f'course-{e(c["id"])}'
     progress = '<span class="row-progress requires-js" data-course-progress></span>' if c['status'] == 'available' else ''
     start = '학습 열기' if c['status'] == 'available' else '과목 미리보기'
-    contents = workspace_html(c, official, videos, notes, model, lookup, briefs)
+    contents = workspace_html(c, official, videos, notes, model, lookup, editorials, briefs)
     legacy_anchors = ('<noscript>' + ''.join(f'<span id="step-{e(c['id'])}-{key}"></span>' for key in ('watch','practice','reflect')) + '</noscript>') if c['status'] == 'available' else ''
     return f"""
     <article id="{cid}" class="course" tabindex="-1" aria-labelledby="{cid}-title"
@@ -390,9 +433,10 @@ def document(data, videos, notes, briefs):
     tracks = data['tracks']
     by_id = {c['id']: c for c in courses}
     routes = ''.join(route_html(r, by_id) for r in data['routes'])
-    model = build_feed_model(data,videos,notes,briefs)
+    editorials = read_editorial(BASE,{v["id"] for rows in videos.values() for v in rows})
+    model = build_feed_model(data,videos,notes,briefs,editorials)
     lookup = {v['id']:(by_id[cid],v) for cid,rows in videos.items() for v in rows}
-    cards = ''.join(course_html(c, tracks[c['track']], data['source'], videos, notes, model, lookup, briefs) for c in courses)
+    cards = ''.join(course_html(c, tracks[c['track']], data['source'], videos, notes, model, lookup, editorials, briefs) for c in courses)
     track_opts = ''.join(f'<option value="{e(k)}">{e(v)}</option>' for k, v in tracks.items())
     available = sum(c['status']=='available' for c in courses)
     planned = sum(c['status']=='planned' for c in courses)
@@ -401,8 +445,9 @@ def document(data, videos, notes, briefs):
     official = link('CMU 공식 강의 목록', data['source'], 'official')
     announcement = link('CMU 출시 공지', data['announcement'])
     total_videos = sum(map(len, videos.values()))
-    topic_chips = ''.join(f'<button type="button" data-topic="{e(k)}" aria-pressed="false">{e(v)}</button>' for k,v in tracks.items() if model['topics'][k]['video_ids'])
-    feed = feed_html(courses, videos, notes, briefs, model, topic_chips)
+    feed = feed_html(courses, videos, notes, briefs, model)
+    ranking_records={vid:{k:row[k] for k in ('search_terms','short_title','title','availability')} for vid,row in model['videos'].items()}
+    recommend_data = json.dumps({'videos':ranking_records,'feed_ids':model['feed_ids']},ensure_ascii=False,separators=(',',':')).replace('<','\\u003c')
     return f"""<!doctype html>
 <html lang="ko">
 <head>
@@ -413,8 +458,10 @@ def document(data, videos, notes, briefs):
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>CMU CS Learn · 한국어 독학 가이드</title>
   <link rel="canonical" href="https://yongkilee.com/learning/cmu-cs-learn/">
-  <link rel="stylesheet" href="./style.css?v=7">
-  <script defer src="./study.js?v=9"></script>
+  <link rel="stylesheet" href="./style.css?v=9">
+  <link rel="stylesheet" href="./editorial.css?v=1">
+  <script defer src="./feed-recommend.js?v=1"></script>
+  <script defer src="./study.js?v=10"></script>
 </head>
 <body>
   <a class="skip" href="#videos">강의로 건너뛰기</a>
@@ -430,10 +477,18 @@ def document(data, videos, notes, briefs):
   </header>
   <main class="shell">
     <section id="videos" class="feed" aria-labelledby="feed-title">
-      <div class="feed-intro"><h1 id="feed-title">다음에 어떤 강의를 볼까요?</h1>
-      <p>카네기멜론의 공식 강의 {total_videos}개. 한국어 노트, 중요한 구간, 출처를 함께 보세요.</p></div>
+      <div class="feed-intro">
+        <h1 id="feed-title">다음에 어떤 강의를 볼까요?</h1>
+        <p class="feed-intro-copy">카네기멜론의 공식 컴퓨터과학 강의 {total_videos}개를 한곳에 모았습니다.<br>한국어 노트, 핵심 구간, 원본 출처와 함께 관심 있는 강의부터 보세요.</p>
+        <p class="feed-context-link"><a href="#library">공개 과목 전체 보기</a><span> · AI, 머신러닝, 소프트웨어 설계, 컴퓨팅 기초</span></p>
+      </div>
       <p id="feed-results" class="visually-hidden" aria-live="polite"></p>
-      <p class="empty" id="feed-empty" hidden>해당 강의를 찾지 못했어요. 검색어나 주제를 바꿔보세요.</p>
+      <section id="discovery-results" class="discovery-section" aria-labelledby="discovery-results-title" hidden>
+        <div class="heading-with-count"><div><h2 id="discovery-results-title" tabindex="-1">강의 결과</h2><p id="discovery-count"></p></div><button class="clear" id="clear-discovery" type="button">전체 보기</button></div>
+        <p class="empty" id="feed-empty" hidden>해당 강의를 찾지 못했어요. 다른 관심사나 주제를 선택해 보세요.</p>
+        <div class="video-grid" id="discovery-grid"></div>
+      </section>
+      <script type="application/json" id="recommend-data">{recommend_data}</script>
       {feed}
     </section>
     <p class="watch-back requires-js"><a href="#videos" id="back-to-feed">← 모든 강의</a></p>
@@ -489,7 +544,7 @@ def build(output):
     html = document(data, videos, notes, read_briefings(videos))
     output.mkdir(parents=True, exist_ok=True)
     (output / 'index.html').write_text(html, encoding='utf-8')
-    for asset in ('study.js', 'style.css'):
+    for asset in ('study.js','style.css','feed-recommend.js','editorial.css'):
         shutil.copyfile(BASE / 'assets' / asset, output / asset)
 
 

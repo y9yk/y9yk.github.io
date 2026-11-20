@@ -1,0 +1,91 @@
+{
+  "checked": "2026-11-19",
+  "source": "Official YouTube watch pages: playerMicroformatRenderer.publishDate and publisher description CHAPTERS heading. Availability is independently tracked in video-index.json.",
+  "channel_id": "UCqvooOJo8792T83va7LMMSA",
+  "videos": {
+    "0nmhvgc5XOI": {
+      "published_at": "2026-11-16T09:01:17-08:00",
+      "published_chapters": true
+    },
+    "1DvaPZ_4sh0": {
+      "published_at": "2026-11-18T09:00:09-08:00",
+      "published_chapters": true
+    },
+    "2Sgd3efXKGg": {
+      "published_at": "2026-11-17T09:01:03-08:00",
+      "published_chapters": true
+    },
+    "3TmIRW4N3zo": {
+      "published_at": "2026-11-17T14:00:07-08:00",
+      "published_chapters": true
+    },
+    "CV-H1MynwNg": {
+      "published_at": "2026-11-18T14:00:07-08:00",
+      "published_chapters": true
+    },
+    "KQUtNJEzUxU": {
+      "published_at": "2026-11-16T06:01:23-08:00",
+      "published_chapters": true
+    },
+    "N7V5hsQeGVM": {
+      "published_at": "2026-11-17T09:00:06-08:00",
+      "published_chapters": true
+    },
+    "P_33xayi9J8": {
+      "published_at": "2026-11-17T09:02:21-08:00",
+      "published_chapters": true
+    },
+    "TJ6qYAaGRZ8": {
+      "published_at": "2026-11-16T06:00:08-08:00",
+      "published_chapters": true
+    },
+    "WqBTJeFJ-FA": {
+      "published_at": "2026-11-16T06:00:17-08:00",
+      "published_chapters": false
+    },
+    "XTRyyqbo4cw": {
+      "published_at": "2026-11-18T09:02:13-08:00",
+      "published_chapters": true
+    },
+    "Y4Q2V6MI1oA": {
+      "published_at": "2026-11-18T09:01:15-08:00",
+      "published_chapters": true
+    },
+    "c-fD7vM0Qj8": {
+      "published_at": "2026-11-18T14:01:13-08:00",
+      "published_chapters": true
+    },
+    "f-uQBacLc2E": {
+      "published_at": "2026-11-17T14:02:31-08:00",
+      "published_chapters": true
+    },
+    "f8jUgfO-Aik": {
+      "published_at": "2026-11-18T21:23:35-08:00",
+      "published_chapters": true
+    },
+    "nbBCi6SZ8hE": {
+      "published_at": "2026-11-17T14:01:09-08:00",
+      "published_chapters": true
+    },
+    "oPSMMckx3eY": {
+      "published_at": "2026-11-16T09:00:06-08:00",
+      "published_chapters": true
+    },
+    "vFJCgzuEkmY": {
+      "published_at": "2026-11-16T05:14:52-08:00",
+      "published_chapters": true
+    },
+    "vh3oVBcWG0A": {
+      "published_at": "2026-11-16T09:02:25-08:00",
+      "published_chapters": true
+    },
+    "w05Mk2tjl_U": {
+      "published_at": "2026-11-15T15:07:25-08:00",
+      "published_chapters": true
+    },
+    "xd7fZ5QpezY": {
+      "published_at": "2026-11-16T06:02:23-08:00",
+      "published_chapters": true
+    }
+  }
+}

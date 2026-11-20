@@ -506,3 +506,71 @@ details.caption-help p{margin:.3rem 0}
   .feed-meta,.feed-signals,.feed-context{font-size:.7rem}
 }
 @media(hover:none){.feed-actions{opacity:1;pointer-events:auto}}
+
+/* Home measurements use the reference's independent full-width header and feed. */
+:is(html:not(.is-enhanced),html[data-top-view="browse"]) .mast .topbar{
+  width:100%;max-width:none;padding:0 16px;min-height:58px;
+}
+:is(html:not(.is-enhanced),html[data-top-view="browse"]) main.shell{
+  box-sizing:border-box;width:min(100%,1320px);padding:34px 16px 48px;
+}
+.feed-intro h1{font-size:clamp(1.85rem,4.2vw,40px);line-height:1.15;letter-spacing:-.037em;margin:0 0 12px}
+.feed-intro .feed-intro-copy{font-size:17px;line-height:1.5;max-width:900px;margin-bottom:18px}
+.feed-intro .feed-context-link{font-size:15px;line-height:1.5;margin:0}
+.feed-context-link a{color:#aa4209;text-decoration:underline;text-underline-offset:.13em;font-weight:650}
+.feed-context-link a:hover{color:#823000}
+.leading-shelf{margin-top:14px}
+#videos .video-grid{gap:22px 16px}
+#videos .feed-card h3{
+  font-size:15px;line-height:1.35;margin:10px 0 4px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+#videos .feed-meta{font-size:13px;line-height:1.5;margin:0}
+#videos .feed-context{font-size:12px;line-height:1.3;margin-top:4px}
+.discovery-section{margin:34px 0 0}
+.discovery-section h2{font-size:20px;line-height:1.3;letter-spacing:-.028em;margin:0 0 12px}
+.discovery-section>p,.heading-with-count>span{color:#606060;font-size:13px;line-height:1.5;margin:0 0 12px}
+.recommendation-box{background:#fafafa;border:1px solid #dedede;border-radius:11px;padding:17px 18px 14px}
+.is-enhanced .discovery-section.requires-js:not([hidden]){display:block!important}
+#recommend-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin:0 0 9px}
+#recommend-query{background:white;border:1px dashed #bdbdbd;border-radius:7px;color:#222;padding:11px 12px;min-width:0;min-height:44px}
+#recommend-form button{background:#ae4108;color:white;border:0;border-radius:7px;padding:0 17px;min-height:44px;font-weight:700}
+#recommend-form button:hover{background:#913500}
+#recommend-help{margin:0;font-size:12px}
+.discovery-pills{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.discovery-pills button{background:white;color:#353535;border:1px solid #dedede;border-radius:999px;padding:7px 13px;font-size:13px;line-height:1.35;text-align:left}
+.discovery-pills button span{color:#626262;font-size:11px;margin-left:4px;font-variant-numeric:tabular-nums}
+.discovery-pills button:hover{background:#f5f5f5;border-color:#bfbfbf}
+.discovery-pills button[aria-pressed=true]{background:#242424;border-color:#242424;color:white}
+.discovery-pills button[aria-pressed=true] span{color:#dedede}
+.detail-topic-pills{gap:7px}
+.heading-with-count{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:4px}
+.heading-with-count h2,.heading-with-count>span{margin:0}
+#discovery-results .heading-with-count{justify-content:space-between;align-items:center;margin-bottom:12px}
+#discovery-results .clear{min-height:34px;line-height:1.2;font-size:13px}
+@media(min-width:741px){
+  :is(html:not(.is-enhanced),html[data-top-view="browse"]) .topbar{
+    grid-template-columns:clamp(110px,calc(53vw - 428px),350px) minmax(0,560px) minmax(max-content,1fr);
+    gap:16px;
+  }
+  :is(html:not(.is-enhanced),html[data-top-view="browse"]) .topbar nav{justify-self:end;gap:14px}
+  :is(html:not(.is-enhanced),html[data-top-view="browse"]) .top-search{max-width:none}
+  #videos .feed-card h3{min-height:2.7em}
+}
+@media(max-width:740px){
+  :is(html:not(.is-enhanced),html[data-top-view="browse"]) .mast .topbar{padding:3px 12px 8px}
+  :is(html:not(.is-enhanced),html[data-top-view="browse"]) main.shell{padding:25px 12px 40px}
+  .feed-intro .feed-intro-copy{font-size:14px;line-height:1.55;margin-bottom:11px}
+  .feed-intro-copy br{display:none}
+  .feed-intro .feed-context-link{font-size:13px}
+  #videos .video-grid{gap:19px 12px}
+  #videos .feed-card h3{font-size:14px}
+  #videos .feed-meta,#videos .feed-context{font-size:12px}
+  .discovery-section{margin-top:26px}
+  .recommendation-box{padding:12px}
+  #recommend-query,#recommend-form button{font-size:13px}
+  #recommend-form button{padding-inline:10px}
+}
+@media(max-width:360px){#recommend-form{grid-template-columns:1fr}}
+
+.recommend-reason,#discovery-count{font-size:12px;line-height:1.4;color:#6b452f;margin-top:4px}

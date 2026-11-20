@@ -41,9 +41,9 @@ class PublicBuildTests(unittest.TestCase):
         self.assertFalse((ROOT/'public/cmu-learn').exists())
         self.assertEqual({p.name for p in (output/'learning').iterdir()},{'cmu-cs-learn'})
         guide=output/'learning/cmu-cs-learn'
-        filenames={'index.html','study.js','style.css'}
+        filenames={'index.html','study.js','style.css','feed-recommend.js','editorial.css'}
         self.assertEqual({p.name for p in guide.iterdir()},filenames)
-        for name in {'study.js','style.css'}:
+        for name in filenames-{'index.html'}:
             self.assertEqual((guide/name).read_bytes(),(ROOT/'learning/cmu-cs-learn/assets'/name).read_bytes())
         content=(guide/'index.html').read_text(encoding='utf-8')
         self.assertIn('CMU CS Learn · 한국어 독학 가이드',content)

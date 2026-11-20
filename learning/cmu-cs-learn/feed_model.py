@@ -1,9 +1,22 @@
 """Normalize the verified CS Learn catalog into a video-first discovery feed."""
+import json
 import re
 import unicodedata
 from collections import defaultdict
-from urllib.parse import urldefrag
+from datetime import datetime
+from pathlib import Path
+from urllib.parse import urldefrag, urlsplit
 
+SOURCE_SNAPSHOT = json.loads(Path(__file__).with_name('feed-source-snapshot.json').read_text(encoding='utf-8'))
+SOURCE_TYPES = {
+    'official-video': 'CMU 공식 영상',
+    'official-chapter': '공식 영상 챕터',
+    'course-page': '과목 안내·일정',
+    'lecture-notes': '강의 슬라이드·노트',
+    'academic-paper': '학술 논문',
+    'official-docs': '공식 문서·예제',
+    'other-reference': '기타 참고자료',
+}
 CHANNEL_ID = 'cmu-cs-learn'
 CHANNEL = {'id': CHANNEL_ID, 'label': 'CS Learn at Carnegie Mellon',
            'url': 'https://www.youtube.com/@CMULearn'}
@@ -52,14 +65,84 @@ def _key(value):
     return unicodedata.normalize('NFKC', value).strip().casefold()
 
 
-def _source_count(note, brief):
+def _source_count(note, brief, editorial=None):
     # Count distinct documents cited for this lesson. A PDF page anchor and its
     # unanchored URL count once. Clip timestamp evidence is not another source.
     candidates = [*note.get('evidence', ()), *note.get('references', ()),
                   *brief.get('sources', ()), *brief.get('references', ()),
-                  *(clip.get('reading') for clip in brief.get('clips', ()))]
+                  *(clip.get('reading') for clip in brief.get('clips', ())),
+                  *(row for row in (editorial or {}).get('evidence', ()) if row['kind'] != 'official-chapter')]
     return len({urldefrag(item['url']).url for item in candidates
                 if isinstance(item, dict) and item.get('url')})
+
+
+def _source_type(item):
+    if item.get('type') in SOURCE_TYPES:
+        return item['type']
+    url = urlsplit(item['url'])
+    host = url.hostname or ''
+    label = item.get('label', '')
+    if host in {'www.youtube.com', 'youtube.com', 'youtu.be'}:
+        return 'official-chapter' if '챕터' in label else 'official-video'
+    if '논문' in label or host in {'arxiv.org', 'doi.org', 'proceedings.neurips.cc'}:
+        return 'academic-paper'
+    if any(word in label for word in ('슬라이드', '강의 자료', '강의진 자료')):
+        return 'lecture-notes'
+    if any(word in label for word in ('예제 코드', '공식 문서', '교재', '가이드')) or host in {
+        'spark.apache.org', 'docs.pola.rs',
+    }:
+        return 'official-docs'
+    if any(word in label for word in ('과목', '일정', '강의계획서', '강의진 공식 사이트')):
+        return 'course-page'
+    return 'other-reference'
+
+
+def _video_sources(video_url, chapter, note, brief, course, editorial=None):
+    sources = []
+    seen = set()
+
+    def add(item, scope):
+        if not isinstance(item, dict) or not item.get('url') or not item.get('label'):
+            return
+        source_type = _source_type(item)
+        key = (source_type, item['url'])
+        if key not in seen:
+            seen.add(key)
+            sources.append({'type': source_type, 'label': item['label'],
+                            'url': item['url'], 'scope': scope})
+
+    add({'type': 'official-video', 'label': 'CS Learn 공식 영상', 'url': video_url}, 'video')
+    if chapter:
+        add({'type': 'official-chapter', 'label': '공식 게시자 챕터·영상 설명',
+             'url': video_url}, 'video')
+    for fields in (note.get('evidence', ()), note.get('references', ()),
+                   brief.get('sources', ()), brief.get('references', ())):
+        for item in fields:
+            add(item, 'lesson')
+    for clip in brief.get('clips', ()):
+        add(clip.get('reading'), 'lesson')
+    editorial_types = {'official-chapter':'official-chapter', 'lecture-slides':'lecture-notes',
+                       'primary-paper':'academic-paper', 'official-docs':'official-docs',
+                       'official-code':'official-docs', 'course-schedule':'course-page',
+                       'course-page':'course-page'}
+    for row in (editorial or {}).get('evidence', ()):
+        add({'type':editorial_types.get(row['kind'],'other-reference'),
+             'label':row['title'],'url':row['url']}, 'video' if row['kind']=='official-chapter' else 'lesson')
+    for item in course.get('resources', ()):
+        # Alternate course recordings are not lesson-specific unless already
+        # linked by the note. Stable course sources are separately scoped.
+        source_type = _source_type(item)
+        if source_type != 'official-video':
+            add(item, 'course')
+    return sources
+
+
+def _indexed_facets(videos, feed_ids, facet):
+    result = {}
+    for vid in feed_ids:
+        for key in dict.fromkeys(facet(videos[vid])):
+            result.setdefault(key, []).append(vid)
+    return result
 
 
 def _relationship(current, candidate):
@@ -79,13 +162,13 @@ def _relationship(current, candidate):
     return order, reason
 
 
-def build_feed_model(catalog, video_index, notes=None, briefs=None):
+def build_feed_model(catalog, video_index, notes=None, briefs=None, editorials=None):
     """Build keyed topics/channels/courses/videos, plus editorial feed_ids.
 
     notes and briefs are optional dicts keyed by (course_id, video_id), as
     returned by the existing content loaders. No engagement data are generated.
     """
-    notes, briefs = notes or {}, briefs or {}
+    notes, briefs, editorials = notes or {}, briefs or {}, editorials or {}
     courses = {}
     videos = {}
     topics = {key: {'id': key, 'label': label, 'course_ids': [], 'video_ids': []}
@@ -114,6 +197,16 @@ def build_feed_model(catalog, video_index, notes=None, briefs=None):
             lecture_match = re.match(r'Lecture (\d+)\b', short_title, re.I)
             lesson_number = int(lecture_match[1]) if lecture_match else None
             is_trailer = title.casefold().startswith('welcome to ')
+            pinned = SOURCE_SNAPSHOT['videos'].get(vid, {})
+            published_at = pinned.get('published_at') if availability == 'available' else None
+            video_url = 'https://www.youtube.com/watch?v=' + vid
+            lecture_tags = list(VIDEO_TAGS.get(vid, ()))
+            search_terms = list(dict.fromkeys([
+                short_title, key, course['title'], course['ko'], catalog['tracks'][topic],
+                *lecture_tags, *course.get('tags', ()), *([course['faculty']] if course.get('faculty') else ()),
+            ]))
+            editorial = editorials.get(vid, {})
+            source_refs = _video_sources(video_url, pinned.get('published_chapters'), note, brief, course, editorial)
             image_base = 'https://i.ytimg.com/vi/' + vid + '/'
             poster = image_base + 'hqdefault.jpg' if source.get('thumbnail') else None
             videos[vid] = dict(
@@ -122,12 +215,13 @@ def build_feed_model(catalog, video_index, notes=None, briefs=None):
                 preview_thumbnails=[image_base + name + '.jpg' for name in ('hq1','hq2','hq3')]
                 if poster and vid in VERIFIED_PREVIEWS else [],
                 course_id=key, channel_id=CHANNEL_ID, topic_ids=[topic],
-                tags=list(VIDEO_TAGS.get(vid, ())), course_tags=list(course.get('tags', ())),
-                position=position, youtube_url='https://www.youtube.com/watch?v=' + vid,
+                tags=lecture_tags, course_tags=list(course.get('tags', ())), search_terms=search_terms,
+                source_refs=source_refs, position=position, youtube_url=video_url,
+                published_at=published_at, published_date=published_at[:10] if published_at else None,
                 duration_s=source.get('duration_s'), availability=availability,
                 english_cc=source.get('english_cc'), thumbnail=source.get('thumbnail', False),
                 signals={'notes': bool(note), 'clips': len(brief.get('clips', ())),
-                         'sources': _source_count(note, brief)},
+                         'sources': _source_count(note, brief, editorial)},
                 reason=note.get('summary') or None,
             )
             topics[topic]['video_ids'].append(vid)
@@ -164,6 +258,27 @@ def build_feed_model(catalog, video_index, notes=None, briefs=None):
         ordered = sorted(related)[:6]
         video['related_ids'] = [row[2] for row in ordered]
         video['related_reasons'] = {row[2]: row[3] for row in ordered}
-    channel = {**CHANNEL, 'course_ids': list(courses), 'video_ids': feed_ids.copy()}
-    return {'topics': topics, 'channels': {CHANNEL_ID: channel}, 'courses': courses,
-            'videos': videos, 'feed_ids': feed_ids}
+    for row in topics.values():
+        row['video_count'] = len(row['video_ids'])
+    tags = _indexed_facets(videos, feed_ids, lambda v: v['tags'])
+    source_ids = _indexed_facets(videos, feed_ids, lambda v: (r['type'] for r in v['source_refs']))
+    tag_facets = {tag: {'id': tag, 'label': tag, 'video_ids': ids, 'video_count': len(ids)}
+                  for tag, ids in sorted(tags.items(), key=lambda pair: (-len(pair[1]), _key(pair[0])))}
+    source_types = {key: {'id': key, 'label': label, 'video_ids': source_ids.get(key, []),
+                         'video_count': len(source_ids.get(key, ()))}
+                    for key, label in SOURCE_TYPES.items()}
+    dated = [vid for vid in feed_ids if videos[vid]['published_at'] and videos[vid]['kind'] == 'lesson']
+    fresh = sorted(dated, key=lambda vid: datetime.fromisoformat(videos[vid]['published_at']),
+                   reverse=True)
+    channel = {**CHANNEL, 'course_ids': list(courses), 'video_ids': feed_ids.copy(),
+               'video_count': len(feed_ids)}
+    shelves = {
+        'fresh': {'label': '최근 공개', 'video_ids': fresh,
+                  'basis': 'YouTube 공식 공개 시각순 · 확인된 재생 가능 강의만',
+                  'checked': SOURCE_SNAPSHOT['checked']},
+        'featured': {'label': '추천 강의', 'video_ids': feed_ids[:8],
+                     'basis': '과목 다양성과 검증된 학습자료 기준으로 편집'},
+    }
+    return {'topics': topics, 'tag_facets': tag_facets, 'source_types': source_types,
+            'channels': {CHANNEL_ID: channel}, 'courses': courses, 'videos': videos,
+            'feed_ids': feed_ids, 'shelves': shelves}
