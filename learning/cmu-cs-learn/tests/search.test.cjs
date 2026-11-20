@@ -16,45 +16,40 @@ test('완료 과목을 실제 저장 상태로 거른다',()=>{
  assert.equal(matches(c,{q:'agents',track:'all',progress:'open',seen:new Set(['11-768'])}),false);
 });
 test('한글 조합 및 하이픈을 정규화한다',()=>assert.equal(normalize('한글–A   B'),'한글 a b'));
-const {loadStudy,toggleStep,nextAction,courseCount}=require('../assets/study.js');
-const available={id:'11-768',status:'available'}, planned={id:'11-777',status:'planned'};
-const courses=[available,planned,{id:'17-645',status:'available'}];
-test('기존 과목 완료 기록을 체크리스트에 보존한다',()=>{
- const state=loadStudy(['11-768','unknown'],null,courses);
- assert.equal(courseCount(state,available),3);
- assert.equal(state.last,null);
+const {loadStudy,toggleWatched,nextAction,legacyStepCourse}=require('../assets/study.js');
+const x='w05Mk2tjl_U', y='KQUtNJEzUxU', z='0nmhvgc5XOI';
+const available={id:'11-768',status:'available',videoIds:[x,y]}, planned={id:'11-777',status:'planned',videoIds:[]};
+const courses=[available,planned,{id:'17-645',status:'available',videoIds:[z]}];
+test('기존 기록은 수정하지 않고 마지막 선택 영상만 이어본다',()=>{
+ const legacy={last:available.id,steps:{[available.id]:['watch','practice']},notes:{[available.id]:'개인 노트'},videos:{[available.id]:y}};
+ const snapshot=structuredClone(legacy);
+ const s=loadStudy(null,legacy,courses);
+ assert.deepEqual(legacy,snapshot);
+ assert.deepEqual(Object.keys(s.watched),[]);
+ assert.deepEqual(nextAction(courses,s),{id:available.id,video:y,resume:true});
 });
-test('다시 열면 마지막 과목의 다음 미완료 활동으로 이어간다',()=>{
- const state=loadStudy([],null,courses);
- toggleStep(state,available,'watch');
- const restored=loadStudy([],JSON.parse(JSON.stringify(state)),courses);
- assert.deepEqual(nextAction(courses,restored),{id:'11-768',step:'practice',resume:true});
+test('개별 영상의 수동 시청 표시만 복원하고 독립적으로 해제한다',()=>{
+ const s=loadStudy(null,null,courses);
+ assert.equal(toggleWatched(s,available,x),true);
+ assert.equal(toggleWatched(s,available,z),false);
+ assert.equal(toggleWatched(s,planned,x),false);
+ const restored=loadStudy(JSON.parse(JSON.stringify(s)),null,courses);
+ assert.equal(restored.watched[x],true);
+ assert.equal(restored.watched[y],undefined);
+ assert.equal(toggleWatched(restored,available,x),true);
+ assert.equal(restored.watched[x],undefined);
 });
-test('공개 예정 과목을 완료하거나 이어보기 대상으로 만들지 않는다',()=>{
- const state=loadStudy([], {last:'11-777',steps:{'11-777':['watch'],'unknown':['practice']}},courses);
- assert.equal(toggleStep(state,planned,'watch'),false);
- assert.equal(courseCount(state,planned),0);
- assert.deepEqual(nextAction(courses,state),{id:'11-768',step:'watch',resume:false});
+test('마지막 과목의 다음 미시청 강의를 우선하고 완료 후 다른 과목을 고른다',()=>{
+ const s=loadStudy({last:available.id,videos:{[available.id]:x},watched:{[x]:true,invalid:true}},null,courses);
+ assert.deepEqual(nextAction(courses,s),{id:available.id,video:y,resume:true});
+ toggleWatched(s,available,y);
+ assert.deepEqual(nextAction(courses,s),{id:'17-645',video:z,resume:false});
+ toggleWatched(s,courses[2],z);
+ assert.equal(nextAction(courses,s),null);
 });
-test('완료한 과목은 다음 공개 과목을 추천하며 모두 완료하면 종료한다',()=>{
- const state=loadStudy(['11-768'],{last:'11-768'},courses);
- assert.deepEqual(nextAction(courses,state),{id:'17-645',step:'watch',resume:false});
- for(const k of ['watch','practice','reflect']) toggleStep(state,courses[2],k);
- assert.equal(nextAction(courses,state),null);
-});
-test('노트는 유효한 과목만 보존하고 브라우저 입력 길이를 지킨다',()=>{
- const restored=loadStudy([],JSON.parse(JSON.stringify({last:'11-768',steps:{'11-768':['practice','practice','bogus']},notes:{'11-768':'가'.repeat(2200),'11-777':'not available','unknown':'no'}})),courses);
- assert.equal(restored.notes['11-768'].length,2000);
- assert.deepEqual(Object.keys(restored.notes),['11-768']);
- assert.equal(courseCount(restored,available),1);
- assert.deepEqual(nextAction(courses,restored),{id:'11-768',step:'watch',resume:true});
-});
-test('도메인 내 학습 경로 변경 뒤에도 이전 단계·노트·선택 영상 데이터를 보존한다',()=>{
- const old={last:'11-768',steps:{'11-768':['watch']},notes:{'11-768':'개인 노트'},videos:{'11-768':'w05Mk2tjl_U'}};
- const st=loadStudy([],JSON.parse(JSON.stringify(old)),courses);
- assert.equal(st.notes['11-768'],'개인 노트');
- assert.equal(st.videos['11-768'],'w05Mk2tjl_U');
- assert.deepEqual(nextAction(courses,st),{id:'11-768',step:'practice',resume:true});
+test('이전 3단계 해시는 모두 동일 과목 보기로 이어진다',()=>{
+ for(const name of ['watch','practice','reflect']) assert.equal(legacyStepCourse('#step-11-768-'+name),'11-768');
+ assert.equal(legacyStepCourse('#step-11-768-invalid'),null);
 });
 const {videoEmbedUrl}=require('../assets/study.js');
 test('개별 영상은 올바른 ID와 공식 CC 파라미터만 허용한다',()=>{

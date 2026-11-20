@@ -43,8 +43,11 @@ class CatalogTest(unittest.TestCase):
   self.assertIn('id="study-next"',html)
   self.assertIn('id="study-progress"',html)
   self.assertEqual(html.count('data-workspace'),13)
-  self.assertEqual(html.count('data-step-key="watch"'),8)
-  self.assertIn('공식 커리큘럼이나 수료 기준이 아닙니다',html)
+  self.assertEqual(html.count("data-mark-watch"),8)
+  self.assertIn('0 / 21개 영상',html)
+  self.assertIn('아래 과목을 펼쳐 공식 강의 링크와 노트를 볼 수 있습니다.',html)
+  self.assertIn('<noscript><span id="step-11-768-watch"></span><span id="step-11-768-practice"></span>',html)
+  self.assertIn('핵심 개념과 예시',html)
   self.assertNotIn('<iframe',html) # third-party player must be opt-in
   self.assertIn('data-play=',html)
  def test_eight_official_playlists_and_no_upcoming_embeds(self):
@@ -92,10 +95,14 @@ class CatalogTest(unittest.TestCase):
   self.assertEqual(parsed.queues,8)
   self.assertIn('id="header-search"',self.html)
   self.assertNotIn('<iframe',self.html)
+  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
+   self.assertNotIn(removed,self.html)
  def test_briefing_fallbacks_are_available_for_every_video_and_do_not_fake_clip_bounds(self):
   self.assertEqual(len(set(re.findall(r'data-video-brief="([^"]+)"',self.html))),21)
   self.assertIn('학습 브리핑',self.html)
   self.assertNotIn('<iframe',self.html)
+  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
+   self.assertNotIn(removed,self.html)
  def test_invalid_clips_are_rejected(self):
   import build
   row={'title':'Example','context':'context','evidence':{'label':'verified','url':'https://www.youtube.com/watch?v=oPSMMckx3eY'},'start':30,'end':80}
@@ -118,12 +125,14 @@ class CatalogTest(unittest.TestCase):
    self.assertIn(term,unescape(attrs.group(1)))
   self.assertIn('data-clip-keywords="Shuffle와 Combiner',self.html)
  def test_watch_workspace_has_discrete_learning_tabs(self):
-  for key, label in [('notes','강의 노트'),('clips','핵심 구간'),('sources','출처'),('study','실습·복습')]:
+  for key, label in [('notes','강의 노트'),('clips','핵심 구간'),('sources','출처')]:
    self.assertEqual(self.html.count(f'data-study-tab="{key}"'),8)
    self.assertEqual(self.html.count(f'data-study-panel="{key}"'),8)
    self.assertIn(label,self.html)
   self.assertEqual(self.html.count('data-video-sources='),21)
   self.assertNotIn('<iframe',self.html)
+  for removed in ('data-step-key=', 'data-study-tab="study"', '<textarea', '이해 확인', '남길 결과물', '체크리스트', '0/3 단계', '스스로 실행해 볼 작업', '다음 추적 연습'):
+   self.assertNotIn(removed,self.html)
 
  def test_course_discovery_and_verified_additional_readings(self):
   self.assertIn('id="course-discovery"',self.html)

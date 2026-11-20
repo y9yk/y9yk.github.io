@@ -1,9 +1,11 @@
 'use strict';
 
-const STEPS=['watch','practice','reflect'];
-const LABELS={watch:'공식 강의 보기',practice:'미니 실습',reflect:'복습 노트'};
-const OLD_KEY='cmu-cs-study:completed:v1';
-const STUDY_KEY='cmu-cs-study:workspace:v2';
+const LEGACY_STUDY_KEY='cmu-cs-study:workspace:v2';
+const VIEWING_KEY='cmu-cs-study:viewing:v3';
+
+function legacyStepCourse(hash) {
+  return /^#step-(\d{2}-\d{3})-(?:watch|practice|reflect)$/.exec(hash)?.[1]??null;
+}
 
 function normalize(input) {
   return String(input ?? '').normalize('NFKC').toLowerCase().replace(/[‐‑‒–—−-]/g,' ').replace(/\s+/g,' ').trim();
@@ -50,49 +52,51 @@ function videoEmbedUrl(vid, at=0, end=null) {
   return `https://www.youtube-nocookie.com/embed/${vid}?${q}`;
 }
 
-function loadStudy(legacy, raw, courses) {
-  const available=new Set(courses.filter(c=>c.status==='available').map(c=>c.id));
-  const steps=Object.create(null), notes=Object.create(null), videos=Object.create(null);
-  const legacyDone=new Set(Array.isArray(legacy)?legacy:[]);
-  for (const id of available) {
-    const src=raw?.steps?.[id];
-    if (Array.isArray(src)) steps[id]=STEPS.filter(s=>src.includes(s));
-    else if(legacyDone.has(id)) steps[id]=[...STEPS];
-    const note=raw?.notes?.[id];
-    if(typeof note==='string') notes[id]=note.slice(0,2000);
-    if(/^[A-Za-z0-9_-]{11}$/.test(raw?.videos?.[id]??'')) videos[id]=raw.videos[id];
+function loadStudy(raw, legacy, courses) {
+  const available=courses.filter(c=>c.status==='available');
+  const last=(raw??legacy)?.last;
+  const watched=Object.create(null), videos=Object.create(null);
+  for(const c of available) {
+    const vid=(raw??legacy)?.videos?.[c.id];
+    if(c.videoIds.includes(vid)) videos[c.id]=vid;
+    for(const id of c.videoIds) if(raw?.watched?.[id]===true) watched[id]=true;
   }
-  return {steps,notes,videos,last:available.has(raw?.last)?raw.last:null};
+  return {watched,videos,last:available.some(c=>c.id===last)?last:null};
 }
 
 function courseCount(state, course) {
-  return course.status==='available'?(state.steps[course.id]?.length??0):0;
+  return course.videoIds.filter(id=>state.watched[id]).length;
 }
 
-function toggleStep(state, course, step) {
-  if (course.status!=='available' || !STEPS.includes(step)) return false;
-  const values=new Set(state.steps[course.id]??[]);
-  if(values.has(step)) values.delete(step); else values.add(step);
-  state.steps[course.id]=STEPS.filter(s=>values.has(s));
+function toggleWatched(state, course, video) {
+  if(course.status!=='available' || !course.videoIds.includes(video)) return false;
+  if(state.watched[video]) delete state.watched[video];
+  else state.watched[video]=true;
   state.last=course.id;
+  state.videos[course.id]=video;
   return true;
 }
 
 function nextAction(courses,state) {
-  const active=courses.filter(c=>c.status==='available' && courseCount(state,c)<STEPS.length);
+  const active=courses.filter(c=>c.status==='available' && courseCount(state,c)<c.videoIds.length);
   const last=active.find(c=>c.id===state.last);
   const course=last??active[0];
   if(!course) return null;
-  return {id:course.id,step:STEPS.find(s=>!state.steps[course.id]?.includes(s)),resume:Boolean(last)};
+  const selected=state.videos[course.id];
+  const video=selected&&!state.watched[selected]?selected:course.videoIds.find(id=>!state.watched[id]);
+  return {id:course.id,video,resume:Boolean(last)};
 }
 
-if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount,videoEmbedUrl,videoIdFromHash,clipRoute,matchingClip,topView};
+if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleWatched,nextAction,courseCount,videoEmbedUrl,videoIdFromHash,clipRoute,matchingClip,topView,legacyStepCourse};
 
 if (typeof document!=='undefined') {
   const get=id=>document.getElementById(id);
   const form=get('filters'), fields=form.elements;
   const cards=[...document.querySelectorAll('[data-course]')];
-  const courses=cards.map(c=>c.dataset);
+  const courses=cards.map(card=>({
+    ...card.dataset, videoIds:[...card.querySelectorAll('[data-video-option]')].map(o=>o.value)
+  }));
+  const courseData=new Map(courses.map(c=>[c.id,c]));
   const byId=new Map(cards.map(card=>[card.dataset.id,card]));
   const videoCards=[...document.querySelectorAll('[data-feed-video]')];
   const topics=[...document.querySelectorAll('[data-topic]')];
@@ -107,38 +111,31 @@ if (typeof document!=='undefined') {
   function read(key) {
     try {return JSON.parse(localStorage.getItem(key));} catch {return null;}
   }
-  const legacy=read(OLD_KEY);
-  const state=loadStudy(legacy,read(STUDY_KEY),courses);
+  const state=loadStudy(read(VIEWING_KEY),read(LEGACY_STUDY_KEY),courses);
   const released=courses.filter(c=>c.status==='available');
+  const totalVideos=released.reduce((sum,c)=>sum+c.videoIds.length,0);
   function save() {
-    try {
-      localStorage.setItem(STUDY_KEY,JSON.stringify(state));
-      const future=(Array.isArray(legacy)?legacy:[]).filter(id=>byId.get(id)?.dataset.status==='planned');
-      localStorage.setItem(OLD_KEY,JSON.stringify([...released.filter(c=>courseCount(state,c)===3).map(c=>c.id),...future]));
-    } catch {get('storage-note').hidden=false;}
+    try {localStorage.setItem(VIEWING_KEY,JSON.stringify(state));}
+    catch {get('storage-note').hidden=false;}
   }
 
   function render() {
-    const seen=new Set(released.filter(c=>courseCount(state,c)===3).map(c=>c.id));
-    const started=new Set(released.filter(c=>courseCount(state,c)>0 || state.last===c.id || state.notes[c.id]).map(c=>c.id));
+    const seen=new Set(released.filter(c=>courseCount(state,c)===c.videoIds.length).map(c=>c.id));
+    const started=new Set(released.filter(c=>courseCount(state,c)>0 || state.videos[c.id]).map(c=>c.id));
     const filters={q:fields.q.value,track:fields.track.value,status:fields.status.value,progress:fields.progress.value,seen,started};
     let visible=0;
     for(const card of cards) {
-      const c=card.dataset;
+      const c=courseData.get(card.dataset.id);
       const show=matches(c,filters);
       card.hidden=!show && active?.card!==card;
       if(show) visible++;
       if(c.status!=='available') continue;
-      card.querySelector('[data-course-progress]').textContent=`${courseCount(state,c)}/3 단계`;
+      const count=courseCount(state,c);
+      card.querySelector('[data-course-progress]').textContent=count?`${count}/${c.videoIds.length}개 시청`:'';
       const watchMark=card.querySelector('[data-mark-watch]');
-      const watched=Boolean(state.steps[c.id]?.includes('watch'));
+      const watched=Boolean(state.watched[card.querySelector('[data-video-select]').value]);
       watchMark.setAttribute('aria-pressed',String(watched));
-      watchMark.textContent=watched?'시청 완료 ✓':'시청 완료 표시';
-      card.querySelectorAll('button[data-step-key]').forEach(button=>{
-        const done=Boolean(state.steps[c.id]?.includes(button.dataset.stepKey));
-        button.setAttribute('aria-pressed',String(done));
-        button.textContent=done?'완료 ✓':'완료 표시';
-      });
+      watchMark.textContent=watched?'이 영상 시청 완료 ✓':'이 영상 시청 완료 표시';
     }
     let videoCount=0;
     for(const video of videoCards) {
@@ -160,21 +157,21 @@ if (typeof document!=='undefined') {
     get('result-count').textContent=`${visible}개 과목`;
     get('empty').hidden=visible>0;
     const count=released.reduce((sum,c)=>sum+courseCount(state,c),0);
-    get('study-progress').textContent=`${count} / ${released.length*3}단계`;
+    get('study-progress').textContent=`${count} / ${totalVideos}개 영상`;
     get('study-meter').value=count;
-    get('study-count').textContent=`완료한 공개 과목 ${seen.size} / ${released.length}`;
+    get('study-count').textContent=`전체 강의를 시청 완료한 과목 ${seen.size} / ${released.length}`;
     const action=nextAction(courses,state), target=get('next-cta');
     if(!action) {
       get('next-label').textContent='공개 과목 완료';
       get('next-title').textContent='공개된 모든 과목을 마쳤어요.';
-      get('next-step').textContent='노트를 다시 열거나 공개 예정 과목을 확인해 보세요.';
+      get('next-step').textContent='강의 노트를 다시 읽거나 공개 예정 과목을 확인해 보세요.';
       target.href='#library';target.textContent='과목 라이브러리 보기';
     } else {
       const c=byId.get(action.id).dataset;
       get('next-label').textContent=action.resume?'이어서 학습':'추천 시작 과목';
       get('next-title').textContent=c.title;
-      get('next-step').textContent=`${c.id} · 다음: ${LABELS[action.step]}`;
-      target.href=`#step-${action.id}-${action.step}`;
+      get('next-step').textContent=`${c.id} · ${byId.get(c.id).querySelector(`[data-video-option="${action.video}"]`).dataset.title}`;
+      target.href=`#video-${action.video}`;
       target.textContent=action.resume?'이어서 공부하기 →':'공부 시작하기 →';
     }
   }
@@ -199,7 +196,8 @@ if (typeof document!=='undefined') {
   function selectTarget(hash) {
     const route=clipRoute(hash);
     const videoId=route?.id??videoIdFromHash(hash);
-    const target=get(videoId?`video-${videoId}`:hash.slice(1));
+    const legacyId=legacyStepCourse(hash);
+    const target=get(videoId?`video-${videoId}`:legacyId?`course-${legacyId}`:hash.slice(1));
     if(videoId && target) {
       const card=target.closest('[data-course]');
       const controls=videoPicker.get(card);
@@ -226,12 +224,9 @@ if (typeof document!=='undefined') {
       }
       return;
     }
-    const focusedStep=target && active?.card.contains(target) && target.matches('.step');
-    if(!focusedStep) {
-      closeWatch();
-      const view=topView(hash);
-      showView(view==='watch'?'browse':view);
-    }
+    closeWatch();
+    const view=topView(hash);
+    showView(view==='watch'?'browse':view);
     if(!target || !target.closest('[data-course]')) {
       if(hash==='#videos' && lastFeedLink && !lastFeedLink.closest('[hidden]')) lastFeedLink.focus({preventScroll:true});
       if(hash==='#paths') target?.scrollIntoView({block:'start'});
@@ -239,11 +234,8 @@ if (typeof document!=='undefined') {
       return;
     }
     const card=target.closest('[data-course]');
-    const panel=target.closest('[data-study-panel]');
-    if(panel) videoPicker.get(card)?.tab(panel.dataset.studyPanel);
     form.reset();
     card.querySelector('[data-workspace]').open=true;
-    if(card.dataset.status==='available') {state.last=card.dataset.id;save();}
     render();
     target.focus({preventScroll:true});
     target.scrollIntoView({block:'start'});
@@ -255,24 +247,12 @@ if (typeof document!=='undefined') {
   }
 
   for(const card of cards) {
-    const c=card.dataset, workspace=card.querySelector('[data-workspace]');
+    const c=courseData.get(card.dataset.id);
     if(c.status!=='available') continue;
-    workspace.addEventListener('toggle',()=>{
-      if(workspace.open) {state.last=c.id;save();render();}
-    });
-    card.querySelectorAll('button[data-step-key]').forEach(button=>button.addEventListener('click',()=>{
-      if(toggleStep(state,c,button.dataset.stepKey)) {save();render();if(card.hidden)fields.progress.focus();}
-    }));
-    card.querySelector('[data-mark-watch]').addEventListener('click',()=>{
-      if(toggleStep(state,c,'watch')) {save();render();}
-    });
-    const note=card.querySelector('textarea');
-    note.value=state.notes[c.id]??'';
-    note.addEventListener('input',()=>{
-      if(note.value) state.notes[c.id]=note.value;else delete state.notes[c.id];
-      state.last=c.id;save();render();
-    });
     const select=card.querySelector('select[data-video-select]');
+    card.querySelector('[data-mark-watch]').addEventListener('click',()=>{
+      if(toggleWatched(state,c,select.value)) {save();render();}
+    });
     const playerBox=card.querySelector('[data-player]');
     const placeholder=playerBox.firstElementChild.cloneNode(true);
     const notes=[...card.querySelectorAll('[data-video-notes]')];
@@ -389,7 +369,7 @@ if (typeof document!=='undefined') {
   document.querySelectorAll('[data-reset]').forEach(button=>button.addEventListener('click',()=>{reset();fields.q.focus();}));
   get('next-cta').addEventListener('click',evt=>{
     const hash=evt.currentTarget.hash;
-    if(hash.startsWith('#step-')){evt.preventDefault();go(hash);}
+    if(videoIdFromHash(hash)){evt.preventDefault();go(hash);}
   });
   function handleVideoLink(evt) {
     if(evt.ctrlKey || evt.metaKey || evt.shiftKey || evt.altKey || evt.button!==0) return;
@@ -398,7 +378,7 @@ if (typeof document!=='undefined') {
     go(evt.currentTarget.hash);
   }
   document.querySelectorAll('.video-card-link,[data-queue-video]').forEach(link=>link.addEventListener('click',handleVideoLink));
-  document.querySelectorAll('a[data-route-course],a[data-watch-step]').forEach(link=>link.addEventListener('click',evt=>{
+  document.querySelectorAll('a[data-route-course]').forEach(link=>link.addEventListener('click',evt=>{
     evt.preventDefault();go(link.hash);
   }));
   get('back-to-feed').addEventListener('click',evt=>{

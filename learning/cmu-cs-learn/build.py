@@ -27,17 +27,7 @@ def route_html(route, by_id):
     )
     return (f'<article class="route"><p class="eyebrow">{e(route["label"])}</p>'
             f'<h3>{e(route["title"])}</h3><p>{e(route["description"])}</p>'
-            f'<ol>{parts}</ol><p class="route-goal"><strong>남길 결과물</strong> {e(route["goal"])}</p></article>')
-
-
-def step_html(c, key, number, label, content):
-    sid = f'step-{e(c["id"])}-{key}'
-    return (f'<section id="{sid}" class="step" tabindex="-1" aria-labelledby="{sid}-title">'
-            f'<div class="step-head"><span class="step-number" aria-hidden="true">{number:02}</span>'
-            f'<h4 id="{sid}-title">{label}</h4><button class="mark requires-js" type="button" '
-            f'data-step-key="{key}" aria-label="{label} 완료 여부" aria-pressed="false">완료 표시</button></div>'
-            f'<div class="step-body">{content}</div></section>')
-
+            f'<ol>{parts}</ol></article>')
 
 
 def read_lessons():
@@ -132,9 +122,7 @@ def briefing_html(c, video, note, brief, lesson_number, *, clips_only=False):
     else:
         clip_section = '<p class="brief-empty">시작·종료가 확인된 학습 구간은 아직 없습니다. 전체 영상은 아래에서 열 수 있습니다.</p>'
     concepts = ''.join(f'<dt>{e(x["term"])}</dt><dd>{e(x["explanation"])}</dd>' for x in (brief or {}).get('concepts', []))
-    questions = ''.join(f'<details><summary>{e(x["question"])}</summary><p>{e(x["answer"])}</p></details>' for x in (brief or {}).get('questions', []))
-    extras = (f'<details class="brief-extra"><summary>핵심 개념과 이해 확인</summary><dl>{concepts}</dl>{questions}</details>'
-              if concepts or questions else '')
+    extras = f'<details class="brief-extra"><summary>핵심 개념과 예시</summary><dl>{concepts}</dl></details>' if concepts else ''
     if clips_only:
         return f'<section class="quick-brief" data-video-brief="{vid}" aria-label="검증 구간 {lesson_number}">{clip_section}</section>'
     return (f'<section class="quick-brief" data-video-overview="{vid}" data-summary-fallback="{str(not brief and bool(note)).lower()}" aria-label="학습 브리핑 {lesson_number}">'
@@ -266,13 +254,13 @@ def learning_panel(cid, key, body):
 
 
 def learning_tabs(cid, panels):
-    labels = [('notes','강의 노트'),('clips','핵심 구간'),('sources','출처'),('study','실습·복습')]
+    labels = [('notes','강의 노트'),('clips','핵심 구간'),('sources','출처')]
     buttons = ''.join(f'<button type="button" id="tab-{cid}-{key}" role="tab" data-study-tab="{key}" aria-selected="{str(key=="notes").lower()}" aria-controls="panel-{cid}-{key}" tabindex="{0 if key=="notes" else -1}">{label}</button>' for key,label in labels)
     return (f'<div class="learning-pane"><div class="learning-tabs requires-js" role="tablist" aria-label="강의 학습 자료">{buttons}</div>'
             f'{"".join(learning_panel(cid,key,panels[key]) for key,_ in labels)}</div>')
 
 
-def lesson_html(c, video_rows, notes, related, briefs, practice, reflect, official):
+def lesson_html(c, video_rows, notes, related, briefs, official):
     if not video_rows or any(not re.fullmatch(r'[A-Za-z0-9_-]{11}', row['id']) for row in video_rows):
         raise ValueError(f'Missing or invalid official videos: {c["id"]}')
     playlist = c['playlist']
@@ -285,7 +273,7 @@ def lesson_html(c, video_rows, notes, related, briefs, practice, reflect, offici
     clips = ''.join(briefing_html(c, v, notes.get((c['id'],v['id'])), briefs.get((c['id'],v['id'])), i+1, clips_only=True) for i,v in enumerate(video_rows))
     sources = ''.join(lesson_sources(c,v,notes.get((c['id'],v['id'])),official) for v in video_rows)
     panels = learning_tabs(cid, {'notes':overview+f'<div class="lesson-notes">{articles}</div>',
-      'clips':clips, 'sources':sources, 'study':step_html(c,'practice',2,'미니 실습',practice)+step_html(c,'reflect',3,'복습 노트',reflect)})
+      'clips':clips, 'sources':sources})
     return f"""
       <div class="lesson-control requires-js"><label for="videos-{cid}">강의 영상 선택</label>
       <select id="videos-{cid}" data-video-select>{options}</select></div>
@@ -298,7 +286,7 @@ def lesson_html(c, video_rows, notes, related, briefs, practice, reflect, offici
             <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
             <button class="play requires-js" type="button" data-play="{e(playlist)}"><span aria-hidden="true">▶</span> 전체 영상 열기</button></div>
           </div>
-          <div class="watch-meta"><p>{e(c["ko"])} · {e(c["faculty"])}</p><button class="mark-pill requires-js" data-mark-watch type="button" aria-pressed="false">시청 완료</button></div>
+          <div class="watch-meta"><p>{e(c["ko"])} · {e(c["faculty"])}</p><button class="mark-pill requires-js" data-mark-watch type="button" aria-pressed="false">이 영상 시청 완료</button></div>
           <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
           <button type="button" class="full-video requires-js" data-full-video hidden>전체 영상으로 전환</button>
           <p class="play-fallback">{link('CMU 공식 재생목록', f'https://www.youtube.com/playlist?list={playlist}')} · 영상 시청 후 직접 완료를 표시하세요.</p>
@@ -314,17 +302,12 @@ def workspace_html(c, official, videos, notes, related, briefs):
     resources = f'<details class="sources"><summary>출처 및 보충 자료</summary><ul>{fallback}<li>{link("CMU 공식 CS Learn", official)}</li></ul></details>'
     prep = f'<p class="prepare"><strong>이 과목을 보기 전에</strong> {e(c["prepare"])}</p>'
     if c['status'] == 'planned':
-        return f'{prep}<p class="not-yet">CS Learn에서 공개되면 강의와 학습 체크리스트를 이용할 수 있습니다.</p>{resources}'
+        return f'{prep}<p class="not-yet">CS Learn에서 공개되면 공식 강의를 볼 수 있습니다.</p>{resources}'
     playlist = c.get('playlist', '')
     if not re.fullmatch(r'PL[A-Za-z0-9_-]{8,60}', playlist):
         raise ValueError(f'Invalid official playlist: {c["id"]}')
-    practice = f'<p>{e(c["practice"])}</p>'
-    reflect = f"""
-      <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
-      <label class="note requires-js" for="note-{e(c["id"])}">나의 복습 노트</label>
-      <textarea class="requires-js" id="note-{e(c["id"])}" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea>"""
-    watch = lesson_html(c, videos.get(c['id'], []), notes, related, briefs, practice, reflect, official)
-    return prep + step_html(c, 'watch', 1, '공식 강의 보기', watch) + resources
+    watch = lesson_html(c, videos.get(c['id'], []), notes, related, briefs, official)
+    return prep + f'<div class="official-watch">{watch}</div>' + resources
 
 
 def course_html(c, track, official, videos, notes, related, briefs):
@@ -333,13 +316,14 @@ def course_html(c, track, official, videos, notes, related, briefs):
     status = 'YouTube 공개' if c['status'] == 'available' else '2027년 1월 예정'
     tags = ''.join(f'<li>{e(t)}</li>' for t in c['tags'])
     cid = f'course-{e(c["id"])}'
-    progress = '<span class="row-progress requires-js" data-course-progress>0/3 단계</span>' if c['status'] == 'available' else ''
+    progress = '<span class="row-progress requires-js" data-course-progress></span>' if c['status'] == 'available' else ''
     start = '학습 열기' if c['status'] == 'available' else '과목 미리보기'
     contents = workspace_html(c, official, videos, notes, related, briefs)
+    legacy_anchors = ('<noscript>' + ''.join(f'<span id="step-{e(c['id'])}-{key}"></span>' for key in ('watch','practice','reflect')) + '</noscript>') if c['status'] == 'available' else ''
     return f"""
     <article id="{cid}" class="course" tabindex="-1" aria-labelledby="{cid}-title"
       data-course data-id="{e(c['id'])}" data-title="{e(c['ko'])}" data-track="{e(c['track'])}" data-status="{e(c['status'])}" data-keywords="{e(key)}">
-      <details class="workspace" data-workspace>
+      {legacy_anchors}<details class="workspace" data-workspace>
         <summary class="course-row">
           <div class="row-code"><span class="course-id">{e(c['id'])}</span><span class="badge {e(c['status'])}">{status}</span></div>
           <div class="row-title"><h3 id="{cid}-title">{e(c['ko'])}</h3><p class="en" lang="en">{e(c['title'])}</p></div>
@@ -383,8 +367,8 @@ def document(data, videos, notes, briefs):
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>CMU CS Learn · 한국어 독학 가이드</title>
   <link rel="canonical" href="https://yongkilee.com/learning/cmu-cs-learn/">
-  <link rel="stylesheet" href="./style.css?v=5">
-  <script defer src="./study.js?v=7"></script>
+  <link rel="stylesheet" href="./style.css?v=6">
+  <script defer src="./study.js?v=8"></script>
 </head>
 <body>
   <a class="skip" href="#videos">강의로 건너뛰기</a>
@@ -395,7 +379,7 @@ def document(data, videos, notes, briefs):
         <input type="search" id="video-query" placeholder="강의, 과목, 키워드 검색" aria-label="강의, 과목, 키워드 검색" autocomplete="off">
         <button type="submit" aria-label="검색"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       </form>
-      <nav aria-label="페이지"><a href="#videos" data-top-view="browse">탐색</a><a href="#library" data-top-view="catalog">과목</a><a href="#study-next" data-top-view="learn">내 학습</a></nav>
+      <nav aria-label="페이지"><a href="#videos" data-top-view="browse">탐색</a><a href="#library" data-top-view="catalog">과목</a><a href="#study-next" class="requires-js" data-top-view="learn">내 학습</a></nav>
     </div>
   </header>
   <main class="shell">
@@ -411,7 +395,7 @@ def document(data, videos, notes, briefs):
     </section>
     <p class="watch-back requires-js"><a href="#videos" id="back-to-feed">← 모든 강의</a></p>
     <section id="study-next" class="study-grid" aria-labelledby="study-heading">
-      <div class="section-title study-heading"><h1 id="study-heading">내 학습</h1><p>마지막 학습에서 이어서 시작하세요. 진도와 노트는 이 브라우저에만 남습니다.</p></div>
+      <div class="section-title study-heading"><h1 id="study-heading">내 학습</h1><p>최근에 연 강의를 이어 보세요. 시청 완료는 영상마다 직접 표시할 수 있습니다.</p></div>
       <article class="next-sheet">
         <p class="eyebrow" id="next-label">추천 시작 과목</p>
         <h2 id="next-title">{e(featured['ko'])}</h2>
@@ -420,11 +404,11 @@ def document(data, videos, notes, briefs):
       </article>
       <aside class="progress-sheet" aria-label="내 학습 진도">
         <p class="eyebrow">MY PROGRESS</p>
-        <h2 id="study-progress">0 / {available*3}단계</h2>
-        <progress id="study-meter" value="0" max="{available*3}" aria-label="완료한 독학 단계"></progress>
-        <p id="study-count">완료한 공개 과목 0 / {available}</p>
+        <h2 id="study-progress">0 / {total_videos}개 영상</h2>
+        <progress id="study-meter" value="0" max="{total_videos}" aria-label="시청 완료한 영상"></progress>
+        <p id="study-count">전체 강의를 시청 완료한 과목 0 / {available}</p>
         <p id="storage-note" hidden>현재 브라우저에서 저장할 수 없어 새로고침하면 진도가 초기화됩니다.</p>
-        <p class="local-note">진도와 노트는 이 브라우저에만 남습니다.</p>
+        <p class="local-note">시청 기록은 이 브라우저에만 남습니다.</p>
       </aside>
     </section>
     <section id="library" aria-labelledby="library-title">
@@ -437,8 +421,7 @@ def document(data, videos, notes, briefs):
         <button class="clear" type="button" data-reset>초기화</button>
       </form>
       <p id="result-count" aria-live="polite">{len(courses)}개 과목</p>
-      <p class="storage">세 단계 체크리스트는 독학용입니다. CMU 공식 커리큘럼이나 수료 기준이 아닙니다.</p>
-      <noscript><p>이 환경에서는 검색, 내장 플레이어, 진도 저장이 꺼져 있습니다. 아래 과목을 펼쳐 강의 링크와 실습을 볼 수 있습니다.</p></noscript>
+      <noscript><p>이 환경에서는 검색, 내장 플레이어, 진도 저장이 꺼져 있습니다. 아래 과목을 펼쳐 공식 강의 링크와 노트를 볼 수 있습니다.</p></noscript>
       <div class="empty" id="empty" hidden><h3>검색 결과가 없어요</h3><p>키워드를 줄이거나 필터를 초기화해 보세요.</p><button class="clear" type="button" data-reset>검색·필터 초기화</button></div>
       <div class="courses">{cards}</div>
     </section>
@@ -448,7 +431,7 @@ def document(data, videos, notes, briefs):
     </section>
   </main>
   <footer><div class="shell footer-inner">
-    <div><strong>CMU CS Learn · 한국어 독학 가이드</strong><p>CMU와 별개인 비공식 정리입니다. 소개·준비·실습은 독학용 제안이며 강의 영상·슬라이드·자막은 재배포하지 않습니다. CMU의 자가 학습 교재와 AI 튜터는 공식 안내상 별도 공개 예정입니다. 공식 목록 확인: <time datetime="{updated}">{updated}</time>.</p></div>
+    <div><strong>CMU CS Learn · 한국어 독학 가이드</strong><p>CMU와 별개인 비공식 정리입니다. 한국어 안내와 요약은 별도로 작성했으며 강의 영상·슬라이드·자막은 재배포하지 않습니다. CMU의 자가 학습 교재와 AI 튜터는 공식 안내상 별도 공개 예정입니다. 공식 목록 확인: <time datetime="{updated}">{updated}</time>.</p></div>
     <div class="foot-links">{official}{announcement}<a href="#library">과목 목록 ↑</a></div>
   </div></footer>
 </body>
