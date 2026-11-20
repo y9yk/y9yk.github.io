@@ -55,13 +55,16 @@ function videoEmbedUrl(vid, at=0, end=null) {
 function loadStudy(raw, legacy, courses) {
   const available=courses.filter(c=>c.status==='available');
   const last=(raw??legacy)?.last;
-  const watched=Object.create(null), videos=Object.create(null);
+  const watched=Object.create(null), videos=Object.create(null), saved=Object.create(null);
   for(const c of available) {
     const vid=(raw??legacy)?.videos?.[c.id];
     if(c.videoIds.includes(vid)) videos[c.id]=vid;
-    for(const id of c.videoIds) if(raw?.watched?.[id]===true) watched[id]=true;
+    for(const id of c.videoIds) {
+      if(raw?.watched?.[id]===true) watched[id]=true;
+      if(raw?.saved?.[id]===true) saved[id]=true;
+    }
   }
-  return {watched,videos,last:available.some(c=>c.id===last)?last:null};
+  return {watched,videos,saved,last:available.some(c=>c.id===last)?last:null};
 }
 
 function courseCount(state, course) {
@@ -77,6 +80,12 @@ function toggleWatched(state, course, video) {
   return true;
 }
 
+function toggleSaved(state, course, video) {
+  if(course.status!=='available' || !course.videoIds.includes(video)) return false;
+  if(state.saved[video]) delete state.saved[video]; else state.saved[video]=true;
+  return true;
+}
+
 function nextAction(courses,state) {
   const active=courses.filter(c=>c.status==='available' && courseCount(state,c)<c.videoIds.length);
   const last=active.find(c=>c.id===state.last);
@@ -87,7 +96,7 @@ function nextAction(courses,state) {
   return {id:course.id,video,resume:Boolean(last)};
 }
 
-if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleWatched,nextAction,courseCount,videoEmbedUrl,videoIdFromHash,clipRoute,matchingClip,topView,legacyStepCourse};
+if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleWatched,toggleSaved,nextAction,courseCount,videoEmbedUrl,videoIdFromHash,clipRoute,matchingClip,topView,legacyStepCourse};
 
 if (typeof document!=='undefined') {
   const get=id=>document.getElementById(id);
@@ -99,6 +108,10 @@ if (typeof document!=='undefined') {
   const courseData=new Map(courses.map(c=>[c.id,c]));
   const byId=new Map(cards.map(card=>[card.dataset.id,card]));
   const videoCards=[...document.querySelectorAll('[data-feed-video]')];
+  const actions=[...document.querySelectorAll('[data-video-action]')];
+  const videoData=new Map(videoCards.map(card=>[card.dataset.feedVideo,{
+    title:card.querySelector('h3').textContent,course:courseData.get(card.dataset.feedCourse)
+  }]));
   const topics=[...document.querySelectorAll('[data-topic]')];
   const videoPicker=new Map();
   const clipPanels=new Map([...document.querySelectorAll('[data-video-brief]')].map(panel=>[
@@ -135,8 +148,24 @@ if (typeof document!=='undefined') {
       const watchMark=card.querySelector('[data-mark-watch]');
       const watched=Boolean(state.watched[card.querySelector('[data-video-select]').value]);
       watchMark.setAttribute('aria-pressed',String(watched));
+      const saveMark=card.querySelector('[data-mark-save]');
+      const saved=Boolean(state.saved[card.querySelector('[data-video-select]').value]);
+      saveMark.setAttribute('aria-pressed',String(saved));
+      saveMark.textContent=saved?'◷ 저장됨':'◷ 나중에 보기';
       watchMark.textContent=watched?'이 영상 시청 완료 ✓':'이 영상 시청 완료 표시';
     }
+    for(const button of actions) {
+      const checked=Boolean(state[button.dataset.videoAction==='save'?'saved':'watched'][button.dataset.actionVideo]);
+      button.setAttribute('aria-pressed',String(checked));
+    }
+    const savedItems=[];
+    for(const [id,data] of videoData) if(state.saved[id]) {
+      const entry=document.createElement('li'), link=document.createElement('a');
+      link.href='#video-'+id;link.textContent=data.title;
+      entry.append(link);savedItems.push(entry);
+    }
+    get('saved-videos').replaceChildren(...savedItems);
+    get('saved-empty').hidden=Boolean(savedItems.length);
     let videoCount=0;
     for(const video of videoCards) {
       const course=byId.get(video.dataset.feedCourse).dataset;
@@ -229,7 +258,7 @@ if (typeof document!=='undefined') {
     showView(view==='watch'?'browse':view);
     if(!target || !target.closest('[data-course]')) {
       if(hash==='#videos' && lastFeedLink && !lastFeedLink.closest('[hidden]')) lastFeedLink.focus({preventScroll:true});
-      if(hash==='#paths') target?.scrollIntoView({block:'start'});
+      if(hash==='#paths'||hash==='#topics') target?.scrollIntoView({block:'start'});
       else if(['#library','#study-next'].includes(hash)) window.scrollTo({top:0,behavior:'instant'});
       return;
     }
@@ -250,6 +279,9 @@ if (typeof document!=='undefined') {
     const c=courseData.get(card.dataset.id);
     if(c.status!=='available') continue;
     const select=card.querySelector('select[data-video-select]');
+    card.querySelector('[data-mark-save]').addEventListener('click',()=>{
+      if(toggleSaved(state,c,select.value)) {save();render();}
+    });
     card.querySelector('[data-mark-watch]').addEventListener('click',()=>{
       if(toggleWatched(state,c,select.value)) {save();render();}
     });
@@ -290,6 +322,14 @@ if (typeof document!=='undefined') {
       const frame=playerBox.querySelector('iframe');
       playerBox.querySelector('[data-video-title]')?.replaceChildren(option.dataset.title);
       card.querySelector('[data-watch-title]').textContent=option.dataset.title;
+      card.querySelector('[data-watch-duration]').textContent=option.dataset.duration?' · '+option.dataset.duration:'';
+      card.querySelector('[data-video-original]').href='https://www.youtube.com/watch?v='+select.value;
+      for(const group of card.querySelectorAll('[data-related-video],[data-video-tags]'))
+        group.hidden=(group.dataset.relatedVideo??group.dataset.videoTags)!==select.value;
+      const poster=playerBox.querySelector('.player-poster img');
+      if(poster && poster.getAttribute('src')!==option.dataset.poster && option.dataset.poster) {
+        poster.hidden=false;poster.src=option.dataset.poster;
+      }
       card.querySelectorAll('[data-queue-video]').forEach(row=>{
         if(row.dataset.queueVideo===select.value) row.setAttribute('aria-current','true');
         else row.removeAttribute('aria-current');
@@ -328,7 +368,7 @@ if (typeof document!=='undefined') {
       select.value=id;
       state.last=c.id;state.videos[c.id]=id;save();
       renderVideo();
-      if(changed) loadVideo();
+      if(changed) {playerBox.replaceChildren(placeholder.cloneNode(true));renderClip();renderVideo();}
       render();
     }
     videoPicker.set(card,{choose,tab:chooseTab,stop:()=>{
@@ -362,6 +402,8 @@ if (typeof document!=='undefined') {
     fields.status.value='all';
     fields.progress.value='all';
     render();
+    get('video-query').value=fields.q.value;
+    document.querySelector('.feed-shelf:not([hidden])')?.scrollIntoView({block:'start'});
   }));
   form.addEventListener('submit',evt=>{evt.preventDefault();render();});
   form.addEventListener('input',render);
@@ -384,12 +426,37 @@ if (typeof document!=='undefined') {
   get('back-to-feed').addEventListener('click',evt=>{
     evt.preventDefault();go('#videos');get('videos').scrollIntoView({block:'start'});
   });
-  // A thumbnail is visual context, not required to select a lecture.
+  actions.forEach(button=>button.addEventListener('click',()=>{
+    const vid=button.dataset.actionVideo, c=videoData.get(vid)?.course;
+    const toggle=button.dataset.videoAction==='save'?toggleSaved:toggleWatched;
+    if(c && toggle(state,c,vid)) {save();render();}
+  }));
+  document.querySelectorAll('[data-search-tag]').forEach(link=>link.addEventListener('click',event=>{
+    if(event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    form.reset();get('video-query').value=link.dataset.searchTag;
+    runHeaderSearch(true);
+  }));
+  // Failed posters fall back to the course badge. Alternate frames are fetched only on hover.
+  document.addEventListener('error',event=>{
+    if(event.target.matches?.('.video-thumb img')) event.target.hidden=true;
+  },true);
   document.querySelectorAll('.video-thumb img').forEach(img=>{
-    function hideMissing(){img.hidden=true;}
-    img.addEventListener('error',hideMissing,{once:true});
-    if(img.complete && img.naturalWidth===0) hideMissing();
+    if(img.complete && img.naturalWidth===0) img.hidden=true;
   });
+  for(const card of videoCards) {
+    const thumb=card.querySelector('.video-thumb');
+    const frameUrl=card.dataset.previewFrames.split(' ').find(url=>url.startsWith('https://i.ytimg.com/vi/'));
+    if(!frameUrl || !thumb.querySelector('img')) continue;
+    let frame;
+    card.addEventListener('pointerenter',event=>{
+      if(event.pointerType==='touch' || frame) return;
+      frame=new Image();frame.alt='';frame.className='preview-frame';
+      frame.referrerPolicy='no-referrer';frame.decoding='async';frame.hidden=true;
+      frame.addEventListener('load',()=>{frame.hidden=false;},{once:true});
+      frame.src=frameUrl;thumb.append(frame);
+    });
+  }
   window.addEventListener('hashchange',()=>selectTarget(location.hash));
   document.documentElement.classList.add('is-enhanced');
   render();

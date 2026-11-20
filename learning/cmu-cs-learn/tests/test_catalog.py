@@ -140,3 +140,23 @@ class CatalogTest(unittest.TestCase):
   self.assertIn('4449.pdf#page=2',self.html)
   self.assertIn('4449.pdf#page=6',self.html)
   self.assertIn('rdd-programming-guide.html#rdd-operations',self.html)
+
+ def test_video_feed_exposes_provenance_and_watch_page_prioritizes_player(self):
+  h=self.html
+  self.assertGreater(h.index('id="topics"'),h.index('data-feed-shelf'))
+  self.assertEqual(h.count('class="feed-signals"'),21)
+  self.assertEqual(h.count('data-preview-frames="https://i.ytimg.com/vi/'),21)
+  self.assertIn('data-poster="https://i.ytimg.com/vi/KQUtNJEzUxU/hqdefault.jpg"',h)
+  self.assertIn('https://i.ytimg.com/vi/KQUtNJEzUxU/hq1.jpg',h)
+  lead=re.search(r'<div class="feed-shelf leading-shelf".+?</div>\s*</div>',h,re.S).group()
+  self.assertEqual(lead.count('data-feed-video='),8)
+  self.assertEqual(re.findall(r'data-feed-video="([^"]+)"',lead)[0],'KQUtNJEzUxU')
+  self.assertGreaterEqual(len(set(re.findall(r'data-feed-course="([^"]+)"',lead))),6)
+  self.assertIn('공식 확인 구간',h)
+  self.assertEqual(h.count('class="watch-detail"'),8)
+  self.assertEqual(h.count('class="watch-rail"'),8)
+  self.assertNotIn('class="secondary-queue"',h)
+  detail=h[h.index('class="watch-detail"'):]
+  self.assertLess(detail.index('data-player'),detail.index('data-watch-title'))
+  self.assertLess(detail.index('data-watch-title'),detail.index('data-study-tab'))
+  self.assertLess(detail.index('data-study-tab'),detail.index('class="watch-rail"'))

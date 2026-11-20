@@ -96,3 +96,13 @@ test('탐색·과목·내 학습을 별도의 화면으로 분리하고 기존 �
  assert.equal(topView('#study-next'),'learn');
  assert.equal(topView('#video-KQUtNJEzUxU-clip-2692'),'watch');
 });
+test('나중에 볼 목록은 검증된 공식 영상만 저장하고 기존 시청 완료는 유지한다',()=>{
+ const {toggleSaved}=require('../assets/study.js');
+ const s=loadStudy({watched:{[x]:true},saved:{[y]:true,invalid:true}},null,courses);
+ assert.deepEqual(Object.keys(s.saved),[y]);
+ assert.equal(toggleSaved(s,available,z),false);
+ assert.equal(toggleSaved(s,available,x),true);
+ assert.equal(s.watched[x],true);
+ assert.equal(toggleSaved(s,available,y),true);
+ assert.deepEqual(Object.keys(s.saved),[x]);
+});
