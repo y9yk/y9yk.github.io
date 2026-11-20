@@ -33,37 +33,13 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('<script>alert',self.build.render(data))
         data=copy.deepcopy(self.data);data['links'][0]['url']='javascript:alert(1)'
         with self.assertRaises(ValueError):self.build.render(data)
-    def test_learning_migration_builds_one_canonical_guide_and_preserves_legacy_routes(self):
+    def test_build_omits_private_and_retired_routes(self):
         subprocess.run([sys.executable,str(ROOT/'scripts/build.py')],check=True,cwd=ROOT,capture_output=True)
         output=ROOT/'dist'
         self.assertTrue((output/'projects/index.html').is_file())
-        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html','cmu-learn','cmu-cs-learn'})
-        self.assertFalse((ROOT/'public/cmu-learn').exists())
-        self.assertEqual({p.name for p in (output/'learning').iterdir()},{'cmu-cs-learn'})
-        guide=output/'learning/cmu-cs-learn'
-        filenames={'index.html','study.js','style.css','feed-recommend.js','editorial.css'}
-        self.assertEqual({p.name for p in guide.iterdir()},filenames)
-        for name in filenames-{'index.html'}:
-            self.assertEqual((guide/name).read_bytes(),(ROOT/'learning/cmu-cs-learn/assets'/name).read_bytes())
-        content=(guide/'index.html').read_text(encoding='utf-8')
-        self.assertIn('CMU CS Learn · 한국어 독학 가이드',content)
-        self.assertIn('rel="canonical" href="https://yongkilee.com/learning/cmu-cs-learn/"',content)
-        self.assertEqual(content.count('data-course data-id='),13)
-        self.assertRegex(content,r'src="[.]\/study[.]js(?:[?]v=\d+)?"')
-        self.assertRegex(content,r'href="[.]\/style[.]css(?:[?]v=\d+)?"')
-        self.assertNotIn('http-equiv="refresh"',content.lower())
-        self.assertIn('id="study-next"',content)
-        self.assertEqual(content.count('data-play='),8)
-        self.assertEqual(content.count('data-video-option='),21)
-        self.assertEqual(content.count('data-video-notes='),21)
-        self.assertNotIn('<iframe',content)
-        for route in ('projects/cmu-learn','projects/cmu-cs-learn','cmu-cs-learn'):
-            legacy=output/route
-            self.assertEqual({p.name for p in legacy.iterdir()},{'index.html','redirect.js'})
-            self.assertIn('href="/learning/cmu-cs-learn/"',(legacy/'index.html').read_text())
-            self.assertIn('location.search + location.hash',(legacy/'redirect.js').read_text())
-        self.assertFalse((output/'talks').exists());self.assertFalse((output/'demos').exists())
-        self.assertFalse((output/'stats').exists());self.assertFalse((output/'for-fun').exists())
+        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html'})
+        for route in ('learning', 'cmu-cs-learn', 'talks', 'demos', 'stats', 'for-fun'):
+            self.assertFalse((output/route).exists(), route)
         for file in output.rglob('*.html'):
             doc=Document(file.read_text())
             for url in doc.links:

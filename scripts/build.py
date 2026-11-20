@@ -5,8 +5,6 @@ import json
 from pathlib import Path
 import re
 import shutil
-import subprocess
-import sys
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -188,21 +186,12 @@ def main():
     output.mkdir();(output/'index.html').write_text(render(data))
     (output/'projects').mkdir()
     (output/'projects/index.html').write_text(render_projects(data))
-    # Standalone learning module; never export private portfolio details.
-    guide=ROOT/'learning/cmu-cs-learn/build.py'
-    subprocess.run([sys.executable,str(guide),'--output',str(output/'learning/cmu-cs-learn')],check=True)
-    redirect_source=ROOT/'src/cmu-legacy-redirect'
-    for route in ('projects/cmu-learn','projects/cmu-cs-learn','cmu-cs-learn'):
-        legacy_catalog=output/route
-        legacy_catalog.mkdir()
-        for name in ('index.html','redirect.js'):
-            shutil.copyfile(redirect_source/name,legacy_catalog/name)
     (output/'blog').mkdir()
     (output/'blog/index.html').write_text(render_blog(data))
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')
-    print('Built the approved public homepage. Projects summary index and CMU study catalog generated; private details and statistics remain unpublished.')
+    print('Built the public homepage, Projects summary index, and Blog.')
 
 
 if __name__=='__main__':main()
