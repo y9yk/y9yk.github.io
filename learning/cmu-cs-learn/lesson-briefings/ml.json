@@ -33,13 +33,37 @@
         }
       },
       {
+        "title": "Map과 Reduce의 계약",
+        "context": "Map이 만든 중간 키와 값이 Reduce에 그룹으로 전달되는 관계를 먼저 확인하세요.",
+        "start": 1700,
+        "end": 1944,
+        "evidence": {
+          "label": "공식 영상 설명의 챕터 시작·종료",
+          "url": "https://www.youtube.com/watch?v=KQUtNJEzUxU&t=1700s"
+        },
+        "reading": {
+          "label": "MapReduce 원논문 §2 · PDF 2쪽",
+          "url": "https://storage.googleapis.com/gweb-research2023-media/pubtools/4449.pdf#page=2"
+        }
+      },
+      {
         "title": "Shuffle와 Combiner",
+        "keywords": [
+          "셔플",
+          "컴바이너",
+          "콤바이너",
+          "로컬 집계"
+        ],
         "context": "위 단어 세기 예제에서 어떤 값이 작업자 사이를 이동하는지 확인하세요.",
         "start": 2692,
         "end": 2991,
         "evidence": {
           "label": "공식 YouTube 설명의 챕터 시작과 다음 챕터 시작으로 검증한 구간",
           "url": "https://www.youtube.com/watch?v=KQUtNJEzUxU&t=2692s"
+        },
+        "reading": {
+          "label": "MapReduce 원논문 §4.3 · PDF 6쪽",
+          "url": "https://storage.googleapis.com/gweb-research2023-media/pubtools/4449.pdf#page=6"
         }
       },
       {
@@ -50,6 +74,10 @@
         "evidence": {
           "label": "공식 YouTube 설명의 챕터 시작과 다음 챕터 시작으로 검증한 구간",
           "url": "https://www.youtube.com/watch?v=KQUtNJEzUxU&t=3211s"
+        },
+        "reading": {
+          "label": "Spark 공식 문서 · 심화 참고",
+          "url": "https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-operations"
         }
       }
     ],

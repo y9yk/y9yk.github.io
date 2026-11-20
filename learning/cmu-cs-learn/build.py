@@ -69,6 +69,10 @@ def validate_clip(clip, duration_s):
     source = urlsplit(evidence.get('url', ''))
     if source.scheme != 'https' or not source.hostname or not evidence.get('label', '').strip():
         raise ValueError('Clip needs a verifiable HTTPS source and label')
+    if reading := clip.get('reading'):
+        reading_url = urlsplit(reading.get('url',''))
+        if reading_url.scheme != 'https' or not reading_url.hostname or not reading.get('label','').strip():
+            raise ValueError('Clip reading needs a valid HTTPS link and label')
     if not clip.get('title', '').strip() or not clip.get('context', '').strip():
         raise ValueError('Clip needs a title and contextual explanation')
 
@@ -93,7 +97,11 @@ def timecode(seconds):
     return f'{hours}:{minutes:02}:{second:02}' if hours else f'{minutes}:{second:02}'
 
 
-def briefing_html(c, video, note, brief, lesson_number):
+def clip_keywords(segment):
+    return ' '.join([segment['title'], segment['context'], *segment.get('keywords', [])])
+
+
+def briefing_html(c, video, note, brief, lesson_number, *, clips_only=False):
     vid = e(video['id'])
     basis = (brief or {}).get('basis') or ('출처가 확인된 기존 노트 요약' if note else '공식 영상 목록')
     text = brief['briefing'] if brief else note['summary'] if note else '공식 과목 소개 영상입니다. 아직 별도 기술 요약은 없습니다.'
@@ -107,27 +115,30 @@ def briefing_html(c, video, note, brief, lesson_number):
         evidence = segment['evidence']
         title = e(segment['title'])
         label = f'{timecode(start)}–{timecode(end)}'
+        reading = segment.get('reading')
+        reading_link = f'<p>{link("함께 읽기: "+reading["label"], reading["url"], "clip-reading")}</p>' if reading else ''
         return (f'<li><button type="button" class="clip-button requires-js" data-clip-start="{start}" data-clip-end="{end}" '
-                f'data-clip-title="{title}" data-clip-label="{label}" aria-pressed="false" '
+                f'data-clip-title="{title}" data-clip-keywords="{e(clip_keywords(segment))}" data-clip-label="{label}" aria-pressed="false" '
                 f'aria-label="{title} · {timecode(start)}에서 {timecode(end)}까지 재생">'
                 f'<span aria-hidden="true">▶</span> {label}</button>'
                 f'<div><strong>{title}</strong><p>{e(segment["context"])}</p>'
-                f'{link(evidence["label"], evidence["url"], "clip-evidence")}</div></li>')
+                f'{link(evidence["label"], evidence["url"], "clip-evidence")}{reading_link}</div></li>')
     if segments:
         core_rows = ''.join(clip_row(item) for item in segments if (item['start'],item['end']) in core_ranges)
         rest = [item for item in segments if (item['start'],item['end']) not in core_ranges]
         extras_list = (f'<details class="more-clips"><summary>나머지 구간 {len(rest)}개 보기</summary>'
                        f'<ul class="clip-list">{"".join(clip_row(item) for item in rest)}</ul></details>' if rest else '')
-        clip_section = f'<h4>핵심 구간만 보기 <small>총 {len(segments)}개</small></h4><ul class="clip-list">{core_rows}</ul>{extras_list}'
+        clip_section = f'<h4>핵심 구간만 보기 <small>총 {len(segments)}개</small></h4><p class="clip-method">시작과 끝은 공식 게시자의 챕터 또는 영상 길이 기준입니다. 발화나 자막을 직접 검증한 구간은 아닙니다.</p><ul class="clip-list">{core_rows}</ul>{extras_list}'
     else:
         clip_section = '<p class="brief-empty">시작·종료가 확인된 학습 구간은 아직 없습니다. 전체 영상은 아래에서 열 수 있습니다.</p>'
     concepts = ''.join(f'<dt>{e(x["term"])}</dt><dd>{e(x["explanation"])}</dd>' for x in (brief or {}).get('concepts', []))
     questions = ''.join(f'<details><summary>{e(x["question"])}</summary><p>{e(x["answer"])}</p></details>' for x in (brief or {}).get('questions', []))
     extras = (f'<details class="brief-extra"><summary>핵심 개념과 이해 확인</summary><dl>{concepts}</dl>{questions}</details>'
               if concepts or questions else '')
-    return (f'<section class="quick-brief" data-video-brief="{vid}" aria-label="학습 브리핑 {lesson_number}">'
-            f'<h3>학습 브리핑</h3><p class="brief-basis">{e(basis)}</p>'
-            f'<p class="brief-text">{e(text)}</p>{clip_section}{extras}</section>')
+    if clips_only:
+        return f'<section class="quick-brief" data-video-brief="{vid}" aria-label="검증 구간 {lesson_number}">{clip_section}</section>'
+    return (f'<section class="quick-brief" data-video-overview="{vid}" data-summary-fallback="{str(not brief and bool(note)).lower()}" aria-label="학습 브리핑 {lesson_number}">'
+            f'<h3>학습 브리핑</h3><p class="brief-basis">{e(basis)}</p><p class="brief-text">{e(text)}</p>{extras}</section>')
 
 
 def video_title(v):
@@ -154,10 +165,14 @@ def thumbnail(v, c, eager=False):
     return f'<span class="video-thumb"><span class="thumb-fallback" aria-hidden="true">{e(c["id"])}</span>{img}{badge}</span>'
 
 
-def video_card(c, v, note, eager=False):
+def video_card(c, v, note, brief, eager=False):
     vid = e(v['id'])
     context = note['summary'] if note else '공식 과목 소개 영상'
-    searchable = ' '.join([video_title(v), c['title'], c['ko'], c['faculty'], *c['tags'], context])
+    metadata = brief or {}
+    concepts = [' '.join((x['term'], x['explanation'])) for x in metadata.get('concepts', [])]
+    clips = [clip_keywords(x) for x in metadata.get('clips', [])]
+    searchable = ' '.join([video_title(v), c['title'], c['ko'], c['faculty'], *c['tags'], context,
+                           metadata.get('briefing', ''), *concepts, *clips])
     return f"""<article class="feed-card" data-feed-video="{vid}" data-feed-course="{e(c['id'])}" data-feed-keywords="{e(searchable)}">
       <a class="video-card-link" href="#video-{vid}">
         {thumbnail(v, c, eager)}
@@ -168,7 +183,7 @@ def video_card(c, v, note, eager=False):
     </article>"""
 
 
-def feed_html(courses, videos, notes):
+def feed_html(courses, videos, notes, briefs):
     featured, more = [], []
     for c in courses:
         rows = videos.get(c['id'], [])
@@ -176,11 +191,16 @@ def feed_html(courses, videos, notes):
             continue
         # Prefer the first lecture over a course trailer.
         first = next((v for v in rows if 'Lecture 1:' in v['title']), rows[0])
-        featured.append(video_card(c, first, notes.get((c['id'], first['id'])), len(featured) < 4))
-        more.extend(video_card(c, v, notes.get((c['id'], v['id']))) for v in rows if v is not first)
+        featured.append(video_card(c, first, notes.get((c['id'], first['id'])), briefs.get((c['id'], first['id'])), len(featured) < 4))
+        more.extend(video_card(c, v, notes.get((c['id'], v['id'])), briefs.get((c['id'], v['id']))) for v in rows if v is not first)
+    shelf = ''.join(f'<a href="#course-{e(c["id"])}"><small>{e(c["id"])}</small><strong>{e(c["ko"])}</strong><span>{len(videos[c["id"]])}개 강의</span></a>' for c in courses if videos.get(c['id']))
     return f"""<div class="feed-shelf" data-feed-shelf aria-labelledby="featured-title">
        <div class="visually-hidden"><h2 id="featured-title">과목별 첫 강의</h2></div>
        <div class="video-grid">{''.join(featured)}</div>
+     </div>
+     <div class="catalog-shelf" id="course-discovery">
+       <div><h2>과목 둘러보기</h2><a href="#library">전체 과목 보기 →</a></div>
+       <nav aria-label="공개 과목">{shelf}</nav>
      </div>
      <div class="feed-shelf more-shelf" data-feed-shelf aria-labelledby="more-title">
        <h2 id="more-title">다음 강의</h2><p>마음에 든 과목을 이어서 공부하세요.</p>
@@ -226,7 +246,33 @@ def video_note(c, video, index, note):
     return f'<section class="video-note" id="video-{e(vid)}" data-video-notes="{e(vid)}" aria-labelledby="{name}">{label}{body}<p class="video-source">재생 문제 발생 시 {fallback}</p></section>'
 
 
-def lesson_html(c, video_rows, notes, related, briefs):
+def lesson_sources(c, video, note, official):
+    vid = video['id']
+    sections = []
+    for title, rows in (('요약의 근거', (note or {}).get('evidence', [])),
+                        ('추가 참고자료', (note or {}).get('references', [])),
+                        ('공식 자료', [{'url':f'https://www.youtube.com/watch?v={vid}','label':'YouTube 공식 영상'}, {'url':official,'label':'CMU CS Learn'}])):
+        if rows:
+            links=''.join(f'<li>{link(r["label"],r["url"])}</li>' for r in rows)
+            sections.append(f'<h4>{title}</h4><ul>{links}</ul>')
+    basis = (note or {}).get('basis')
+    context = f'<p>{e(basis)}</p>' if basis else '<p>이 영상의 별도 요약 근거는 아직 확인되지 않았습니다.</p>'
+    return f'<div class="lesson-source-list" data-video-sources="{e(vid)}">{context}{"".join(sections)}</div>'
+
+
+def learning_panel(cid, key, body):
+    return (f'<section class="learning-panel" id="panel-{cid}-{key}" role="tabpanel" '
+            f'aria-labelledby="tab-{cid}-{key}" data-study-panel="{key}">{body}</section>')
+
+
+def learning_tabs(cid, panels):
+    labels = [('notes','강의 노트'),('clips','핵심 구간'),('sources','출처'),('study','실습·복습')]
+    buttons = ''.join(f'<button type="button" id="tab-{cid}-{key}" role="tab" data-study-tab="{key}" aria-selected="{str(key=="notes").lower()}" aria-controls="panel-{cid}-{key}" tabindex="{0 if key=="notes" else -1}">{label}</button>' for key,label in labels)
+    return (f'<div class="learning-pane"><div class="learning-tabs requires-js" role="tablist" aria-label="강의 학습 자료">{buttons}</div>'
+            f'{"".join(learning_panel(cid,key,panels[key]) for key,_ in labels)}</div>')
+
+
+def lesson_html(c, video_rows, notes, related, briefs, practice, reflect, official):
     if not video_rows or any(not re.fullmatch(r'[A-Za-z0-9_-]{11}', row['id']) for row in video_rows):
         raise ValueError(f'Missing or invalid official videos: {c["id"]}')
     playlist = c['playlist']
@@ -235,32 +281,32 @@ def lesson_html(c, video_rows, notes, related, briefs):
     covered = sum((c['id'], v['id']) in notes for v in video_rows)
     articles = ''.join(video_note(c, row, i, notes.get((c['id'], row['id']))) for i, row in enumerate(video_rows))
     cid = e(c['id'])
-    note_summary = f'학습 노트 {covered}/{len(video_rows)}편'
-    brief_panels = ''.join(briefing_html(c, v, notes.get((c['id'],v['id'])), briefs.get((c['id'],v['id'])), i+1) for i,v in enumerate(video_rows))
+    overview = ''.join(briefing_html(c, v, notes.get((c['id'],v['id'])), briefs.get((c['id'],v['id'])), i+1) for i,v in enumerate(video_rows))
+    clips = ''.join(briefing_html(c, v, notes.get((c['id'],v['id'])), briefs.get((c['id'],v['id'])), i+1, clips_only=True) for i,v in enumerate(video_rows))
+    sources = ''.join(lesson_sources(c,v,notes.get((c['id'],v['id'])),official) for v in video_rows)
+    panels = learning_tabs(cid, {'notes':overview+f'<div class="lesson-notes">{articles}</div>',
+      'clips':clips, 'sources':sources, 'study':step_html(c,'practice',2,'미니 실습',practice)+step_html(c,'reflect',3,'복습 노트',reflect)})
     return f"""
       <div class="lesson-control requires-js"><label for="videos-{cid}">강의 영상 선택</label>
       <select id="videos-{cid}" data-video-select>{options}</select></div>
       <div class="lesson-layout">
         <div class="lesson-screen">
           <h2 class="watch-title" data-watch-title tabindex="-1">{e(video_title(first))}</h2>
-          <div class="briefing-region">{brief_panels}</div>
           <p class="active-clip" data-active-clip aria-live="polite" hidden></p>
           <div class="player" data-player>
             <div class="player-placeholder"><p class="player-title" data-video-title>{e(first['title'].split(' | ', 1)[-1])}</p>
             <p>버튼을 누를 때만 YouTube 플레이어에 연결합니다.</p>
             <button class="play requires-js" type="button" data-play="{e(playlist)}"><span aria-hidden="true">▶</span> 전체 영상 열기</button></div>
           </div>
-          <div class="watch-meta"><p>{e(c["ko"])} · {e(c["faculty"])}</p><button class="mark-pill requires-js" data-mark-watch type="button" aria-pressed="false">시청 완료</button><a href="#step-{cid}-practice" data-watch-step>미니 실습</a><a href="#step-{cid}-reflect" data-watch-step>복습 노트</a></div>
+          <div class="watch-meta"><p>{e(c["ko"])} · {e(c["faculty"])}</p><button class="mark-pill requires-js" data-mark-watch type="button" aria-pressed="false">시청 완료</button></div>
           <p class="caption-help"><strong data-cc-status></strong> 자막이 있는 영상은 기본으로 영어 자막을 요청합니다. 플레이어의 CC 버튼과 설정에서 끄거나 언어를 선택하세요. 자막 언어와 제공 여부는 영상마다 다릅니다.</p>
           <button type="button" class="full-video requires-js" data-full-video hidden>전체 영상으로 전환</button>
           <p class="play-fallback">{link('CMU 공식 재생목록', f'https://www.youtube.com/playlist?list={playlist}')} · 영상 시청 후 직접 완료를 표시하세요.</p>
         </div>
-        {queue_html(c, video_rows, related)}
-        <div class="lesson-notes">
-          <p class="eyebrow">VIDEO NOTES · {note_summary}</p>
-          {articles}
-        </div>
-      </div>"""
+        {panels}
+      </div>
+      <details class="secondary-queue"><summary>이어 볼 강의</summary>{queue_html(c, video_rows, related)}</details>
+      """
 
 
 def workspace_html(c, official, videos, notes, related, briefs):
@@ -272,13 +318,13 @@ def workspace_html(c, official, videos, notes, related, briefs):
     playlist = c.get('playlist', '')
     if not re.fullmatch(r'PL[A-Za-z0-9_-]{8,60}', playlist):
         raise ValueError(f'Invalid official playlist: {c["id"]}')
-    watch = lesson_html(c, videos.get(c['id'], []), notes, related, briefs)
     practice = f'<p>{e(c["practice"])}</p>'
     reflect = f"""
       <p>배운 개념 1개, 아직 설명하기 어려운 질문 1개, 다음에 해볼 실험 1개를 적어보세요.</p>
       <label class="note requires-js" for="note-{e(c["id"])}">나의 복습 노트</label>
       <textarea class="requires-js" id="note-{e(c["id"])}" maxlength="2000" rows="3" placeholder="배운 점 · 질문 · 다음 실험"></textarea>"""
-    return prep + step_html(c, 'watch', 1, '공식 강의 보기', watch) + step_html(c, 'practice', 2, '미니 실습', practice) + step_html(c, 'reflect', 3, '복습 노트', reflect) + resources
+    watch = lesson_html(c, videos.get(c['id'], []), notes, related, briefs, practice, reflect, official)
+    return prep + step_html(c, 'watch', 1, '공식 강의 보기', watch) + resources
 
 
 def course_html(c, track, official, videos, notes, related, briefs):
@@ -324,7 +370,7 @@ def document(data, videos, notes, briefs):
     featured = by_id[data['routes'][0]['steps'][0]]
     official = link('CMU 공식 강의 목록', data['source'], 'official')
     announcement = link('CMU 출시 공지', data['announcement'])
-    feed = feed_html(courses, videos, notes)
+    feed = feed_html(courses, videos, notes, briefs)
     total_videos = sum(map(len, videos.values()))
     topic_chips = ''.join(f'<button type="button" data-topic="{e(k)}" aria-pressed="false">{e(v)}</button>' for k,v in tracks.items() if any(c["track"]==k and videos.get(c["id"]) for c in courses))
     return f"""<!doctype html>
@@ -337,8 +383,8 @@ def document(data, videos, notes, briefs):
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://i.ytimg.com; frame-src https://www.youtube-nocookie.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <title>CMU CS Learn · 한국어 독학 가이드</title>
   <link rel="canonical" href="https://yongkilee.com/learning/cmu-cs-learn/">
-  <link rel="stylesheet" href="./style.css?v=4">
-  <script defer src="./study.js?v=5"></script>
+  <link rel="stylesheet" href="./style.css?v=5">
+  <script defer src="./study.js?v=7"></script>
 </head>
 <body>
   <a class="skip" href="#videos">강의로 건너뛰기</a>
@@ -349,7 +395,7 @@ def document(data, videos, notes, briefs):
         <input type="search" id="video-query" placeholder="강의, 과목, 키워드 검색" aria-label="강의, 과목, 키워드 검색" autocomplete="off">
         <button type="submit" aria-label="검색"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       </form>
-      <nav aria-label="페이지"><a href="#videos">탐색</a><a href="#library">과목</a><a href="#paths">학습 경로</a><a href="#study-next">내 학습</a></nav>
+      <nav aria-label="페이지"><a href="#videos" data-top-view="browse">탐색</a><a href="#library" data-top-view="catalog">과목</a><a href="#study-next" data-top-view="learn">내 학습</a></nav>
     </div>
   </header>
   <main class="shell">
@@ -364,7 +410,8 @@ def document(data, videos, notes, briefs):
       {feed}
     </section>
     <p class="watch-back requires-js"><a href="#videos" id="back-to-feed">← 모든 강의</a></p>
-    <section id="study-next" class="study-grid" aria-label="내 학습">
+    <section id="study-next" class="study-grid" aria-labelledby="study-heading">
+      <div class="section-title study-heading"><h1 id="study-heading">내 학습</h1><p>마지막 학습에서 이어서 시작하세요. 진도와 노트는 이 브라우저에만 남습니다.</p></div>
       <article class="next-sheet">
         <p class="eyebrow" id="next-label">추천 시작 과목</p>
         <h2 id="next-title">{e(featured['ko'])}</h2>

@@ -107,6 +107,27 @@ class CatalogTest(unittest.TestCase):
   videos,_=build.read_lessons()
   briefs=build.read_briefings(videos)
   self.assertEqual(len(briefs),5)
-  self.assertEqual(sum(len(x['clips']) for x in briefs.values()),49)
-  self.assertEqual(len(re.findall(r'data-clip-start="\d+" data-clip-end="\d+"',self.html)),49)
-  self.assertEqual(self.html.count('class="more-clips"'),3)
+  self.assertEqual(sum(len(x['clips']) for x in briefs.values()),50)
+  self.assertEqual(len(re.findall(r'data-clip-start="\d+" data-clip-end="\d+"',self.html)),50)
+  self.assertEqual(self.html.count('class="more-clips"'),4)
+ def test_briefing_terms_and_clip_context_are_indexed(self):
+  from html import unescape
+  attrs=re.search(r'data-feed-video="KQUtNJEzUxU"[^>]+data-feed-keywords="([^"]+)"',self.html)
+  self.assertIsNotNone(attrs)
+  for term in ('컴바이너','Combiner','로컬 합계'):
+   self.assertIn(term,unescape(attrs.group(1)))
+  self.assertIn('data-clip-keywords="Shuffle와 Combiner',self.html)
+ def test_watch_workspace_has_discrete_learning_tabs(self):
+  for key, label in [('notes','강의 노트'),('clips','핵심 구간'),('sources','출처'),('study','실습·복습')]:
+   self.assertEqual(self.html.count(f'data-study-tab="{key}"'),8)
+   self.assertEqual(self.html.count(f'data-study-panel="{key}"'),8)
+   self.assertIn(label,self.html)
+  self.assertEqual(self.html.count('data-video-sources='),21)
+  self.assertNotIn('<iframe',self.html)
+
+ def test_course_discovery_and_verified_additional_readings(self):
+  self.assertIn('id="course-discovery"',self.html)
+  self.assertIn('전체 과목 보기',self.html)
+  self.assertIn('4449.pdf#page=2',self.html)
+  self.assertIn('4449.pdf#page=6',self.html)
+  self.assertIn('rdd-programming-guide.html#rdd-operations',self.html)

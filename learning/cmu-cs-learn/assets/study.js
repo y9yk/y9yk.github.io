@@ -22,6 +22,24 @@ function videoIdFromHash(hash) {
   return /^#video-([A-Za-z0-9_-]{11})$/.exec(hash)?.[1]??null;
 }
 
+function clipRoute(hash) {
+  const match=/^#video-([A-Za-z0-9_-]{11})-clip-(0|[1-9]\d{0,8})$/.exec(hash);
+  return match?{id:match[1],start:match[2]}:null;
+}
+
+function matchingClip(clips,query) {
+  const terms=normalize(query).split(' ').filter(Boolean);
+  if(!terms.length) return undefined;
+  return clips.find(clip=>terms.every(term=>normalize(clip.keywords).includes(term)));
+}
+
+function topView(hash) {
+  if(videoIdFromHash(hash) || clipRoute(hash)) return 'watch';
+  if(hash==='#study-next') return 'learn';
+  if(hash==='#library' || hash==='#paths' || /^#(?:course|step)-/.test(hash)) return 'catalog';
+  return 'browse';
+}
+
 function videoEmbedUrl(vid, at=0, end=null) {
   if(!/^[A-Za-z0-9_-]{11}$/.test(vid)) return null;
   const q=new URLSearchParams({playsinline:'1',cc_load_policy:'1',cc_lang_pref:'en',hl:'ko'});
@@ -68,7 +86,7 @@ function nextAction(courses,state) {
   return {id:course.id,step:STEPS.find(s=>!state.steps[course.id]?.includes(s)),resume:Boolean(last)};
 }
 
-if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount,videoEmbedUrl,videoIdFromHash};
+if (typeof module!=='undefined') module.exports={matches,normalize,loadStudy,toggleStep,nextAction,courseCount,videoEmbedUrl,videoIdFromHash,clipRoute,matchingClip,topView};
 
 if (typeof document!=='undefined') {
   const get=id=>document.getElementById(id);
@@ -79,6 +97,11 @@ if (typeof document!=='undefined') {
   const videoCards=[...document.querySelectorAll('[data-feed-video]')];
   const topics=[...document.querySelectorAll('[data-topic]')];
   const videoPicker=new Map();
+  const clipPanels=new Map([...document.querySelectorAll('[data-video-brief]')].map(panel=>[
+    panel.dataset.videoBrief,[...panel.querySelectorAll('[data-clip-start]')].map(button=>({
+      start:button.dataset.clipStart,keywords:button.dataset.clipKeywords,button
+    }))
+  ]));
   let active=null;
   let lastFeedLink=null;
   function read(key) {
@@ -121,6 +144,9 @@ if (typeof document!=='undefined') {
     for(const video of videoCards) {
       const course=byId.get(video.dataset.feedCourse).dataset;
       video.hidden=!matches({...course,keywords:video.dataset.feedKeywords+' '+course.id+' '+course.id.replace('-','')},filters);
+      const vid=video.dataset.feedVideo;
+      const clip=video.hidden?undefined:matchingClip(clipPanels.get(vid)??[],filters.q);
+      video.querySelector('.video-card-link').hash=clip?`#video-${vid}-clip-${clip.start}`:`#video-${vid}`;
       if(!video.hidden) videoCount++;
     }
     document.querySelectorAll('[data-feed-shelf]').forEach(shelf=>{
@@ -128,6 +154,7 @@ if (typeof document!=='undefined') {
     });
     topics.forEach(chip=>chip.setAttribute('aria-pressed',String(chip.dataset.topic===fields.track.value)));
     get('feed-empty').hidden=videoCount>0;
+    get('course-discovery').hidden=Boolean(normalize(filters.q)) || filters.track!=='all';
     get('feed-results').textContent=`강의 영상 ${videoCount}개`;
     get('video-query').value=fields.q.value;
     get('result-count').textContent=`${visible}개 과목`;
@@ -152,6 +179,14 @@ if (typeof document!=='undefined') {
     }
   }
 
+  function showView(view) {
+    document.documentElement.dataset.topView=view;
+    document.querySelectorAll('[data-top-view]').forEach(link=>{
+      if(link.dataset.topView===view) link.setAttribute('aria-current','page');
+      else link.removeAttribute('aria-current');
+    });
+  }
+
   function closeWatch() {
     if(!active) return;
     active.controls.stop();
@@ -162,8 +197,9 @@ if (typeof document!=='undefined') {
   }
 
   function selectTarget(hash) {
-    const videoId=videoIdFromHash(hash);
-    const target=get(hash.slice(1));
+    const route=clipRoute(hash);
+    const videoId=route?.id??videoIdFromHash(hash);
+    const target=get(videoId?`video-${videoId}`:hash.slice(1));
     if(videoId && target) {
       const card=target.closest('[data-course]');
       const controls=videoPicker.get(card);
@@ -173,19 +209,38 @@ if (typeof document!=='undefined') {
       active={card,controls};
       card.classList.add('watch-current');
       document.documentElement.classList.add('watch-mode');
+      showView('watch');
       controls.choose(videoId);
+      controls.tab(route?'clips':'notes');
       render();
-      card.querySelector('[data-watch-title]').focus({preventScroll:true});
-      window.scrollTo({top:0,behavior:'instant'});
+      // Deep links reveal verified clips but never start playback.
+      const clip=route&&clipPanels.get(videoId)?.find(entry=>entry.start===route.start)?.button;
+      if(clip) {
+        const disclosure=clip.closest('details.more-clips');
+        if(disclosure) disclosure.open=true;
+        clip.focus({preventScroll:true});
+        clip.scrollIntoView({block:'center'});
+      } else {
+        card.querySelector('[data-watch-title]').focus({preventScroll:true});
+        window.scrollTo({top:0,behavior:'instant'});
+      }
       return;
     }
     const focusedStep=target && active?.card.contains(target) && target.matches('.step');
-    if(!focusedStep) closeWatch();
+    if(!focusedStep) {
+      closeWatch();
+      const view=topView(hash);
+      showView(view==='watch'?'browse':view);
+    }
     if(!target || !target.closest('[data-course]')) {
       if(hash==='#videos' && lastFeedLink && !lastFeedLink.closest('[hidden]')) lastFeedLink.focus({preventScroll:true});
+      if(hash==='#paths') target?.scrollIntoView({block:'start'});
+      else if(['#library','#study-next'].includes(hash)) window.scrollTo({top:0,behavior:'instant'});
       return;
     }
     const card=target.closest('[data-course]');
+    const panel=target.closest('[data-study-panel]');
+    if(panel) videoPicker.get(card)?.tab(panel.dataset.studyPanel);
     form.reset();
     card.querySelector('[data-workspace]').open=true;
     if(card.dataset.status==='available') {state.last=card.dataset.id;save();}
@@ -221,6 +276,26 @@ if (typeof document!=='undefined') {
     const playerBox=card.querySelector('[data-player]');
     const placeholder=playerBox.firstElementChild.cloneNode(true);
     const notes=[...card.querySelectorAll('[data-video-notes]')];
+    const extraVideoSections=[...card.querySelectorAll('[data-video-overview],[data-video-sources]')];
+    const tabs=[...card.querySelectorAll('[data-study-tab]')];
+    function chooseTab(key, focus=false) {
+      tabs.forEach(tab=>{
+        const selected=tab.dataset.studyTab===key;
+        tab.setAttribute('aria-selected',String(selected));
+        tab.tabIndex=selected?0:-1;
+        get(tab.getAttribute('aria-controls')).hidden=!selected;
+        if(selected && focus) tab.focus();
+      });
+    }
+    tabs.forEach((tab,i)=>{
+      tab.addEventListener('click',()=>chooseTab(tab.dataset.studyTab));
+      tab.addEventListener('keydown',event=>{
+        const motion={ArrowLeft:-1,ArrowRight:1}[event.key];
+        const next=motion?tabs[(i+motion+tabs.length)%tabs.length]:event.key==='Home'?tabs[0]:event.key==='End'?tabs.at(-1):null;
+        if(next){event.preventDefault();chooseTab(next.dataset.studyTab,true);}
+      });
+    });
+    chooseTab('notes');
     const briefings=[...card.querySelectorAll('[data-video-brief]')];
     const clipButtons=[...card.querySelectorAll('[data-clip-start]')];
     const clipStatus=card.querySelector('[data-active-clip]');
@@ -241,6 +316,7 @@ if (typeof document!=='undefined') {
       });
       if(frame) frame.title=`${option.dataset.title} · CMU 공식 영상`;
       notes.forEach(n=>{n.hidden=n.dataset.videoNotes!==select.value;});
+      extraVideoSections.forEach(n=>{n.hidden=(n.dataset.videoOverview??n.dataset.videoSources)!==select.value;});
       briefings.forEach(n=>{n.hidden=n.dataset.videoBrief!==select.value;});
       const caption=card.querySelector('[data-cc-status]');
       caption.textContent = option.dataset.availability==='premiere'
@@ -275,7 +351,7 @@ if (typeof document!=='undefined') {
       if(changed) loadVideo();
       render();
     }
-    videoPicker.set(card,{choose,stop:()=>{
+    videoPicker.set(card,{choose,tab:chooseTab,stop:()=>{
       if(playerBox.querySelector('iframe')) {
         playerBox.replaceChildren(placeholder.cloneNode(true));
         renderClip();renderVideo();
@@ -295,10 +371,7 @@ if (typeof document!=='undefined') {
   function reset(){form.reset();render();}
   function runHeaderSearch(scroll) {
     fields.q.value=get('video-query').value;
-    if(active) {
-      closeWatch();
-      history.pushState(null,'','#videos');
-    }
+    if(document.documentElement.dataset.topView!=='browse') go('#videos');
     render();
     if(scroll) get('videos').scrollIntoView({block:'start'});
   }

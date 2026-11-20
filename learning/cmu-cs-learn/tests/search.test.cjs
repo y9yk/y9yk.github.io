@@ -82,3 +82,22 @@ test('공식 플레이어 구간을 시작과 종료 모두로 제한한다',()=
  assert.equal(videoEmbedUrl('0nmhvgc5XOI',-1,280),null);
  assert.equal(new URL(videoEmbedUrl('0nmhvgc5XOI',300)).searchParams.has('end'),false);
 });
+const {clipRoute,matchingClip}=require('../assets/study.js');
+test('영문과 한글 학습 용어는 정확한 구간 링크를 찾는다',()=>{
+ const clips=[{start:'2692',keywords:'Shuffle Combiner 셔플 컴바이너 로컬 집계'}];
+ assert.equal(matchingClip(clips,'combiner')?.start,'2692');
+ assert.equal(matchingClip(clips,'컴바이너')?.start,'2692');
+ assert.equal(matchingClip(clips,'map reduce'),undefined);
+ assert.deepEqual(clipRoute('#video-KQUtNJEzUxU-clip-2692'),{id:'KQUtNJEzUxU',start:'2692'});
+ assert.equal(clipRoute('#video-KQUtNJEzUxU-clip-../a'),null);
+});
+const {topView}=require('../assets/study.js');
+test('탐색·과목·내 학습을 별도의 화면으로 분리하고 기존 링크를 유지한다',()=>{
+ assert.equal(topView(''),'browse');
+ assert.equal(topView('#videos'),'browse');
+ assert.equal(topView('#library'),'catalog');
+ assert.equal(topView('#paths'),'catalog');
+ assert.equal(topView('#step-11-768-practice'),'catalog');
+ assert.equal(topView('#study-next'),'learn');
+ assert.equal(topView('#video-KQUtNJEzUxU-clip-2692'),'watch');
+});
