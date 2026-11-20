@@ -1,13 +1,19 @@
 # Yong Ki Lee
 
-My personal website brings together my career, selected engineering projects, research, talks, and writing. [Visit yongkilee.com](https://yongkilee.com/)
+[yongkilee.com](https://yongkilee.com/)
 
 ## On the site
 
-- **Home** covers my career, technical interests, and research. [View the profile](https://yongkilee.com/)
-- **Projects** summarizes what selected projects set out to do, my role, and how I approached the work. [Browse projects](https://yongkilee.com/projects/)
-- **Talks** links to recordings and published slides. [Browse talks](https://yongkilee.com/#talks)
-- **Blog** brings my public Bearblog writing into the site. [Read the blog](https://yongkilee.com/blog/)
+- **Home**
+  - Career timeline and highlights from recent work
+  - Education, research publications, and technical interests
+- **Projects**
+  - Brief summaries of selected engineering projects
+  - The problem each project addressed, my role, and the approach I took
+- **Talks**
+  - Selected presentations with recordings or published slides where available
+- **Blog**
+  - Public posts from my Bearblog
 
 ## Ownership and permissions
 
