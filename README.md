@@ -13,7 +13,11 @@
 - **Talks**
   - Selected presentations with recordings or published slides where available
 - **Blog**
-  - Public posts from my Bearblog
+  - A curated index and public posts built with Astro at `/blog/`
+
+## Local development
+
+Use Node.js 24 and Python 3. Run `make serve` for the complete site or `make check` and `make build` to verify the Pages artifact in `dist/`. The build installs locked blog dependencies as needed. See [blog authoring and comments](blog/README.md).
 
 ## Ownership and permissions
 

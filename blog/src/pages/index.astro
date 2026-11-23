@@ -1,0 +1,19 @@
+---
+import Shell from '../layouts/Shell.astro';
+import { posts, dateLabel } from '../lib/posts';
+const featured = posts.find(post => post.slug === 'sop-agent-workflows-reliability') ?? posts[0];
+---
+<Shell title="블로그" description="이용기의 소프트웨어 개발과 AI에 관한 글">
+  <div class="home">
+    <div class="intro"><h1>블로그<span>.</span></h1><p>소프트웨어를 만들며 만난 문제와<br />AI를 쓰며 달라진 일을 기록합니다.</p></div>
+    {featured && <section class="pick" aria-labelledby="pick-heading">
+      <h2 class="label" id="pick-heading">먼저 읽을 글</h2>
+      <a href={featured.href}><h3>{featured.title}</h3><p>{featured.description}</p><span class="read">글 읽기 <b aria-hidden="true">↗</b></span></a>
+    </section>}
+    <section class="archive" aria-labelledby="all-heading"><h2 id="all-heading">전체 글 <small>{posts.length}</small></h2>
+      <ul>{posts.map(post => <li><a href={post.href}>
+        <time datetime={post.date}>{dateLabel(post.date)}</time><span>{post.title}</span><em>{post.topic}</em>
+      </a></li>)}</ul>
+    </section>
+  </div>
+</Shell>

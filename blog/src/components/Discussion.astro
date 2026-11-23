@@ -1,0 +1,71 @@
+---
+interface Props {
+  source?: string;
+}
+const { source } = Astro.props;
+const repo = import.meta.env.PUBLIC_GISCUS_REPO;
+const repoId = import.meta.env.PUBLIC_GISCUS_REPO_ID;
+const category = import.meta.env.PUBLIC_GISCUS_CATEGORY;
+const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID;
+const configured = Boolean(repo && repoId && category && categoryId);
+---
+<section class="discussion" aria-labelledby="discussion-heading">
+  <h2 id="discussion-heading">댓글과 공감</h2>
+  {configured ? (
+    <div data-discussion data-repo={repo} data-repo-id={repoId}
+      data-category={category} data-category-id={categoryId}>
+      <p data-status aria-live="polite">GitHub 계정으로 댓글을 쓰거나 이 글에 공감을 남길 수 있어요.</p>
+      <button type="button" hidden>댓글과 공감 열기</button>
+      <a href={`https://github.com/${repo}/discussions`}>GitHub Discussions 방문하기 ↗</a>
+      <div class="giscus"></div>
+    </div>
+  ) : (
+    <p>댓글은 GitHub Discussions 연결 후 열립니다.
+      {source && <a href={source}>Bear Blog 원문에서 공감하기 ↗</a>}
+    </p>
+  )}
+</section>
+
+<script>
+  const container = document.querySelector<HTMLElement>('[data-discussion]');
+  const button = container?.querySelector('button');
+  const status = container?.querySelector<HTMLElement>('[data-status]');
+  if (container && button && status) {
+    const privacy = navigator as Navigator & { globalPrivacyControl?: boolean };
+    if (privacy.globalPrivacyControl || ['1', 'yes'].includes(navigator.doNotTrack)) {
+      status.textContent = '브라우저의 개인정보 보호 설정에 따라 GitHub에서 댓글을 볼 수 있어요.';
+    } else {
+      button.hidden = false;
+      button.addEventListener('click', () => {
+        button.disabled = true;
+        status.textContent = '댓글을 불러오는 중입니다.';
+        const script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        Object.assign(script.dataset, container.dataset, {
+          mapping: 'pathname', strict: '1', reactionsEnabled: '1', emitMetadata: '0',
+          inputPosition: 'top', lang: 'ko', theme: 'light'
+        });
+        script.addEventListener('error', () => {
+          script.remove();
+          button.disabled = false;
+          status.textContent = '댓글을 불러오지 못했어요. 다시 시도하거나 GitHub에서 열어 주세요.';
+        });
+        script.addEventListener('load', () => {
+          button.hidden = true;
+          status.textContent = 'GitHub 계정으로 댓글과 공감을 남길 수 있어요.';
+        });
+        container.append(script);
+      });
+    }
+  }
+</script>
+<style>
+  .discussion { border-block-start: 1px solid #d7d6cf; margin-block: 3rem 1rem; padding-block: 1.5rem; }
+  .discussion h2 { font-size: 1.2rem; margin: 0 0 .7rem; }
+  .discussion p, .discussion a, .discussion button { font-size: .94rem; }
+  .discussion a { text-underline-offset: .2em; }
+  .discussion button { background: transparent; border: 1px solid currentColor; border-radius: .3rem; color: inherit; cursor: pointer; margin: 0 .6rem .75rem 0; padding: .45rem .8rem; }
+  .giscus:not(:empty) { margin-block-start: 1.5rem; }
+</style>

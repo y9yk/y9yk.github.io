@@ -1,0 +1,25 @@
+---
+import Shell from '../layouts/Shell.astro';
+import Discussion from '../components/Discussion.astro';
+import { posts, dateLabel } from '../lib/posts';
+export function getStaticPaths() {
+  return posts.map(post => ({ params: {slug: post.slug}, props: {post} }));
+}
+const {post} = Astro.props;
+const {Content, getHeadings} = post.entry;
+const sections = getHeadings().filter(heading => heading.depth === 2);
+---
+<Shell title={post.title} description={post.description}>
+  <article class="story">
+    <header class="story-head"><a class="back" href="/blog/">← 전체 글</a>
+      <h1>{post.title}</h1><p class="meta"><time datetime={post.date}>{dateLabel(post.date)}</time> · {post.topic}{post.excerpt && ' · 요약'}</p>
+    </header>
+    <div class="reading">
+      {sections.length > 1 && <nav class="contents" aria-label="이 글의 목차"><strong>이 글의 목차</strong>
+        <ol>{sections.map(section => <li><a href={'#'+section.slug}>{section.text}</a></li>)}</ol>
+      </nav>}
+      <div class="prose"><Content />{post.excerpt && <p><a href={post.source}>Bear Blog에서 전문 읽기 ↗</a></p>}</div>
+    </div>
+    <Discussion source={post.source} />
+  </article>
+</Shell>

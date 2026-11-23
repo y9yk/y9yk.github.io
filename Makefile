@@ -4,9 +4,12 @@ PORT ?= 8000
 .PHONY: help build check serve dev preview
 help:
 	@printf '%s\n' 'make serve    Build and preview at http://127.0.0.1:$(PORT)' 'make build    Build approved public pages' 'make check    Run checks' 'Use PORT=8001 to select another port. Stop with Ctrl+C.'
-build:
+blog/node_modules/.install-stamp: blog/package.json blog/package-lock.json
+	npm --prefix blog ci
+	touch $@
+build: blog/node_modules/.install-stamp
 	$(PYTHON) scripts/build.py
-check:
+check: blog/node_modules/.install-stamp
 	$(PYTHON) -m unittest discover -s tests -v
 	node --check assets/site.js
 	node --test tests/*.test.cjs

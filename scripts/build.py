@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import re
 import shutil
+import subprocess
 from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -172,22 +173,16 @@ def render_projects(data):
     return template('projects.html',values)
 
 
-def render_blog(data):
-    validate(data)
-    values=base(data,prefix='../',title=f'{data["name"]} | Blog',route='blog/')
-    values['policy']=esc("default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; frame-src https://y9yk.bearblog.dev; base-uri 'none'; form-action 'none'")
-    return template('blog.html',values)
-
-
 def main():
     data=json.loads((ROOT/'content/profile.json').read_text());validate(data)
+    blog = ROOT / 'blog'
+    subprocess.run(['npm', 'run', 'build'], cwd=blog, check=True)
     output=ROOT/'dist'
     if output.exists():shutil.rmtree(output)
     output.mkdir();(output/'index.html').write_text(render(data))
     (output/'projects').mkdir()
     (output/'projects/index.html').write_text(render_projects(data))
-    (output/'blog').mkdir()
-    (output/'blog/index.html').write_text(render_blog(data))
+    shutil.copytree(blog / 'dist', output / 'blog')
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')

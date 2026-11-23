@@ -1,0 +1,24 @@
+---
+import '../styles/site.css';
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Yong Ki Lee</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} /><meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <a class="skip" href="#main">본문으로</a>
+    <header class="mast"><a class="wordmark" href="/blog/">Yong Ki Lee<span>.</span></a>
+      <nav aria-label="주 메뉴"><a href="/blog/">블로그</a><a href="/">프로필</a></nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="foot"><a href="/blog/">Yong Ki Lee · Blog</a><a href="#main">맨 위로 ↑</a></footer>
+  </body>
+</html>

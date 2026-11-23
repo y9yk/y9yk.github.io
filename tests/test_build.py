@@ -15,6 +15,40 @@ class Document(HTMLParser):
         if 'id' in attrs:self.ids.append(attrs['id'])
         if tag=='a':self.links.append(attrs.get('href',''))
 
+class PublishedRoutesTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        subprocess.run([sys.executable, str(ROOT/'scripts/build.py')], check=True, cwd=ROOT)
+
+    def test_build_omits_private_and_retired_routes(self):
+        output=ROOT/'dist'
+        self.assertTrue((output/'projects/index.html').is_file())
+        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html'})
+        for route in ('learning', 'cmu-cs-learn', 'talks', 'demos', 'stats', 'for-fun'):
+            self.assertFalse((output/route).exists(), route)
+        for file in output.rglob('*.html'):
+            doc=Document(file.read_text())
+            for url in doc.links:
+                self.assertFalse(url.startswith('talks/'))
+                self.assertNotRegex(url,r'projects/[^?#/]+/')
+                if url.startswith('#'):self.assertIn(url[1:],doc.ids)
+
+    def test_astro_blog_builds_native_routes_for_published_posts(self):
+        output = ROOT/'dist/blog'
+        listing = (output/'index.html').read_text()
+        self.assertNotIn('<iframe', listing)
+        links = Document(listing).links
+        posts = sorted((ROOT/'blog/src/posts').glob('*.md'))
+        self.assertTrue(posts)
+        for post in posts:
+            with self.subTest(slug=post.stem):
+                self.assertIn(f'/blog/{post.stem}/', links)
+                article = (output/post.stem/'index.html').read_text()
+                self.assertIn('<article', article)
+                self.assertIn('discussion-heading', Document(article).ids)
+                self.assertIn('/blog/', Document(article).links)
+
+
 class PublicBuildTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -33,19 +67,6 @@ class PublicBuildTests(unittest.TestCase):
         self.assertNotIn('<script>alert',self.build.render(data))
         data=copy.deepcopy(self.data);data['links'][0]['url']='javascript:alert(1)'
         with self.assertRaises(ValueError):self.build.render(data)
-    def test_build_omits_private_and_retired_routes(self):
-        subprocess.run([sys.executable,str(ROOT/'scripts/build.py')],check=True,cwd=ROOT,capture_output=True)
-        output=ROOT/'dist'
-        self.assertTrue((output/'projects/index.html').is_file())
-        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html'})
-        for route in ('learning', 'cmu-cs-learn', 'talks', 'demos', 'stats', 'for-fun'):
-            self.assertFalse((output/route).exists(), route)
-        for file in output.rglob('*.html'):
-            doc=Document(file.read_text())
-            for url in doc.links:
-                self.assertFalse(url.startswith('talks/'))
-                self.assertNotRegex(url,r'projects/[^?#/]+/')
-                if url.startswith('#'):self.assertIn(url[1:],doc.ids)
     def test_research_and_outlined_project_action(self):
         html=self.build.render(self.data)
         self.assertIn('https://s-space.snu.ac.kr/handle/10371/11693',html)
@@ -136,16 +157,6 @@ class PublicBuildTests(unittest.TestCase):
         for link in Document(listing).links:
             self.assertNotRegex(link,r'(?:projects/)?(?:smartbee|reviewro|polaris-studio|marketing-ax-workspace)/')
         self.assertEqual({p.name for p in (ROOT/'assets/projects').iterdir()},{'review-widget.png','reviewro-app.png','SOURCES.md'})
-
-    def test_blog_is_embedded_under_the_shared_site_navigation(self):
-        blog=self.build.render_blog(self.data)
-        self.assertIn('class="site-header"',blog)
-        self.assertIn('src="https://y9yk.bearblog.dev/blog/"',blog)
-        self.assertIn('frame-src https://y9yk.bearblog.dev',blog)
-        self.assertIn('href="../blog/">Blog</a>',blog)
-        self.assertIn('class="blog-viewport"',blog)
-        self.assertNotIn('blog-direct',blog)
-        self.assertNotIn('scrolling="no"',blog)
 
     def test_confirmed_collaborators_are_sorted_and_exclude_the_owner(self):
         projects={p['id']:p for p in self.data['projects']}

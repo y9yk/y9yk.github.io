@@ -12,10 +12,8 @@
 
 - Home contact links exclude Blog, which lives in the shared header. Recent SK Telecom career projects render newest-first; canonical project chronology is retained in content data.
 
-- Blog opens /blog/ under the same shared header. Its iframe points only to https://y9yk.bearblog.dev/blog/; the route CSP allows that frame origin and keeps the outer navigation on this site. Browser verification is authoritative: the CLI returned a different 404 response, while the normal browser returned 200 with ALLOWALL.
+- Blog opens the Astro editorial index at /blog/. Each public post has its own static page with a reading layout and optional discussion.
 
 - Projects representatives must be actual service interfaces, never video thumbnails or architecture slides. Omit the preview when no publishable service screen exists. Video thumbnails remain valid only within Talks.
 
 - Projects display newest-first: Marketing AX, Polaris, SmartBee, conversation search, REVIEWRO, review analytics, AIAS, targeting. Exactly six service previews are selected; Polaris and Marketing AX are text-only.
-
-- Blog uses one viewport-height frame without an outer footer/min-height overflow. Its right scrollbar rail is clipped by a wrapper; native inner scrolling remains enabled for long posts.
