@@ -87,7 +87,7 @@ class PublishedRoutesTests(unittest.TestCase):
         self.assertEqual(listing.count('class="post-row"'),len(posts))
         self.assertEqual(listing.count('class="post-cover"'),len(posts))
         self.assertNotIn('topic-list',listing)
-        self.assertIn('데이터 중심 어플리케이션들을 만들며',listing)
+        self.assertNotIn('blog-intro',listing)
         rss=(ROOT/'dist/blog/rss.xml').read_text()
         for post in posts:self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',rss)
 
