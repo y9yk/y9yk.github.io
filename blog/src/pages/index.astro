@@ -1,14 +1,13 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import PostCover from '../components/PostCover.astro';
-import { posts, topics, dateLabel } from '../lib/posts';
+import { posts, dateLabel } from '../lib/posts';
 
 const [featured, ...rest] = posts;
 ---
-<Shell title="Blog" description="소프트웨어를 만들며 만난 문제와 AI를 쓰며 달라진 일을 기록합니다." image={featured?.cover}>
+<Shell title="Blog" description="데이터 중심 서비스를 만들며 만난 문제와 AI를 쓰며 달라진 일을 기록합니다." image={featured?.cover}>
   <section class="hero blog-hero" aria-labelledby="blog-title">
-    <h1 id="blog-title" class="blog-intro">소프트웨어를 만들며 만난 문제와<br />AI를 쓰며 달라진 일을 기록합니다.</h1>
-    <ul class="topic-list" aria-label="다루는 주제">{topics.map(topic => <li>{topic}</li>)}</ul>
+    <h1 id="blog-title" class="blog-intro">데이터 중심 서비스를 만들며 만난 문제와<br />AI를 쓰며 달라진 일을 기록합니다.</h1>
   </section>
 
   {featured && (
@@ -17,7 +16,7 @@ const [featured, ...rest] = posts;
       <a class="feature-card" href={featured.href}>
         <PostCover post={featured} eager />
         <span class="feature-body">
-          <span class="post-meta"><span>{featured.topic}</span><time datetime={featured.date}>{dateLabel(featured.date)}</time></span>
+          <span class="post-meta"><time datetime={featured.date}>{dateLabel(featured.date)}</time></span>
           <span class="feature-title">{featured.title}</span>
           <span class="feature-summary">{featured.description}</span>
           <span class="button button-outline"><span>글 읽기</span><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span>
@@ -33,7 +32,7 @@ const [featured, ...rest] = posts;
         <li>
           <a class="post-row" href={post.href}>
             <span class="post-row-body">
-              <span class="post-meta"><span>{post.topic}</span><time datetime={post.date}>{dateLabel(post.date)}</time><span>{post.readingMinutes}분</span></span>
+              <span class="post-meta"><time datetime={post.date}>{dateLabel(post.date)}</time><span>{post.readingMinutes}분</span></span>
               <span class="post-row-title">{post.title}</span>
               <span class="post-row-summary">{post.description}</span>
             </span>

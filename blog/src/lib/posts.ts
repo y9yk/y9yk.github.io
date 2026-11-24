@@ -36,8 +36,6 @@ export const posts = Object.entries(files).map(([path, entry]) => {
 
 export type Post = (typeof posts)[number];
 
-export const topics = [...new Set(posts.map(post => post.topic))];
-
 export const dateLabel = (value: string) => new Intl.DateTimeFormat('ko-KR', {
   year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Seoul'
 }).format(new Date(value));

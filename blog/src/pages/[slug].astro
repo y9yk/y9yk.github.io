@@ -18,7 +18,7 @@ const arrow = (d: string) => `<svg class="action-icon" viewBox="0 0 24 24" aria-
   <article class="article">
     <header class="article-head">
       <a class="back-link" href="/blog/"><Fragment set:html={arrow('M15 5l-7 7 7 7')} /><span>전체 글</span></a>
-      <p class="post-meta"><span>{post.topic}</span><time datetime={post.date}>{dateLabel(post.date)}</time><span>{post.readingMinutes}분 분량</span></p>
+      <p class="post-meta"><time datetime={post.date}>{dateLabel(post.date)}</time><span>{post.readingMinutes}분 분량</span></p>
       <h1>{post.title}</h1>
       <p class="article-lede">{post.description}</p>
     </header>

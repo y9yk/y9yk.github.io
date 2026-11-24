@@ -6,5 +6,5 @@ const { post, eager = false } = Astro.props;
 <span class="post-cover">
   {post.cover
     ? <img src={post.cover} alt="" loading={eager ? 'eager' : 'lazy'} decoding="async" />
-    : <span class="post-cover-fallback" aria-hidden="true">{post.topic}</span>}
+    : <span class="post-cover-fallback" aria-hidden="true"></span>}
 </span>
