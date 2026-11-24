@@ -98,6 +98,7 @@ class PublishedRoutesTests(unittest.TestCase):
                 self.assertNotIn('github.com/y9yk/y9yk.github.io/discussions',article)
                 self.assertNotIn('좋아요',article)
                 self.assertNotIn('>Profile</a></footer>',article)
+                self.assertNotIn('처음 발행',article)
                 self.assertIn('class="post-pager"',article)
         self.assertIn("reactionsEnabled: '0'",(ROOT/'blog/public/blog.js').read_text())
 

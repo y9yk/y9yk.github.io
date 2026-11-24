@@ -72,7 +72,6 @@
 .prose th { font-size: 13px; font-weight: 650; color: var(--muted); border-bottom-color: #cbd6de; background: var(--soft); }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: 2.4em 0; }
 .prose .highlight { background: linear-gradient(transparent 60%, #d9ebf6 60%); }
-.original-note { margin: 32px 0 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 
 /* Comments */
 .discussion { margin: 40px 0 0; padding: 26px 24px; border: 1px solid var(--line); border-radius: 10px; }
