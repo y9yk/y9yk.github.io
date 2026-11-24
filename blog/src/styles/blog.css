@@ -11,8 +11,9 @@
 .post-cover-fallback { display: block; height: 100%; }
 
 /* Home: hero */
-.blog-intro { font-size: 22px; font-weight: 600; line-height: 1.5; letter-spacing: -.025em; max-width: 30em; }
-@media (max-width: 460px) { .blog-intro { font-size: 19px; } .blog-intro br { display: none; } }
+.blog-intro { font-size: 24px; font-weight: 600; line-height: 1.5; letter-spacing: -.025em; }
+@media (max-width: 700px) { .blog-intro { font-size: 21px; } }
+@media (max-width: 460px) { .blog-intro { font-size: 19px; } }
 
 /* Home: every post in one list, newest first */
 .post-list { list-style: none; padding: 0; margin: 0; }
