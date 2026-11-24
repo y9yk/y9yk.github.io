@@ -79,14 +79,15 @@ class PublishedRoutesTests(unittest.TestCase):
                 for src in __import__('re').findall(r'src="/blog/(media/[^"]+)"',text):
                     self.assertTrue((ROOT/'blog/public'/src).is_file(),src)
 
-    def test_blog_home_has_hero_latest_and_archive_with_thumbnails(self):
+    def test_blog_home_has_hero_and_one_list_with_thumbnails(self):
         listing=(ROOT/'dist/blog/index.html').read_text()
-        ids=Document(listing).ids
-        for section in ('blog-title','latest-title','all-title'):self.assertIn(section,ids)
+        self.assertIn('blog-title',Document(listing).ids)
+        self.assertNotIn('feature-card',listing)
         posts=list((ROOT/'blog/src/posts').glob('*.md'))
+        self.assertEqual(listing.count('class="post-row"'),len(posts))
         self.assertEqual(listing.count('class="post-cover"'),len(posts))
         self.assertNotIn('topic-list',listing)
-        self.assertIn('데이터 중심 서비스를 만들며',listing)
+        self.assertIn('데이터 중심 어플리케이션들을 만들며',listing)
         rss=(ROOT/'dist/blog/rss.xml').read_text()
         for post in posts:self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',rss)
 

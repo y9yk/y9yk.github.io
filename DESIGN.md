@@ -21,7 +21,7 @@ The blog is the same site, not a separate brand. It imports `assets/style.css` (
 - Language: post content and blog UI are Korean (`lang="ko"`, `word-break: keep-all`). The shared header stays English.
 - Footer: name and RSS only; the shared header already links to the profile.
 - Width: same 960px page and 36/24/20px gutters as the portfolio. No horizontal overflow at 360/390px.
-- Home: hero (the one-line intro as a 22px heading, no “블로그” title) → Latest (one large card with cover and outlined “글 읽기” button) → Archive (rows with date · reading time, title, summary, and a cover thumbnail on the right). Archive rows hide summaries below 700px and use a square thumbnail.
+- Home: hero (the one-line intro as a 22px heading, no “블로그” title) → one list of every post, newest first, with no section headings or featured card. Rows show date · reading time, title, summary, and a cover thumbnail on the right; summaries hide below 700px and thumbnails turn square.
 - Covers: the post’s `cover` front matter or its first image. Cropped to 16:10 from the top, 1px `--line` border, 8px radius. Without an image, a plain soft tile. Never a stock or generated picture.
 - Article: back link → meta line (date, reading time) → 40px title (32/28px on smaller screens) → muted lede. Body text 17px/1.85 (16px on phones) uses the full page content width. Tables scroll inside their own box. Figures center with a muted 13px caption.
 - No table of contents, no likes, and no topic/category labels.

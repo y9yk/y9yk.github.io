@@ -3,32 +3,15 @@ import Shell from '../layouts/Shell.astro';
 import PostCover from '../components/PostCover.astro';
 import { posts, dateLabel } from '../lib/posts';
 
-const [featured, ...rest] = posts;
 ---
-<Shell title="Blog" description="데이터 중심 서비스를 만들며 만난 문제와 AI를 쓰며 달라진 일을 기록합니다." image={featured?.cover}>
+<Shell title="Blog" description="데이터 중심 어플리케이션들을 만들며 만난 문제들과 AI를 쓰며 달라진 일들을 기록합니다." image={posts[0]?.cover}>
   <section class="hero blog-hero" aria-labelledby="blog-title">
-    <h1 id="blog-title" class="blog-intro">데이터 중심 서비스를 만들며 만난 문제와<br />AI를 쓰며 달라진 일을 기록합니다.</h1>
+    <h1 id="blog-title" class="blog-intro">데이터 중심 어플리케이션들을 만들며 만난 문제들과<br />AI를 쓰며 달라진 일들을 기록합니다.</h1>
   </section>
 
-  {featured && (
-    <section class="section" aria-labelledby="latest-title">
-      <div class="section-heading"><h2 id="latest-title">최신 글</h2></div>
-      <a class="feature-card" href={featured.href}>
-        <PostCover post={featured} eager />
-        <span class="feature-body">
-          <span class="post-meta"><time datetime={featured.date}>{dateLabel(featured.date)}</time></span>
-          <span class="feature-title">{featured.title}</span>
-          <span class="feature-summary">{featured.description}</span>
-          <span class="button button-outline"><span>글 읽기</span><svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg></span>
-        </span>
-      </a>
-    </section>
-  )}
-
-  {rest.length > 0 && <section class="section" aria-labelledby="all-title">
-    <div class="section-heading"><h2 id="all-title">지난 글 <span class="count">{rest.length}</span></h2></div>
+  <section class="section blog-archive" aria-label="전체 글">
     <ol class="post-list">
-      {rest.map(post => (
+      {posts.map((post, index) => (
         <li>
           <a class="post-row" href={post.href}>
             <span class="post-row-body">
@@ -36,10 +19,10 @@ const [featured, ...rest] = posts;
               <span class="post-row-title">{post.title}</span>
               <span class="post-row-summary">{post.description}</span>
             </span>
-            <PostCover post={post} />
+            <PostCover post={post} eager={index < 2} />
           </a>
         </li>
       ))}
     </ol>
-  </section>}
+  </section>
 </Shell>
