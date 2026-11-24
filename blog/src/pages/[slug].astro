@@ -11,8 +11,7 @@ export function getStaticPaths() {
 }
 interface Props { post: Post; newer?: Post; older?: Post }
 const { post, newer, older } = Astro.props;
-const { Content, getHeadings } = post.entry;
-const sections = getHeadings().filter(heading => heading.depth === 2);
+const { Content } = post.entry;
 const arrow = (d: string) => `<svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
 ---
 <Shell title={post.title} description={post.description} image={post.cover} type="article">
@@ -24,20 +23,10 @@ const arrow = (d: string) => `<svg class="action-icon" viewBox="0 0 24 24" aria-
       <p class="article-lede">{post.description}</p>
     </header>
 
-    <div class={sections.length > 1 ? 'article-layout has-toc' : 'article-layout'}>
-      {sections.length > 1 && (
-        <aside class="toc" aria-labelledby="toc-title">
-          <details open data-toc>
-            <summary id="toc-title">목차</summary>
-            <ol>{sections.map(section => <li><a href={`#${section.slug}`}>{section.text}</a></li>)}</ol>
-          </details>
-        </aside>
-      )}
-      <div class="article-main">
-        <div class="prose"><Content /></div>
-        {post.source && <p class="original-note">이 글은 <a href={post.source}>Bear Blog</a>에 처음 발행했습니다.</p>}
-        <Discussion source={post.source} />
-      </div>
+    <div class="article-main">
+      <div class="prose"><Content /></div>
+      {post.source && <p class="original-note">이 글은 <a href={post.source}>Bear Blog</a>에 처음 발행했습니다.</p>}
+      <Discussion />
     </div>
 
     {(newer || older) && (

@@ -88,12 +88,16 @@ class PublishedRoutesTests(unittest.TestCase):
         rss=(ROOT/'dist/blog/rss.xml').read_text()
         for post in posts:self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',rss)
 
-    def test_articles_offer_contents_and_neighbour_navigation(self):
+    def test_articles_use_full_width_with_comments_only(self):
         for post in (ROOT/'blog/src/posts').glob('*.md'):
             with self.subTest(slug=post.stem):
                 article=(ROOT/'dist/blog'/post.stem/'index.html').read_text()
-                if post.read_text().count('\n## ')>1:self.assertIn('data-toc',article)
+                self.assertNotIn('data-toc',article)
+                self.assertNotIn('github.com/y9yk/y9yk.github.io/discussions',article)
+                self.assertNotIn('좋아요',article)
+                self.assertNotIn('>Profile</a></footer>',article)
                 self.assertIn('class="post-pager"',article)
+        self.assertIn("reactionsEnabled: '0'",(ROOT/'blog/public/blog.js').read_text())
 
     def test_discussion_widget_waits_for_consent_and_honours_privacy_signals(self):
         script=(ROOT/'blog/public/blog.js').read_text()

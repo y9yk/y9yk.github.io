@@ -17,8 +17,7 @@ source: "https://y9yk.bearblog.dev/<slug>/"   # 선택. Bear Blog에서 옮긴 �
 ---
 ```
 
-- 본문의 `##` 제목이 목차가 된다. 두 개 이상일 때 목차가 표시된다.
 - 이미지는 `public/media/<slug>/`에 두고 `/blog/media/<slug>/파일명`으로 참조한다. 외부 이미지 주소와 `<style>`, `style=""`은 콘텐츠 보안 정책 때문에 쓰지 않는다. 테스트가 이를 확인한다.
 - 가장 최근 글이 블로그 홈의 “최신 글”이 된다.
 
-디자인 규칙은 루트의 [DESIGN.md](../DESIGN.md#blog-blog)를 따른다. 루트의 `make build`가 블로그를 빌드해 최종 Pages 산출물의 `dist/blog/`에 포함한다. 좋아요와 댓글은 [giscus 설정](DISCUSSIONS.md)을 따른다.
+디자인 규칙은 루트의 [DESIGN.md](../DESIGN.md#blog-blog)를 따른다. 루트의 `make build`가 블로그를 빌드해 최종 Pages 산출물의 `dist/blog/`에 포함한다. 댓글은 [giscus 설정](DISCUSSIONS.md)을 따른다.

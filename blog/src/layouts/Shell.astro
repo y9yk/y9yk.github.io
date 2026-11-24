@@ -38,7 +38,7 @@ const feed = new URL('/blog/rss.xml', Astro.site);
     <Fragment set:html={siteHeader} />
     <div class="page">
       <main id="main"><slot /></main>
-      <footer><p>{siteName}</p><a href="/blog/rss.xml">RSS</a><a href="/">Profile</a></footer>
+      <footer><p>{siteName}</p><a href="/blog/rss.xml">RSS</a></footer>
     </div>
   </body>
 </html>
