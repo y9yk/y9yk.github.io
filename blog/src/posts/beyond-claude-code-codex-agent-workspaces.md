@@ -53,7 +53,7 @@ Herdr에서는 앱 창을 닫아도 터미널을 관리하는 별도 서버인 h
 가이드에는 기존 에이전트를 탭에서 띄운 뒤 <code>~/.config/herdr-app/AGENTS.md</code>를 읽게 하는 예가 나온다. 거기서 화면 배치를 바꾸거나 타이머, 에이전트 보드를 만들어 달라고 할 수 있다. 아래는 그렇게 꾸민 화면이다.<sup><a href="#ref-1">[1]</a></sup>
 
 <figure class="post-figure">
-<img alt="프로젝트에서 제공하는 Herdr Board 예시. Claude Code와 Codex 터미널 위에 에이전트 상태 카드가 있다." src="https://images-production-944c.up.railway.app/images/b3cbe49de5fcfa930633da5fa0fdaea68b90affad89282d702bf2886e8ad5528.png"/>
+<img alt="프로젝트에서 제공하는 Herdr Board 예시. Claude Code와 Codex 터미널 위에 에이전트 상태 카드가 있다." src="/blog/media/beyond-claude-code-codex-agent-workspaces/b3cbe49de5fcfa93.png"/>
 <figcaption>Herdr Board의 사용자 지정 예시</figcaption>
 </figure>
 
@@ -78,7 +78,7 @@ Herdr에서는 앱 창을 닫아도 터미널을 관리하는 별도 서버인 h
 cmux는 libghostty 기반 macOS 터미널이다. 사이드바에서 브랜치나 포트를 확인하고, 입력이나 확인이 필요한 창은 알림 링으로 찾는다. 내장 브라우저와 CLI·소켓 API가 있어서 터미널에서 작업한 웹 변경을 같은 공간에서 확인할 수 있다.<sup><a href="#ref-3">[3]</a></sup>
 
 <figure class="post-figure">
-<img alt="공식 cmux 문서의 스크린샷. 확인이 필요한 터미널 창 둘레에 파란 알림 링이 표시돼 있다." src="https://images-production-944c.up.railway.app/images/d2b37220de199fc38b56b3bc0d9f25ff958694b074b67f1346419dd512f701f3.png"/>
+<img alt="공식 cmux 문서의 스크린샷. 확인이 필요한 터미널 창 둘레에 파란 알림 링이 표시돼 있다." src="/blog/media/beyond-claude-code-codex-agent-workspaces/d2b37220de199fc3.png"/>
 <figcaption>cmux 알림 링</figcaption>
 </figure>
 
@@ -91,7 +91,7 @@ cmux는 libghostty 기반 macOS 터미널이다. 사이드바에서 브랜치나
 ccmux는 기존 tmux 세션 위에서 돌아간다. 세션 선택기에서 작업 중, 입력 대기, 완료 상태를 보고 바로 그 창으로 이동할 수 있다. 문서에 나온 시작 순서는 <code>brew install ccmux</code>, <code>ccmux setup</code>, 그리고 평소처럼 에이전트와 함께 ccmux를 실행하는 것이다.<sup><a href="#ref-4">[4]</a></sup><sup><a href="#ref-13">[13]</a></sup>
 
 <figure class="post-figure">
-<img alt="프로젝트별 에이전트 세션과 대기, 작업 중, 완료, 유휴 상태를 보여 주는 ccmux 공식 README 화면." src="https://images-production-944c.up.railway.app/images/f59776a1afd6edc8168d0583bc1f4f050900f3b34c679c64f31b4bd839a6ea83.png"/>
+<img alt="프로젝트별 에이전트 세션과 대기, 작업 중, 완료, 유휴 상태를 보여 주는 ccmux 공식 README 화면." src="/blog/media/beyond-claude-code-codex-agent-workspaces/f59776a1afd6edc8.png"/>
 <figcaption>ccmux 세션 선택기</figcaption>
 </figure>
 

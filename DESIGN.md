@@ -14,6 +14,20 @@
 
 - Blog opens the Astro editorial index at /blog/. Each public post has its own static page with a reading layout and optional discussion.
 
+## Blog (/blog/)
+
+The blog is the same site, not a separate brand. It imports `assets/style.css` (Inter, color tokens, buttons, footer) and renders `src/header.html` unchanged, with Blog marked `aria-current`. Blog-only components live in `blog/src/styles/blog.css` and use only the shared tokens (`--ink`, `--muted`, `--line`, `--blue`, `--soft`).
+
+- Language: post content and blog UI are Korean (`lang="ko"`, `word-break: keep-all`). The shared header stays English.
+- Width: same 960px page and 36/24/20px gutters as the portfolio. No horizontal overflow at 360/390px.
+- Home: hero (page title, one-line intro, topic chips) → Latest (one large card with cover and outlined “글 읽기” button) → Archive (rows with topic · date · reading time, title, summary, and a cover thumbnail on the right). Archive rows hide summaries below 700px and use a square thumbnail.
+- Covers: the post’s `cover` front matter or its first image. Cropped to 16:10 from the top, 1px `--line` border, 8px radius. Without an image, a soft tile shows the topic. Never a stock or generated picture.
+- Article: back link → meta line (topic in blue, date, reading time) → 40px title (32/28px on smaller screens) → muted lede. Body text 17px/1.85 (16px on phones), max 700px. Tables scroll inside their own box. Figures center with a muted 13px caption.
+- Contents: at ≥1040px, a 196px sticky column left of the body, numbered, with the current section in blue and a 2px left rule. Below that, a collapsed “목차” disclosure above the body.
+- Likes and comments: a bordered “좋아요와 댓글” panel after the body, using giscus (GitHub Discussions, 👍 reaction = like). It loads only after a click and never under DNT/GPC, which get a GitHub Discussions link instead.
+- Previous/next: two outlined cards (title + two-line summary) after the article.
+- Security: strict CSP with no inline script or style; client code lives in `blog/public/blog.js`. Post images are self-hosted under `blog/public/media/<slug>/`.
+
 - Projects representatives must be actual service interfaces, never video thumbnails or architecture slides. Omit the preview when no publishable service screen exists. Video thumbnails remain valid only within Talks.
 
 - Projects display newest-first: Marketing AX, Polaris, SmartBee, conversation search, REVIEWRO, review analytics, AIAS, targeting. Exactly six service previews are selected; Polaris and Marketing AX are text-only.

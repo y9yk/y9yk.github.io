@@ -1,25 +1,50 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import Discussion from '../components/Discussion.astro';
-import { posts, dateLabel } from '../lib/posts';
+import { posts, dateLabel, type Post } from '../lib/posts';
+
 export function getStaticPaths() {
-  return posts.map(post => ({ params: {slug: post.slug}, props: {post} }));
+  return posts.map((post, index) => ({
+    params: { slug: post.slug },
+    props: { post, newer: posts[index - 1], older: posts[index + 1] },
+  }));
 }
-const {post} = Astro.props;
-const {Content, getHeadings} = post.entry;
+interface Props { post: Post; newer?: Post; older?: Post }
+const { post, newer, older } = Astro.props;
+const { Content, getHeadings } = post.entry;
 const sections = getHeadings().filter(heading => heading.depth === 2);
+const arrow = (d: string) => `<svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
 ---
-<Shell title={post.title} description={post.description}>
-  <article class="story">
-    <header class="story-head"><a class="back" href="/blog/">← 전체 글</a>
-      <h1>{post.title}</h1><p class="meta"><time datetime={post.date}>{dateLabel(post.date)}</time> · {post.topic}{post.excerpt && ' · 요약'}</p>
+<Shell title={post.title} description={post.description} image={post.cover} type="article">
+  <article class="article">
+    <header class="article-head">
+      <a class="back-link" href="/blog/"><Fragment set:html={arrow('M15 5l-7 7 7 7')} /><span>전체 글</span></a>
+      <p class="post-meta"><span>{post.topic}</span><time datetime={post.date}>{dateLabel(post.date)}</time><span>{post.readingMinutes}분 분량</span></p>
+      <h1>{post.title}</h1>
+      <p class="article-lede">{post.description}</p>
     </header>
-    <div class="reading">
-      {sections.length > 1 && <nav class="contents" aria-label="이 글의 목차"><strong>이 글의 목차</strong>
-        <ol>{sections.map(section => <li><a href={'#'+section.slug}>{section.text}</a></li>)}</ol>
-      </nav>}
-      <div class="prose"><Content />{post.excerpt && <p><a href={post.source}>Bear Blog에서 전문 읽기 ↗</a></p>}</div>
+
+    <div class={sections.length > 1 ? 'article-layout has-toc' : 'article-layout'}>
+      {sections.length > 1 && (
+        <aside class="toc" aria-labelledby="toc-title">
+          <details open data-toc>
+            <summary id="toc-title">목차</summary>
+            <ol>{sections.map(section => <li><a href={`#${section.slug}`}>{section.text}</a></li>)}</ol>
+          </details>
+        </aside>
+      )}
+      <div class="article-main">
+        <div class="prose"><Content /></div>
+        {post.source && <p class="original-note">이 글은 <a href={post.source}>Bear Blog</a>에 처음 발행했습니다.</p>}
+        <Discussion source={post.source} />
+      </div>
     </div>
-    <Discussion source={post.source} />
+
+    {(newer || older) && (
+      <nav class="post-pager" aria-label="다른 글">
+        {older ? <a class="pager-card" href={older.href} rel="prev"><span class="pager-label"><Fragment set:html={arrow('M15 5l-7 7 7 7')} />이전 글</span><span class="pager-title">{older.title}</span><span class="pager-summary">{older.description}</span></a> : <span />}
+        {newer ? <a class="pager-card pager-next" href={newer.href} rel="next"><span class="pager-label">다음 글<Fragment set:html={arrow('M9 5l7 7-7 7')} /></span><span class="pager-title">{newer.title}</span><span class="pager-summary">{newer.description}</span></a> : <span />}
+      </nav>
+    )}
   </article>
 </Shell>

@@ -48,6 +48,60 @@ class PublishedRoutesTests(unittest.TestCase):
                 self.assertIn('discussion-heading', Document(article).ids)
                 self.assertIn('/blog/', Document(article).links)
 
+    def test_blog_shares_the_portfolio_header_and_stylesheet(self):
+        partial=(ROOT/'src/header.html').read_text().strip()
+        expected=partial.replace('{{prefix}}','/').replace('{{fun_link}}','').replace('<a href="/blog/">Blog</a>','<a href="/blog/" aria-current="page">Blog</a>')
+        for page in (ROOT/'dist/blog').rglob('index.html'):
+            with self.subTest(page=str(page.relative_to(ROOT))):
+                text=page.read_text()
+                self.assertIn(expected,text)
+                self.assertIn('lang="ko"',text)
+        css=''.join(p.read_text() for p in (ROOT/'dist/blog/_astro').glob('*.css'))
+        self.assertIn('--site-header-height',css)
+        self.assertIn('Inter',css)
+
+    def test_blog_pages_keep_a_strict_policy_without_inline_code(self):
+        for page in (ROOT/'dist/blog').rglob('index.html'):
+            with self.subTest(page=str(page.relative_to(ROOT))):
+                text=page.read_text()
+                self.assertIn("default-src 'none'",text)
+                self.assertNotRegex(text,r'<script(?![^>]*\ssrc=)[^>]*>')
+                self.assertNotIn('<style',text)
+                self.assertNotIn(' style="',text)
+
+    def test_migrated_posts_are_complete_and_self_hosted(self):
+        for post in (ROOT/'blog/src/posts').glob('*.md'):
+            with self.subTest(slug=post.stem):
+                text=post.read_text()
+                self.assertNotIn('excerpt: true',text)
+                self.assertNotIn('<style',text)
+                self.assertNotRegex(text,r'<img[^>]*src="(?!/blog/media/)')
+                for src in __import__('re').findall(r'src="/blog/(media/[^"]+)"',text):
+                    self.assertTrue((ROOT/'blog/public'/src).is_file(),src)
+
+    def test_blog_home_has_hero_latest_and_archive_with_thumbnails(self):
+        listing=(ROOT/'dist/blog/index.html').read_text()
+        ids=Document(listing).ids
+        for section in ('blog-title','latest-title','all-title'):self.assertIn(section,ids)
+        posts=list((ROOT/'blog/src/posts').glob('*.md'))
+        self.assertEqual(listing.count('class="post-cover"'),len(posts))
+        rss=(ROOT/'dist/blog/rss.xml').read_text()
+        for post in posts:self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',rss)
+
+    def test_articles_offer_contents_and_neighbour_navigation(self):
+        for post in (ROOT/'blog/src/posts').glob('*.md'):
+            with self.subTest(slug=post.stem):
+                article=(ROOT/'dist/blog'/post.stem/'index.html').read_text()
+                if post.read_text().count('\n## ')>1:self.assertIn('data-toc',article)
+                self.assertIn('class="post-pager"',article)
+
+    def test_discussion_widget_waits_for_consent_and_honours_privacy_signals(self):
+        script=(ROOT/'blog/public/blog.js').read_text()
+        self.assertIn('globalPrivacyControl',script)
+        self.assertIn('doNotTrack',script)
+        self.assertIn("addEventListener('click'",script)
+        self.assertLess(script.index('if (privacy)'),script.index("createElement('script')"))
+
 
 class PublicBuildTests(unittest.TestCase):
     @classmethod

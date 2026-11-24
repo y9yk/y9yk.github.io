@@ -27,7 +27,7 @@ source: "https://y9yk.bearblog.dev/sop-agent-workflows-reliability/"
 문제는 기록마다 표현이 다르다는 것이다. 채널톡은 분석 에이전트에 SOP를 주고, 스크립트로 뽑은 실제 상담 표본을 모델이 읽게 했다. 여기서 찾아낸 응대 패턴을 고객지원 절차로 정리한 뒤, ALF 설정 초안을 만들어 사람이 검토하는 흐름이다.<sup><a href="#ref-1">[1]</a></sup>
 
 <figure class="post-figure">
-<a aria-label="상담 처리 흐름도 크게 보기" href="https://images-production-944c.up.railway.app/images/9f8b450a0af5657781604d0c5181b7876605550af1a430f60f5c871b1940957e.png"><img alt="상담 수집, 주제 묶기, 표본에서 응대 패턴 추출, 상담 절차 작성, ALF 설정 초안, 사람의 검토 순으로 이어지는 흐름도." src="https://images-production-944c.up.railway.app/images/9f8b450a0af5657781604d0c5181b7876605550af1a430f60f5c871b1940957e.png"/></a>
+<a aria-label="상담 처리 흐름도 크게 보기" href="/blog/media/sop-agent-workflows-reliability/9f8b450a0af56577.png"><img alt="상담 수집, 주제 묶기, 표본에서 응대 패턴 추출, 상담 절차 작성, ALF 설정 초안, 사람의 검토 순으로 이어지는 흐름도." src="/blog/media/sop-agent-workflows-reliability/9f8b450a0af56577.png"/></a>
 <figcaption>상담 기록에서 ALF 설정까지</figcaption>
 </figure>
 
@@ -112,7 +112,7 @@ source: "https://y9yk.bearblog.dev/sop-agent-workflows-reliability/"
 도서관 예시는 ‘연장 가능 여부를 확인한다’에서 더 나아간다. 어떤 도구로 책 상태를 확인하는지 적고, 도서관 카드 번호는 고객 메시지에 쓰인 값 대신 사용자 정보 도구에서 가져오게 했다. ‘어떤 책을 빌렸나요?’와 ‘이 책을 연장해 주세요’도 다른 요청으로 다룬다.<sup><a href="#ref-9">[9]</a></sup>
 
 <figure class="post-figure">
-<img alt="대출 연장 전에 도서 상태를 조회하고 사용자 정보 도구에서 카드 번호를 가져오도록 명시한 Strands 절차 일부." src="https://images-production-944c.up.railway.app/images/0c3335c6470b42d8ef1a86610649ff651170913f1e519aad5b1d294b8ba03ccf.png"/>
+<img alt="대출 연장 전에 도서 상태를 조회하고 사용자 정보 도구에서 카드 번호를 가져오도록 명시한 Strands 절차 일부." src="/blog/media/sop-agent-workflows-reliability/0c3335c6470b42d8.png"/>
 <figcaption>대출 연장 전 필수 확인 항목</figcaption>
 </figure>
 

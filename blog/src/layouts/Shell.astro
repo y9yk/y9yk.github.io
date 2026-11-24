@@ -1,24 +1,44 @@
 ---
-import '../styles/site.css';
-const { title, description } = Astro.props;
+import '../../../assets/style.css';
+import '../styles/blog.css';
+import { siteHeader, siteName, policy } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+}
+const { title, description, image, type = 'website' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = image ? new URL(image, Astro.site) : undefined;
+const feed = new URL('/blog/rss.xml', Astro.site);
 ---
 <!doctype html>
 <html lang="ko">
   <head>
-    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} · Yong Ki Lee</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {siteName}</title>
     <meta name="description" content={description} />
+    <meta name="color-scheme" content="light" />
+    <meta http-equiv="Content-Security-Policy" content={policy} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:title" content={title} /><meta property="og:description" content={description} />
+    <link rel="icon" href="/assets/favicon.png" type="image/png" />
+    <link rel="alternate" type="application/rss+xml" title={`${siteName} · Blog`} href={feed} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <script src="/blog/blog.js" defer></script>
   </head>
-  <body>
-    <a class="skip" href="#main">본문으로</a>
-    <header class="mast"><a class="wordmark" href="/blog/">Yong Ki Lee<span>.</span></a>
-      <nav aria-label="주 메뉴"><a href="/blog/">블로그</a><a href="/">프로필</a></nav>
-    </header>
-    <main id="main"><slot /></main>
-    <footer class="foot"><a href="/blog/">Yong Ki Lee · Blog</a><a href="#main">맨 위로 ↑</a></footer>
+  <body class="blog">
+    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <Fragment set:html={siteHeader} />
+    <div class="page">
+      <main id="main"><slot /></main>
+      <footer><p>{siteName}</p><a href="/blog/rss.xml">RSS</a><a href="/">Profile</a></footer>
+    </div>
   </body>
 </html>

@@ -36,7 +36,7 @@ GeekNews에서 소개된 Zach Chmael의 글 <a href="https://zchmael.substack.co
 앞서 떠올린 도구에 다섯 가지 질문을 적용해 보자. 다음은 실제로 진행한 실험의 결과가 아니라, 메모를 채워 보는 가상의 예시다.
 
 <figure>
-<a href="https://images-production-944c.up.railway.app/images/be45ab1f2446fc9bc6f3a665b0596fd7f7776df431fcdea4c4b68e3f7ed26646.png"><img alt="개발 전 메모 작성 예시: 로그 요약 도구의 목적, 불확실성, 실험, 지속 조건, 운영 책임" height="1536" src="https://images-production-944c.up.railway.app/images/be45ab1f2446fc9bc6f3a665b0596fd7f7776df431fcdea4c4b68e3f7ed26646.png" width="1536"/></a>
+<a href="/blog/media/one-page-memo-before-the-next-build/be45ab1f2446fc9b.png"><img alt="개발 전 메모 작성 예시: 로그 요약 도구의 목적, 불확실성, 실험, 지속 조건, 운영 책임" height="1536" src="/blog/media/one-page-memo-before-the-next-build/be45ab1f2446fc9b.png" width="1536"/></a>
 <figcaption>Zach Chmael의 질문을 응용해 직접 작성한 가상의 로그 요약 도구 메모.</figcaption>
 </figure>
 
