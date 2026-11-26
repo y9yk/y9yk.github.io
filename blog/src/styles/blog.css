@@ -1,5 +1,6 @@
 /* Blog components. Tokens, type, header, buttons and footer come from the portfolio's assets/style.css. */
 .blog { word-break: keep-all; overflow-wrap: anywhere; }
+.blog ::selection { background: #f5ff5c; color: #111; }
 .site-header nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
 
 /* Shared metadata line */
