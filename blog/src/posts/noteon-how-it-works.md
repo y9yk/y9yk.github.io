@@ -3,6 +3,7 @@ title: "NoteOn의 아키텍쳐: 강의 영상과 노트를 영상 ID 하나로 �
 date: "2026-11-27T09:30:00+09:00"
 description: "강의를 깊게 공부하는 도구 NoteOn의 설계를 정리한다. 영상 ID 중심의 데이터 구조, 저장소의 코드 구성, 강의 화면 와이어프레임과 디자인 원칙, 노트를 만드는 큐레이션 과정이다."
 topic: "제품 개발"
+cover: "/blog/media/noteon-how-it-works/architecture.png"
 ---
 
 <blockquote>

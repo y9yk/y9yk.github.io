@@ -3,6 +3,7 @@ title: "좋은 강의를 다 봤는데, 왜 '남는 게' 없을까?"
 date: "2026-11-27T09:00:00+09:00"
 description: "좋은 강의도 보고 나면 남지 않는다. 깊게 이해하려면 무엇이 필요한지 정리하고, 그래서 직접 만든 학습 도구 NoteOn을 화면과 함께 소개한다."
 topic: "제품 개발"
+cover: "/blog/media/noteon-good-lectures-with-notes/lecture.png"
 ---
 
 <blockquote>

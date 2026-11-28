@@ -293,3 +293,12 @@ class ForFunTests(unittest.TestCase):
         for anchor in ('what','why','features','architecture','releases'):self.assertIn(f'id="{anchor}"',html)
         for forbidden in ('question','chat','assistant','admin','질문'):self.assertNotIn(forbidden,html.lower())
         self.assertIn('href="fun/noteon/"',(ROOT/'dist/projects/index.html').read_text())
+
+
+class CoverTests(unittest.TestCase):
+    def test_every_post_has_a_distinct_cover(self):
+        listing=(ROOT/'dist/blog/index.html').read_text()
+        import re as _re
+        covers=_re.findall(r'class="post-cover"[^>]*>\s*<img src="([^"]+)"',listing)
+        self.assertEqual(len(covers),len(list((ROOT/'blog/src/posts').glob('*.md'))))
+        self.assertEqual(len(covers),len(set(covers)),covers)
