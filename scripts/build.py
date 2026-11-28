@@ -173,6 +173,22 @@ def render_projects(data):
     return template('projects.html',values)
 
 
+def crawl_files(site_url):
+    """sitemap.xml and robots.txt for the public routes only: home, Projects index, Blog index and posts."""
+    base = site_url.rstrip('/')
+    urls = [(f'{base}/', None), (f'{base}/projects/', None), (f'{base}/blog/', None)]
+    for post in sorted((ROOT/'blog/src/posts').glob('*.md')):
+        date = re.search(r'^date:\s*"(\d{4}-\d{2}-\d{2})', post.read_text(), re.M)
+        urls.append((f'{base}/blog/{post.stem}/', date.group(1) if date else None))
+    entries = ''.join(
+        f'  <url><loc>{html.escape(loc)}</loc>' + (f'<lastmod>{lastmod}</lastmod>' if lastmod else '') + '</url>\n'
+        for loc, lastmod in urls)
+    sitemap = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + entries + '</urlset>\n')
+    robots = f'User-agent: *\nAllow: /\n\nSitemap: {base}/sitemap.xml\n'
+    return sitemap, robots
+
+
 def main():
     data=json.loads((ROOT/'content/profile.json').read_text());validate(data)
     blog = ROOT / 'blog'
@@ -185,6 +201,9 @@ def main():
     shutil.copytree(blog / 'dist', output / 'blog')
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
+    sitemap, robots = crawl_files(data['site_url'])
+    (output/'sitemap.xml').write_text(sitemap)
+    (output/'robots.txt').write_text(robots)
     (output/'404.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Page not found</title><h1>Page not found</h1><a href="/">Home</a></html>')
     print('Built the public homepage, Projects summary index, and Blog.')
 

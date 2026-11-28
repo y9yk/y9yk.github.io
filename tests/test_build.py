@@ -91,6 +91,20 @@ class PublishedRoutesTests(unittest.TestCase):
         rss=(ROOT/'dist/blog/rss.xml').read_text()
         for post in posts:self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',rss)
 
+    def test_sitemap_and_robots_list_only_public_routes(self):
+        import re as _re
+        sitemap=(ROOT/'dist/sitemap.xml').read_text()
+        locs=_re.findall(r'<loc>([^<]+)</loc>',sitemap)
+        self.assertTrue(all(loc.startswith('https://yongkilee.com/') for loc in locs))
+        for route in ('/','/projects/','/blog/'):self.assertIn(f'https://yongkilee.com{route}',locs)
+        for post in (ROOT/'blog/src/posts').glob('*.md'):self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',locs)
+        self.assertEqual(len(locs),len(set(locs)))
+        # no project or talk detail routes, no internal services
+        self.assertFalse([loc for loc in locs if _re.search(r'/(projects|talks)/[^/]+/|/stats/|/api/',loc)])
+        robots=(ROOT/'dist/robots.txt').read_text()
+        self.assertIn('Sitemap: https://yongkilee.com/sitemap.xml',robots)
+        self.assertNotIn('Disallow: /\n',robots)
+
     def test_articles_use_full_width_with_comments_only(self):
         for post in (ROOT/'blog/src/posts').glob('*.md'):
             with self.subTest(slug=post.stem):
