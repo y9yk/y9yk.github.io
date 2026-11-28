@@ -166,13 +166,13 @@ def render(data):
     return template('template.html',values)
 
 
-FUN_FIELDS = {'id','title','tagline','summary','status','why','features','architecture','releases','posts'}
+FUN_FIELDS = {'id','title','tagline','summary','status','url','why','features','architecture','releases','posts'}
 # Screens reused from already-published blog posts (same origin, self-hosted).
 FUN_IMAGES = {
     'home': ('blog/media/noteon-good-lectures-with-notes/home.png', 1492, 2563),
     'lecture': ('blog/media/noteon-good-lectures-with-notes/lecture.png', 1492, 910),
     'notes': ('blog/media/noteon-good-lectures-with-notes/notes.png', 1280, 900),
-    'architecture': ('assets/fun/noteon-architecture.png', 960, 520),
+    'architecture': ('assets/fun/noteon-architecture.png', 1200, 880),
 }
 
 
@@ -182,6 +182,7 @@ def load_fun():
         page=json.loads(path.read_text())
         if set(page)!=FUN_FIELDS or not re.fullmatch('[a-z][a-z0-9-]*',page['id']):
             raise ValueError('Unapproved For fun fields')
+        safe_url(page['url'])
         for post in page['posts']:
             if not post['url'].startswith('/blog/'):safe_url(post['url'])
         pages.append(page)
@@ -194,7 +195,7 @@ def fun_cards(pages):
         src,w,h=FUN_IMAGES['lecture']
         return (f'<a class="fun-card-shot" href="fun/{p["id"]}/" aria-hidden="true" tabindex="-1">'
                 f'<img src="../{src}" alt="" width="{w}" height="{h}" loading="lazy" decoding="async"></a>')
-    items=''.join(f'<article class="project fun-card" id="fun-{p["id"]}"><div class="fun-card-text"><p class="project-context">{esc(p["status"])}</p><h3><a href="fun/{p["id"]}/">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><div class="resource-links">{action("fun/"+p["id"]+"/","About "+p["title"])}</div></div>{preview(p)}</article>' for p in pages)
+    items=''.join(f'<article class="project fun-card" id="fun-{p["id"]}"><div class="fun-card-text"><p class="project-context">{esc(p["status"])}</p><h3><a href="fun/{p["id"]}/">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><div class="resource-links">{action("fun/"+p["id"]+"/","About "+p["title"])}{action(p["url"],"Open "+p["title"],True)}</div></div>{preview(p)}</article>' for p in pages)
     return f'<section class="projects-group" id="for-fun" aria-labelledby="for-fun-title"><h2 id="for-fun-title">For fun</h2><p class="group-lede">Side projects I build for myself.</p>{items}</section>'
 
 
@@ -220,11 +221,11 @@ def render_fun(data, page):
         src,w,h=FUN_IMAGES[key]
         return f'<img class="{cls}" src="{prefix}{src}" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async">'
     paras=lambda items:''.join(f'<p>{esc(t)}</p>' for t in items)
-    nav='<nav class="fun-toc" aria-label="On this page"><a href="#what">What</a><a href="#why">Why</a><a href="#features">Features</a><a href="#architecture">Architecture</a><a href="#releases">Release notes</a></nav>'
+    nav='<nav class="fun-toc" aria-label="On this page"><a href="#why">Why</a><a href="#features">Features</a><a href="#architecture">Architecture</a><a href="#releases">Release notes</a></nav>'
     posts=''.join(action(prefix+p['url'].lstrip('/') if p['url'].startswith('/blog/') else p['url'],p['label'],not p['url'].startswith('/blog/')) for p in page['posts'])
-    hero=(f'<header class="fun-hero" id="what"><p class="fun-crumb"><a href="../../">Projects</a> / <a href="../../#for-fun">For fun</a></p>'
+    hero=(f'<header class="fun-hero"><p class="fun-crumb"><a href="../../">Projects</a> / <a href="../../#for-fun">For fun</a></p>'
           f'<h1>{esc(page["title"])}</h1><p class="fun-tagline">{esc(page["tagline"])}</p><p class="fun-summary">{esc(page["summary"])}</p>'
-          f'<p class="project-context">{esc(page["status"])}</p><div class="resource-links">{posts}</div>'
+          f'<p class="project-context">{esc(page["status"])}</p><div class="resource-links">{action(page["url"],"Open "+page["title"],True)}{posts}</div>'
           f'<figure class="fun-shot fun-shot-hero">{img("lecture","NoteOn lecture screen: player on the left, timed key segments on the right")}</figure></header>')
     why=(f'<section class="section" id="why"><h2>Why I built it</h2><div class="fun-two"><div><h3>The problem</h3>{paras(page["why"]["problem"])}</div>'
          f'<div><h3>The motivation</h3>{paras(page["why"]["motivation"])}</div></div></section>')
@@ -235,9 +236,10 @@ def render_fun(data, page):
     features=f'<section class="section" id="features"><h2>Features</h2>{"".join(feats)}</section>'
     arch=page['architecture']
     chips=''.join(f'<li>{esc(s)}</li>' for s in arch['stack'])
-    architecture=(f'<section class="section" id="architecture"><h2>Architecture &amp; stack</h2>{bullets(arch["text"],"fun-points")}'
-                  f'<figure class="fun-shot fun-shot-wide">{img("architecture","Code layout: app routes, components, lib data layer, and Supabase storage")}<figcaption>Code layout, from routes to storage.</figcaption></figure>'
-                  f'<ul class="fun-stack" aria-label="Technology">{chips}</ul></section>')
+    groups=''.join(f'<div class="fun-layer"><h3>{esc(g["name"])}</h3>{bullets(g["items"])}</div>' for g in arch['groups'])
+    architecture=(f'<section class="section" id="architecture"><h2>Architecture &amp; stack</h2>'
+                  f'<figure class="fun-shot fun-shot-wide">{img("architecture","How NoteOn fits together: frontend, backend, data and processing, the curation pipeline, and cross-cutting logging, security and monitoring, with the main calls between them")}<figcaption>How the parts connect. Numbered arrows are the main calls.</figcaption></figure>'
+                  f'<div class="fun-layers">{groups}</div><ul class="fun-stack" aria-label="Technology">{chips}</ul></section>')
     rel=''.join(f'<article class="timeline-row"><div class="period">{esc(r["date"])}</div><div>{bullets(r["items"],"career-bullets")}</div></article>' for r in page['releases'])
     releases=f'<section class="section" id="releases"><h2>Recent release notes</h2>{rel}</section>'
     values['body']=hero+nav+why+features+architecture+releases

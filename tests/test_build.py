@@ -288,8 +288,11 @@ class ForFunTests(unittest.TestCase):
             self.assertEqual(set(page),self.build.FUN_FIELDS)
             self.assertNotIn(page['id'],work)
             text=json.dumps(page,ensure_ascii=False)
-            for forbidden in ('SK Telecom','SKT','drive.google','docs.google','notion.so','railway.app'):
+            for forbidden in ('SK Telecom','SKT','drive.google','docs.google','notion.so'):
                 self.assertNotIn(forbidden,text)
+            # the only service link is the owner-approved public URL of the project itself
+            self.assertTrue(page['url'].startswith('https://'))
+            self.assertNotIn('railway.app',text.replace(page['url'],''))
 
     def test_images_are_already_public(self):
         for src,_,_ in self.build.FUN_IMAGES.values():
@@ -300,9 +303,10 @@ class ForFunTests(unittest.TestCase):
 
     def test_noteon_page_sections_and_no_question_feature(self):
         html=(ROOT/'dist/projects/fun/noteon/index.html').read_text()
-        for anchor in ('what','why','features','architecture','releases'):self.assertIn(f'id="{anchor}"',html)
+        for anchor in ('why','features','architecture','releases'):self.assertIn(f'id="{anchor}"',html)
         for forbidden in ('question','chat','assistant','admin','질문'):self.assertNotIn(forbidden,html.lower())
         self.assertIn('href="fun/noteon/"',(ROOT/'dist/projects/index.html').read_text())
+        self.assertIn('href="https://noteon-production.up.railway.app/"',html)
 
 
 class CoverTests(unittest.TestCase):
