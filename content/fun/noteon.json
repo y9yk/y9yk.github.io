@@ -1,0 +1,45 @@
+{
+  "id": "noteon",
+  "title": "NoteOn",
+  "tagline": "Study great open lectures deeply, not just watch them.",
+  "summary": "A personal study tool that puts a lecture video, Korean captions, timed key segments, sourced notes and your own memos on one screen.",
+  "status": "Personal project · started November 2026",
+  "why": {
+    "problem": [
+      "There are more excellent open lectures than ever, yet most of what I watched did not stay with me.",
+      "When a hard passage came up, the video, my notes and the sources that explained it lived in different tabs, and I lost the thread looking for them."
+    ],
+    "motivation": [
+      "I wanted to understand lectures deeply and remember them, not let them stream past.",
+      "That needed two things: the evidence for a hard passage right beside the video, and a trace of my own thinking left on the sentence where it happened.",
+      "People now build personal tools for their own needs. NoteOn is mine: an interactive way to study, where I mark, annotate and come back."
+    ]
+  },
+  "features": [
+    {"title": "Three ways in", "text": "Follow a course in order, jump straight to curated excerpts by topic, or browse and search in Korean and English.", "image": "home"},
+    {"title": "Captions and key segments", "text": "Korean captions overlay the player; timed key segments sit beside it and start playback from that moment.", "image": "lecture"},
+    {"title": "Notes that keep the video in view", "text": "Scroll into the notes and the player docks as a mini player above the contents. Each chapter carries a play range and its sources.", "image": "notes"},
+    {"title": "Sentence memos", "text": "Select sentences, even across paragraphs, and keep a memo on them. Memos are private by default."},
+    {"title": "My study", "text": "Bookmarks and liked lectures collect in one place after signing in with Google."}
+  ],
+  "architecture": {
+    "text": [
+      "Every piece of data hangs off one key: the 11-character YouTube video ID.",
+      "Routes, components and a data layer sit over Supabase; development and production read through the same catalog loader.",
+      "Notes are edited, not generated: a Codex curation plugin drafts, checks and cross-references each lecture before it ships as a SQL migration."
+    ],
+    "stack": ["Next.js 16 (App Router)", "React 19", "TypeScript", "Supabase Postgres + RLS", "Google sign-in", "OpenTelemetry", "Railway", "Codex curation plugin"]
+  },
+  "releases": [
+    {"date": "2026-11-28", "items": ["Korean captions stay visible in fullscreen and scale with the video", "Contents list follows the chapter being read", "Korean captions for the CC BY Vienna Gödel Lecture"]},
+    {"date": "2026-11-27", "items": ["CMU 11-768 AI Agents lectures 2–4 with detailed notes", "Open AI talks grouped under specific topics", "Newly added lectures on the home page"]},
+    {"date": "2026-11-26", "items": ["Renamed to NoteOn with a note-page app mark", "Shared memo underlines drawn as a highlighter"]},
+    {"date": "2026-11-23", "items": ["Deeper lecture notes from a two-pass Codex notes pipeline", "Interface aligned with a written design system", "Return to the originating page after Google sign-in"]},
+    {"date": "2026-11-21", "items": ["Curated lecture workspace and personal study notes", "First ML Systems lectures with full timelines"]},
+    {"date": "2026-11-20", "items": ["Rebuilt on Next.js and Supabase", "Codex curation plugin"]}
+  ],
+  "posts": [
+    {"label": "Why I built it (blog, Korean)", "url": "/blog/noteon-good-lectures-with-notes/"},
+    {"label": "How it is designed (blog, Korean)", "url": "/blog/noteon-how-it-works/"}
+  ]
+}

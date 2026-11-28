@@ -23,14 +23,19 @@ class PublishedRoutesTests(unittest.TestCase):
     def test_build_omits_private_and_retired_routes(self):
         output=ROOT/'dist'
         self.assertTrue((output/'projects/index.html').is_file())
-        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html'})
+        fun_ids={p.stem for p in (ROOT/'content/fun').glob('*.json')}
+        self.assertEqual({p.name for p in (output/'projects').iterdir()},{'index.html'}|({'fun'} if fun_ids else set()))
+        if fun_ids:self.assertEqual({p.name for p in (output/'projects/fun').iterdir()},fun_ids)
         for route in ('learning', 'cmu-cs-learn', 'talks', 'demos', 'stats', 'for-fun'):
             self.assertFalse((output/route).exists(), route)
         for file in output.rglob('*.html'):
             doc=Document(file.read_text())
             for url in doc.links:
                 self.assertFalse(url.startswith('talks/'))
-                self.assertNotRegex(url,r'projects/[^?#/]+/')
+                # only owner-approved For fun landing pages may live under projects/
+                self.assertNotRegex(url.replace('projects/fun/','fun/'),r'projects/[^?#/]+/')
+                m=__import__('re').search(r'(?:^|/)fun/([^/?#]+)/',url)
+                if m and 'projects' in str(file.relative_to(output))+url:self.assertIn(m.group(1),fun_ids,url)
                 if url.startswith('#'):self.assertIn(url[1:],doc.ids)
 
     def test_astro_blog_builds_native_routes_for_published_posts(self):
@@ -100,7 +105,9 @@ class PublishedRoutesTests(unittest.TestCase):
         for post in (ROOT/'blog/src/posts').glob('*.md'):self.assertIn(f'https://yongkilee.com/blog/{post.stem}/',locs)
         self.assertEqual(len(locs),len(set(locs)))
         # no project or talk detail routes, no internal services
-        self.assertFalse([loc for loc in locs if _re.search(r'/(projects|talks)/[^/]+/|/stats/|/api/',loc)])
+        self.assertFalse([loc for loc in locs if _re.search(r'/(projects|talks)/(?!fun/)[^/]+/|/stats/|/api/',loc)])
+        fun_ids={p.stem for p in (ROOT/'content/fun').glob('*.json')}
+        self.assertEqual({_re.search(r'/projects/fun/([^/]+)/',l).group(1) for l in locs if '/projects/fun/' in l},fun_ids)
         robots=(ROOT/'dist/robots.txt').read_text()
         self.assertIn('Sitemap: https://yongkilee.com/sitemap.xml',robots)
         self.assertNotIn('Disallow: /\n',robots)
@@ -256,3 +263,33 @@ class PublicBuildTests(unittest.TestCase):
         self.assertEqual(len(self.data['projects']),8)
 
 if __name__=='__main__':unittest.main()
+
+
+class ForFunTests(unittest.TestCase):
+    """For fun landing pages are the owner's own side projects, approved one by one (AGENTS.md)."""
+    @classmethod
+    def setUpClass(cls):
+        spec=importlib.util.spec_from_file_location('build',ROOT/'scripts/build.py');cls.build=importlib.util.module_from_spec(spec);spec.loader.exec_module(cls.build)
+        cls.pages=cls.build.load_fun()
+
+    def test_only_approved_fields_and_no_work_projects(self):
+        work={p['id'] for p in json.loads((ROOT/'content/profile.json').read_text())['projects']}
+        for page in self.pages:
+            self.assertEqual(set(page),self.build.FUN_FIELDS)
+            self.assertNotIn(page['id'],work)
+            text=json.dumps(page,ensure_ascii=False)
+            for forbidden in ('SK Telecom','SKT','drive.google','docs.google','notion.so','railway.app'):
+                self.assertNotIn(forbidden,text)
+
+    def test_images_are_already_public(self):
+        for src,_,_ in self.build.FUN_IMAGES.values():
+            self.assertTrue(src.startswith('blog/media/') or src.startswith('assets/fun/'),src)
+            base=ROOT/'blog/public'/src.removeprefix('blog/') if src.startswith('blog/') else ROOT/src
+            self.assertTrue(base.is_file(),src)
+        self.assertEqual({p.name for p in (ROOT/'assets/fun').iterdir()},{'noteon-architecture.png','SOURCES.md'})
+
+    def test_noteon_page_sections_and_no_question_feature(self):
+        html=(ROOT/'dist/projects/fun/noteon/index.html').read_text()
+        for anchor in ('what','why','features','architecture','releases'):self.assertIn(f'id="{anchor}"',html)
+        for forbidden in ('question','chat','assistant','admin','질문'):self.assertNotIn(forbidden,html.lower())
+        self.assertIn('href="fun/noteon/"',(ROOT/'dist/projects/index.html').read_text())

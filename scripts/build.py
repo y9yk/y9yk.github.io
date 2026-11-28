@@ -166,17 +166,79 @@ def render(data):
     return template('template.html',values)
 
 
-def render_projects(data):
+FUN_FIELDS = {'id','title','tagline','summary','status','why','features','architecture','releases','posts'}
+# Screens reused from already-published blog posts (same origin, self-hosted).
+FUN_IMAGES = {
+    'home': ('blog/media/noteon-good-lectures-with-notes/home.png', 1492, 2563),
+    'lecture': ('blog/media/noteon-good-lectures-with-notes/lecture.png', 1492, 910),
+    'notes': ('blog/media/noteon-good-lectures-with-notes/notes.png', 1280, 900),
+    'architecture': ('assets/fun/noteon-architecture.png', 960, 520),
+}
+
+
+def load_fun():
+    pages=[]
+    for path in sorted((ROOT/'content/fun').glob('*.json')):
+        page=json.loads(path.read_text())
+        if set(page)!=FUN_FIELDS or not re.fullmatch('[a-z][a-z0-9-]*',page['id']):
+            raise ValueError('Unapproved For fun fields')
+        for post in page['posts']:
+            if not post['url'].startswith('/blog/'):safe_url(post['url'])
+        pages.append(page)
+    return pages
+
+
+def fun_cards(pages):
+    if not pages:return ''
+    items=''.join(f'<article class="project fun-card" id="fun-{p["id"]}"><p class="project-context">{esc(p["status"])}</p><h3><a href="fun/{p["id"]}/">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><div class="resource-links">{action("fun/"+p["id"]+"/","About "+p["title"])}</div></article>' for p in pages)
+    return f'<section class="projects-group" id="for-fun" aria-labelledby="for-fun-title"><h2 id="for-fun-title">For fun</h2><p class="group-lede">Side projects I build for myself.</p>{items}</section>'
+
+
+def render_projects(data, fun_pages=()):
     validate(data)
     values=base(data,prefix='../',title=f'{data["name"]} | Projects',route='projects/')
-    values['projects']=cards(data)
+    work=cards(data)
+    values['projects']=(f'<section class="projects-group" id="work" aria-labelledby="work-title"><h2 id="work-title">Work</h2>{work}</section>'+fun_cards(fun_pages)) if fun_pages else work
     return template('projects.html',values)
+
+
+def render_fun(data, page):
+    prefix='../../../'
+    values=base(data,prefix=prefix,title=f'{page["title"]} | {data["name"]}',route=f'projects/fun/{page["id"]}/')
+    values['description']=esc(page['summary'])
+    def img(key, alt, cls=''):
+        src,w,h=FUN_IMAGES[key]
+        return f'<img class="{cls}" src="{prefix}{src}" alt="{esc(alt)}" width="{w}" height="{h}" loading="lazy" decoding="async">'
+    paras=lambda items:''.join(f'<p>{esc(t)}</p>' for t in items)
+    nav='<nav class="fun-toc" aria-label="On this page"><a href="#what">What</a><a href="#why">Why</a><a href="#features">Features</a><a href="#architecture">Architecture</a><a href="#releases">Release notes</a></nav>'
+    posts=''.join(action(prefix+p['url'].lstrip('/') if p['url'].startswith('/blog/') else p['url'],p['label'],not p['url'].startswith('/blog/')) for p in page['posts'])
+    hero=(f'<header class="fun-hero" id="what"><p class="fun-crumb"><a href="../../">Projects</a> / <a href="../../#for-fun">For fun</a></p>'
+          f'<h1>{esc(page["title"])}</h1><p class="fun-tagline">{esc(page["tagline"])}</p><p class="fun-summary">{esc(page["summary"])}</p>'
+          f'<p class="project-context">{esc(page["status"])}</p><div class="resource-links">{posts}</div>'
+          f'<figure class="fun-shot fun-shot-hero">{img("lecture","NoteOn lecture screen: player on the left, timed key segments on the right")}</figure></header>')
+    why=(f'<section class="section" id="why"><h2>Why I built it</h2><div class="fun-two"><div><h3>The problem</h3>{paras(page["why"]["problem"])}</div>'
+         f'<div><h3>The motivation</h3>{paras(page["why"]["motivation"])}</div></div></section>')
+    feats=[]
+    for f in page['features']:
+        shot=f'<figure class="fun-shot">{img(f["image"],f["title"]+" screen")}</figure>' if f.get('image') else ''
+        feats.append(f'<article class="fun-feature{" has-shot" if shot else ""}"><div><h3>{esc(f["title"])}</h3><p>{esc(f["text"])}</p></div>{shot}</article>')
+    features=f'<section class="section" id="features"><h2>Features</h2>{"".join(feats)}</section>'
+    arch=page['architecture']
+    chips=''.join(f'<li>{esc(s)}</li>' for s in arch['stack'])
+    architecture=(f'<section class="section" id="architecture"><h2>Architecture &amp; stack</h2>{bullets(arch["text"],"fun-points")}'
+                  f'<figure class="fun-shot fun-shot-wide">{img("architecture","Code layout: app routes, components, lib data layer, and Supabase storage")}<figcaption>Code layout, from routes to storage.</figcaption></figure>'
+                  f'<ul class="fun-stack" aria-label="Technology">{chips}</ul></section>')
+    rel=''.join(f'<article class="timeline-row"><div class="period">{esc(r["date"])}</div><div>{bullets(r["items"],"career-bullets")}</div></article>' for r in page['releases'])
+    releases=f'<section class="section" id="releases"><h2>Recent release notes</h2>{rel}</section>'
+    values['body']=hero+nav+why+features+architecture+releases
+    return template('fun.html',values)
 
 
 def crawl_files(site_url):
     """sitemap.xml and robots.txt for the public routes only: home, Projects index, Blog index and posts."""
     base = site_url.rstrip('/')
     urls = [(f'{base}/', None), (f'{base}/projects/', None), (f'{base}/blog/', None)]
+    for page in load_fun():urls.append((f'{base}/projects/fun/{page["id"]}/', None))
     for post in sorted((ROOT/'blog/src/posts').glob('*.md')):
         date = re.search(r'^date:\s*"(\d{4}-\d{2}-\d{2})', post.read_text(), re.M)
         urls.append((f'{base}/blog/{post.stem}/', date.group(1) if date else None))
@@ -197,7 +259,11 @@ def main():
     if output.exists():shutil.rmtree(output)
     output.mkdir();(output/'index.html').write_text(render(data))
     (output/'projects').mkdir()
-    (output/'projects/index.html').write_text(render_projects(data))
+    fun_pages=load_fun()
+    (output/'projects/index.html').write_text(render_projects(data,fun_pages))
+    for page in fun_pages:
+        target=output/'projects/fun'/page['id'];target.mkdir(parents=True)
+        (target/'index.html').write_text(render_fun(data,page))
     shutil.copytree(blog / 'dist', output / 'blog')
     shutil.copytree(ROOT/'assets',output/'assets')
     (output/'.nojekyll').touch()
