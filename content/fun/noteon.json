@@ -39,7 +39,6 @@
     {"date": "2026-11-20", "items": ["Rebuilt on Next.js and Supabase", "Codex curation plugin"]}
   ],
   "posts": [
-    {"label": "Why I built it (blog, Korean)", "url": "/blog/noteon-good-lectures-with-notes/"},
-    {"label": "How it is designed (blog, Korean)", "url": "/blog/noteon-how-it-works/"}
+    {"label": "Why I built it (blog, Korean)", "url": "/blog/noteon-good-lectures-with-notes/"}
   ]
 }
