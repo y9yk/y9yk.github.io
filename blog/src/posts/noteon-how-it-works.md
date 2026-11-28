@@ -8,7 +8,7 @@ relatedPosts:
   - noteon-good-lectures-with-notes
 ---
 
-테렌스 타오의 「Math 2.0」 강연에는 답을 얻는 것과 그 답을 이해하는 것의 차이를 짚는 대목이 있다. NoteOn에서 이 대목은 강의 노트 5장에 있다. 제목 옆 **21분 25초**를 누르면 설명에 해당하는 장면이 재생된다. 편집할 때는 이 시각이 정확한지 확인해야 하고, 화면을 만들 때는 독자가 읽던 문장을 놓치지 않고 영상을 볼 수 있게 해야 한다. [강연에서 해당 대목 보기](https://www.youtube.com/watch?v=aHpPoNNTOKY&t=1285s)
+테렌스 타오의 「Math 2.0」 강연에는 답을 얻는 것과 그 답을 이해하는 것의 차이를 짚는 대목이 있다. NoteOn에서 이 대목은 강의 노트 5장에 있다. 제목 옆 **21분 25초**를 누르면 설명에 해당하는 장면이 재생된다. 편집할 때는 이 시각이 정확한지 확인해야 하고, 화면을 만들 때는 독자가 읽던 문장을 놓치지 않고 영상을 볼 수 있게 해야 한다. [NoteOn에서 「Math 2.0」 노트 5장 열기](https://noteon-production.up.railway.app/lectures/aHpPoNNTOKY#notes-chapter-5)
 
 ## 서비스 구성
 
@@ -22,21 +22,28 @@ relatedPosts:
 
 ## 아키텍처
 
-모듈을 나눈 기준은 맡은 일이다. 예를 들어 **강의 조회**는 한 화면에 무엇을 보낼지 결정하고, **재생 제어**는 독자가 선택한 시각으로 플레이어를 옮긴다. 구간을 누를 때마다 서버에서 강의 한 편을 다시 읽을 필요가 없는 이유다.
+강의를 열 때와 북마크를 저장할 때는 같은 화면에서도 요청 경로가 다르다. 강의 페이지는 **백엔드**가 공개 자료를 읽어 조립한다. 북마크는 **프런트엔드**가 로그인 세션으로 독자의 기록을 저장한다. 이 차이를 기준으로 NoteOn의 구성을 그렸다.
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/layers.svg"><img width="800" height="507" src="/blog/media/noteon-how-it-works/layers.svg" alt="화면, 조회, 저장, 편집으로 묶은 모듈 구성. 화면은 표시와 재생을, 조회는 읽기와 조합을, 저장은 자료 보관을, 편집은 노트 작성과 검증 및 반영을 맡는다." loading="lazy" decoding="async"/></a>
-<figcaption>같은 테두리 안의 모듈은 역할이 비슷하다. 편집은 노트를 고칠 때 실행하고, 화면과 조회는 독자가 강의를 이용할 때 실행한다.</figcaption>
+<a href="/blog/media/noteon-how-it-works/technical-architecture.svg"><img width="800" height="347" src="/blog/media/noteon-how-it-works/technical-architecture.svg" alt="NoteOn의 프런트엔드와 백엔드, 자료가 저장되는 위치, 로그인과 관측, 강의 자료를 준비하는 편집 도구의 관계" loading="lazy" decoding="async"/></a>
+<figcaption>공개 강의 자료는 서버가 읽고, 개인 기록은 로그인한 브라우저가 저장한다. 편집 도구는 강의를 게시하거나 수정할 때 실행한다.</figcaption>
 </figure>
 
-| 레이어 | 모듈과 책임 |
-|---|---|
-| 화면 | **강의 화면**이 영상 옆에 구간 목록과 노트를 배치한다. **재생 제어**가 구간 선택을 플레이어에 전달하고 현재 재생 시각에 맞는 자막을 표시한다. |
-| 조회 | **강의 조회**가 요청받은 영상 ID로 강의와 과목을 고른다. **카탈로그 로더**는 과목·강의를 읽고 공식 챕터와 보충 노트를 합친다. **자막 조회**는 해당 영상에 공개할 수 있는 한국어 자막이 있는지 확인한다. |
-| 저장 | **공개 카탈로그**에는 과목, 강의 노트와 재생 구간이 있다. **공개 자막**은 영상·언어별 파일이다. **개인 학습 기록**에는 독자의 북마크와 문장 메모가 남는다. |
-| 편집 | **노트 편집**에서 영상과 자료를 대조해 초안을 쓴다. **초안 검사**가 필수 항목과 시각 범위를 확인한다. **변경 반영**은 검토한 내용을 개발용 카탈로그와 운영 DB에 적용할 형태로 만든다. |
+- **프런트엔드**는 브라우저에서 실행되는 React 화면이다. 플레이어·타임라인은 노트의 재생 시각을 YouTube 플레이어에 전달한다. 문장 메모와 북마크는 계정 세션을 사용하는 별도 모듈이 맡는다.
+- **백엔드**는 Railway에서 실행하는 Next.js 서버다. 강의 페이지가 영상 ID를 받고, 카탈로그 로더가 과목과 강의를 읽어 공식 챕터와 보충 노트를 합친다. 자막 로더는 공개된 한국어 트랙을 찾아 화면에 전달한다.
+- **저장소**는 자료의 형태에 따라 나뉜다. 과목·강의와 계정별 학습 기록은 Supabase Postgres에 둔다. 자막은 서버가 읽을 수 있는 영상별 파일로 보관하고, 영상 원본의 재생은 YouTube에 맡긴다.
+- **인증과 권한**은 읽고 쓸 수 있는 범위를 정한다. Supabase Auth가 Google 로그인을 처리하고 세션을 발급한다. 개인 기록을 읽거나 쓸 때는 DB의 행 수준 보안(RLS)이 해당 계정에 허용된 작업인지 확인한다.
+- **로깅과 모니터링**에는 두 입력이 있다. 브라우저의 이벤트 수집기는 구간 이동이나 메모 저장을, 서버의 OpenTelemetry 계측은 요청 시간과 오류를 기록한다. 각각의 집계 방식은 아래 ‘측정과 모니터링’에서 설명한다.
+- **데이터 처리**는 발행 전에 실행하는 작업이다. 노트 편집 도구가 근거 자료와 초안을 묶고, 검사기가 노트 구조와 재생 구간을 검증한다. 편집자가 확인한 결과를 로컬 카탈로그와 운영 DB에 반영할 변경분으로 만든다.
 
-구현에서 강의 조회와 카탈로그 조합은 Next.js 서버가 맡는다. 화면과 재생 제어는 React와 YouTube 플레이어 API로 구현했다. 과목·강의와 계정별 기록은 Supabase Postgres에 두고, 로그인은 Supabase Auth를 통해 처리한다.
+### 기능별 처리 경로
+
+| 기능 | 참여하는 구성 요소와 주고받는 데이터 |
+|---|---|
+| 공개 강의 열기 | 브라우저에서 영상 ID로 페이지를 요청한다. 백엔드가 저장소에서 노트·구간과 공개 자막을 읽어 화면을 구성한다. |
+| 노트의 시각 누르기 | 프런트엔드의 재생 제어가 이미 받은 시작·종료 초를 사용해 YouTube 플레이어를 움직인다. 수집이 켜져 있으면 구간 이동 이벤트도 남긴다. |
+| 북마크·문장 메모 저장 | 프런트엔드의 학습 기록 모듈이 인증 세션을 사용해 Supabase 데이터 API에 쓴다. DB가 권한을 검사하고 북마크는 학습 기록에, 메모는 선택한 문장 범위와 함께 메모 테이블에 저장한다. |
+| 강의 노트 발행 | 데이터 처리 도구와 편집자가 초안을 검증하고 저장소에 반영한다. 이후 강의를 열면 백엔드의 카탈로그 로더가 새 노트를 읽는다. |
 
 ## 데이터 모델
 
@@ -63,7 +70,7 @@ relatedPosts:
 ### 강의 노트 제작
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/curation-sequence.svg"><img width="800" height="579" src="/blog/media/noteon-how-it-works/curation-sequence.svg" alt="노트 편집, 초안 검사, 변경 반영, 공개 카탈로그 사이의 전달 순서. 편집자가 원본을 대조하고 검토된 내용만 반영한다." loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/curation-runtime.svg"><img width="800" height="460" src="/blog/media/noteon-how-it-works/curation-runtime.svg" alt="노트 편집, 초안 검사, 변경 반영, 공개 카탈로그 사이의 전달 순서. 편집자가 원본을 대조하고 검토된 내용만 반영한다." loading="lazy" decoding="async"/></a>
 <figcaption>작성한 초안은 검사와 원본 대조를 거친다. 편집자가 미리보기에서 확인한 뒤에 운영 카탈로그에 반영한다.</figcaption>
 </figure>
 
@@ -77,8 +84,8 @@ relatedPosts:
 ### 강의 조회와 구간 재생
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/lecture-sequence.svg"><img width="800" height="653" src="/blog/media/noteon-how-it-works/lecture-sequence.svg" alt="강의 조회가 카탈로그 로더와 자막 조회에서 받은 자료를 강의 화면에 전달한다. 노트의 시각을 누르면 재생 제어가 선택한 위치에서 재생한다." loading="lazy" decoding="async"/></a>
-<figcaption>세로 방향은 시간, 가로 방향은 모듈 사이의 호출이다. 페이지를 열 때 서버 조회가 일어나고, 노트의 시각을 누를 때에는 화면 안에서 재생 위치가 바뀐다.</figcaption>
+<a href="/blog/media/noteon-how-it-works/lecture-runtime.svg"><img width="800" height="540" src="/blog/media/noteon-how-it-works/lecture-runtime.svg" alt="강의 조회가 카탈로그 로더와 자막 조회에서 받은 자료를 강의 화면에 전달한다. 노트의 시각을 누르면 재생 제어가 선택한 위치에서 재생한다." loading="lazy" decoding="async"/></a>
+<figcaption>시간은 위에서 아래로 흐른다. 처음 강의를 열 때는 백엔드가 저장소를 조회한다. 이후 노트의 시각을 누르면 프런트엔드가 플레이어의 재생 위치를 바꾼다.</figcaption>
 </figure>
 
 1. **강의를 연다.** 강의 조회가 URL의 영상 ID 형식을 확인한다. 카탈로그 로더는 공개 카탈로그에서 과목과 강의를 읽는다. 요청한 강의가 목록에 없으면 여기서 404를 돌려준다.
@@ -118,9 +125,19 @@ GitHub Actions에서 코드와 정적 데이터의 일치 여부를 검사하고
 
 ### 디자인 원칙
 
-- **색은 행동과 상태에 쓴다.** 영상 썸네일 자체에 색이 많아서 화면 바탕과 구분선은 회색 계열로 두었다. 주황색은 주요 동작과 현재 위치를 드러내는 데 쓴다.
-- **읽는 폭과 재생 맥락을 함께 지킨다.** 본문은 한 줄이 지나치게 길어지지 않게 하고 한국어 단어 단위로 줄을 바꾼다. 좁은 화면에서는 목차를 접어 본문이 들어갈 자리를 확보한다.
-- **떠 있는 요소만 떠 보이게 한다.** 본문과 구간 사이에는 가는 선을 쓰고, 작은 플레이어나 메모 창처럼 본문 위에 올라오는 요소에만 그림자를 준다.
+NoteOn의 `DESIGN.md`는 목차에서 **현재 장의 번호만 주황색**으로, 선택한 행은 옅은 회색으로 표시하도록 정한다. 노트 본문은 16~17px, 줄 높이는 글자 크기의 1.85배로 두고 한글은 단어 단위로 줄을 바꾼다. 아래에서 두 장을 번갈아 선택해 보면 강조색이 어디로 옮겨가는지 볼 수 있다.
+
+<fieldset class="noteon-contents-example">
+<legend>「Math 2.0」 목차 예시</legend>
+<input class="visually-hidden" type="radio" name="noteon-chapter" id="noteon-ch4" checked />
+<label for="noteon-ch4"><span>04</span> 수학 1.0에서 난제가 사람을 훈련시킨 방식</label>
+<input class="visually-hidden" type="radio" name="noteon-chapter" id="noteon-ch5" />
+<label for="noteon-ch5"><span>05</span> 답을 얻고도 다음 질문과 현실의 목적을 잃는 경우</label>
+<div class="noteon-excerpts" aria-live="polite">
+<p>어려운 문제를 붙드는 동안 얻은 이해는 다음 질문을 낳고, 단순화한 모델의 답을 현실에 적용할 때 판단 근거가 됩니다.</p>
+<p>풀이만 빠르게 얻고 그 이유를 이해하지 못하면 연구자는 후속 질문을 놓치고, 응용에서는 모델의 성공을 현실의 성공으로 오인할 수 있습니다.</p>
+</div>
+</fieldset>
 
 ## 권한과 데이터 보호
 

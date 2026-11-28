@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="540" viewBox="0 0 800 540" role="img" aria-labelledby="title desc" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Arial, Apple SD Gothic Neo, Malgun Gothic, sans-serif">
+<title id="title">강의 페이지 요청과 구간 재생</title><desc id="desc">브라우저의 페이지 요청을 받은 강의 페이지가 DB의 공개 카탈로그와 공개 자막 파일에서 데이터를 가져와 화면을 구성한다. 노트의 시각을 누르면 브라우저가 플레이어에 재생 범위를 전달한다.</desc>
+<rect x="1" y="1" width="798" height="538" rx="4" fill="#fff" stroke="#d7dfe3"/>
+<rect x="18" y="14" width="764" height="24" rx="4" fill="#f3f7fa" stroke="#f3f7fa"/>
+<text x="28" y="30" font-size="13" font-weight="550" text-anchor="start" fill="#205f8c">강의 페이지 요청</text>
+<rect x="24.0" y="48" width="142" height="44" rx="4" fill="#fbfcfd" stroke="#d7dfe3"/>
+<text x="95" y="64" font-size="12" font-weight="400" text-anchor="middle" fill="#58636b">프런트엔드</text>
+<text x="95" y="82" font-size="14" font-weight="550" text-anchor="middle" fill="#22272b">브라우저</text>
+<line x1="95" y1="92" x2="95" y2="398" stroke="#adc0cc" stroke-dasharray="4 4"/>
+<rect x="205.0" y="48" width="146" height="44" rx="4" fill="#fbfcfd" stroke="#d7dfe3"/>
+<text x="278" y="64" font-size="12" font-weight="400" text-anchor="middle" fill="#58636b">백엔드</text>
+<text x="278" y="82" font-size="14" font-weight="550" text-anchor="middle" fill="#22272b">강의 페이지</text>
+<line x1="278" y1="92" x2="278" y2="398" stroke="#adc0cc" stroke-dasharray="4 4"/>
+<rect x="394.0" y="48" width="168" height="44" rx="4" fill="#fbfcfd" stroke="#d7dfe3"/>
+<text x="478" y="64" font-size="12" font-weight="400" text-anchor="middle" fill="#58636b">백엔드</text>
+<text x="478" y="82" font-size="14" font-weight="550" text-anchor="middle" fill="#22272b">카탈로그·자막 로더</text>
+<line x1="478" y1="92" x2="478" y2="398" stroke="#adc0cc" stroke-dasharray="4 4"/>
+<rect x="620.0" y="48" width="164" height="44" rx="4" fill="#fbfcfd" stroke="#d7dfe3"/>
+<text x="702" y="64" font-size="12" font-weight="400" text-anchor="middle" fill="#58636b">저장소</text>
+<text x="702" y="82" font-size="14" font-weight="550" text-anchor="middle" fill="#22272b">DB · 공개 자막 파일</text>
+<line x1="702" y1="92" x2="702" y2="398" stroke="#adc0cc" stroke-dasharray="4 4"/>
+<line x1="95" y1="120" x2="272" y2="120" stroke="#205f8c" stroke-width="1.35"/><path d="M278 120l-7 -3.1v6.2z" fill="#205f8c"/>
+<text x="186.5" y="114" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">강의 URL 요청</text>
+<line x1="278" y1="152" x2="472" y2="152" stroke="#205f8c" stroke-width="1.35"/><path d="M478 152l-7 -3.1v6.2z" fill="#205f8c"/>
+<text x="378.0" y="146" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">카탈로그 요청</text>
+<line x1="478" y1="184" x2="696" y2="184" stroke="#205f8c" stroke-width="1.35"/><path d="M702 184l-7 -3.1v6.2z" fill="#205f8c"/>
+<text x="590.0" y="178" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">과목·강의 조회 → DB</text>
+<line x1="702" y1="216" x2="484" y2="216" stroke="#58636b" stroke-width="1.35" stroke-dasharray="5 3"/><path d="M478 216l7 -3.1v6.2z" fill="#58636b"/>
+<text x="590.0" y="210" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">공개 행</text>
+<line x1="478" y1="248" x2="284" y2="248" stroke="#58636b" stroke-width="1.35" stroke-dasharray="5 3"/><path d="M278 248l7 -3.1v6.2z" fill="#58636b"/>
+<text x="378.0" y="242" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">노트·챕터 결합 결과</text>
+<line x1="278" y1="278" x2="472" y2="278" stroke="#205f8c" stroke-width="1.35"/><path d="M478 278l-7 -3.1v6.2z" fill="#205f8c"/>
+<text x="378.0" y="272" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">시청 가능 시 자막 요청</text>
+<line x1="478" y1="308" x2="696" y2="308" stroke="#205f8c" stroke-width="1.35"/><path d="M702 308l-7 -3.1v6.2z" fill="#205f8c"/>
+<text x="590.0" y="302" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">영상 ID로 자막 파일 읽기</text>
+<line x1="702" y1="338" x2="484" y2="338" stroke="#58636b" stroke-width="1.35" stroke-dasharray="5 3"/><path d="M478 338l7 -3.1v6.2z" fill="#58636b"/>
+<text x="590.0" y="332" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">자막 또는 없음</text>
+<line x1="478" y1="366" x2="284" y2="366" stroke="#58636b" stroke-width="1.35" stroke-dasharray="5 3"/><path d="M278 366l7 -3.1v6.2z" fill="#58636b"/>
+<text x="378.0" y="360" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">사용 가능한 자막</text>
+<line x1="278" y1="394" x2="101" y2="394" stroke="#58636b" stroke-width="1.35" stroke-dasharray="5 3"/><path d="M95 394l7 -3.1v6.2z" fill="#58636b"/>
+<text x="186.5" y="388" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">구성된 강의 화면</text>
+<rect x="18" y="406" width="764" height="24" rx="4" fill="#f3f7fa" stroke="#f3f7fa"/>
+<text x="28" y="422" font-size="13" font-weight="550" text-anchor="start" fill="#205f8c">노트 시각 선택</text>
+<rect x="137.5" y="437" width="205" height="44" rx="4" fill="#fbfcfd" stroke="#d7dfe3"/>
+<text x="240" y="453" font-size="12" font-weight="400" text-anchor="middle" fill="#58636b">프런트엔드</text>
+<text x="240" y="471" font-size="14" font-weight="550" text-anchor="middle" fill="#22272b">노트의 구간 링크</text>
+<line x1="240" y1="481" x2="240" y2="525" stroke="#adc0cc" stroke-dasharray="4 4"/>
+<rect x="461.5" y="437" width="205" height="44" rx="4" fill="#fbfcfd" stroke="#d7dfe3"/>
+<text x="564" y="453" font-size="12" font-weight="400" text-anchor="middle" fill="#58636b">프런트엔드</text>
+<text x="564" y="471" font-size="14" font-weight="550" text-anchor="middle" fill="#22272b">브라우저 플레이어</text>
+<line x1="564" y1="481" x2="564" y2="525" stroke="#adc0cc" stroke-dasharray="4 4"/>
+<line x1="240" y1="515" x2="558" y2="515" stroke="#205f8c" stroke-width="1.35"/><path d="M564 515l-7 -3.1v6.2z" fill="#205f8c"/>
+<text x="402.0" y="509" font-size="13" font-weight="400" text-anchor="middle" fill="#22272b" paint-order="stroke" stroke="#fff" stroke-width="5" stroke-linejoin="round">5장 선택 → 1,285초부터 재생</text>
+</svg>
