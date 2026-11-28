@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 475" width="720" height="475" role="img"><title>강의 요청과 구간 재생의 호출 순서</title>
+<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#456479"/></marker></defs>
+<style>text{font-family:system-ui,sans-serif;fill:#172e3a}.small{font-size:17px}.name{font-size:22px;font-weight:650}</style>
+<rect width="720" height="475" rx="14" fill="#f6f8f8"/>
+<text x="94" y="49" text-anchor="middle" class="name">브라우저</text>
+<path d="M94 66v374" stroke="#93a9b1" stroke-dasharray="5 5"/>
+<text x="350" y="49" text-anchor="middle" class="name">Next.js 서버</text>
+<path d="M350 66v374" stroke="#93a9b1" stroke-dasharray="5 5"/>
+<text x="622" y="49" text-anchor="middle" class="name">Supabase</text>
+<path d="M622 66v374" stroke="#93a9b1" stroke-dasharray="5 5"/>
+<polyline points="94,112 350,112" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="222.0" y="102" text-anchor="middle" class="small">강의 URL 요청</text>
+<polyline points="350,178 622,178" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="486.0" y="168" text-anchor="middle" class="small">공개 과목·강의 조회</text>
+<polyline points="622,240 350,240" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="486.0" y="230" text-anchor="middle" class="small">카탈로그 행 반환</text>
+<polyline points="350,334 94,334" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="222.0" y="324" text-anchor="middle" class="small">노트·구간·자막 전달</text>
+<text x="358" y="286" text-anchor="start" class="small">강의 선택 · 자막 트랙 확인</text>
+<polyline points="94,369 226,369 226,425 97,425" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="239" y="398" text-anchor="start" class="small">구간 선택 → 플레이어 위치 변경</text>
+</svg>

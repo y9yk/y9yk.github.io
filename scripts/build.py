@@ -190,7 +190,11 @@ def load_fun():
 
 def fun_cards(pages):
     if not pages:return ''
-    items=''.join(f'<article class="project fun-card" id="fun-{p["id"]}"><p class="project-context">{esc(p["status"])}</p><h3><a href="fun/{p["id"]}/">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><div class="resource-links">{action("fun/"+p["id"]+"/","About "+p["title"])}</div></article>' for p in pages)
+    def preview(p):
+        src,w,h=FUN_IMAGES['lecture']
+        return (f'<a class="fun-card-shot" href="fun/{p["id"]}/" aria-hidden="true" tabindex="-1">'
+                f'<img src="../{src}" alt="" width="{w}" height="{h}" loading="lazy" decoding="async"></a>')
+    items=''.join(f'<article class="project fun-card" id="fun-{p["id"]}"><div class="fun-card-text"><p class="project-context">{esc(p["status"])}</p><h3><a href="fun/{p["id"]}/">{esc(p["title"])}</a></h3><p>{esc(p["summary"])}</p><div class="resource-links">{action("fun/"+p["id"]+"/","About "+p["title"])}</div></div>{preview(p)}</article>' for p in pages)
     return f'<section class="projects-group" id="for-fun" aria-labelledby="for-fun-title"><h2 id="for-fun-title">For fun</h2><p class="group-lede">Side projects I build for myself.</p>{items}</section>'
 
 
@@ -198,7 +202,13 @@ def render_projects(data, fun_pages=()):
     validate(data)
     values=base(data,prefix='../',title=f'{data["name"]} | Projects',route='projects/')
     work=cards(data)
-    values['projects']=(f'<section class="projects-group" id="work" aria-labelledby="work-title"><h2 id="work-title">Work</h2>{work}</section>'+fun_cards(fun_pages)) if fun_pages else work
+    if fun_pages:
+        tabs=(f'<nav class="project-tabs" aria-label="Project categories">'
+              f'<a href="#work"><span>Work</span><span class="tab-count">{len(data["projects"])}</span></a>'
+              f'<a href="#for-fun"><span>For fun</span><span class="tab-count">{len(fun_pages)}</span></a></nav>')
+        values['projects']=tabs+f'<section class="projects-group" id="work" aria-labelledby="work-title"><h2 id="work-title">Work</h2><p class="group-lede">Services I planned and built at work.</p>{work}</section>'+fun_cards(fun_pages)
+    else:
+        values['projects']=work
     return template('projects.html',values)
 
 
