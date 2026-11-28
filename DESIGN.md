@@ -37,5 +37,5 @@ The blog is the same site, not a separate brand. It imports `assets/style.css` (
 ## For fun (/projects/#for-fun, /projects/fun/<id>/)
 
 - Projects splits into "Work" (career summaries, unchanged) and "For fun" (personal side projects). A For fun card shows status, title, one-line summary and an outlined "About <name>" button.
-- Landing page order: breadcrumb → title, tagline, summary, status, blog links → hero screenshot → sticky in-page nav (What, Why, Features, Architecture, Release notes) → Why (problem | motivation, two columns) → Features (text left, screenshot right; text-only when no screen) → Architecture & stack (points, diagram, pill tags) → Recent release notes (date column + bullets, newest first).
+- Landing page order: breadcrumb → title, tagline, summary, status, links (Open <service>, blog) → hero screenshot → sticky in-page nav (Why, Features, Architecture, Release notes) → Why (problem | motivation, two columns) → Features (text left, screenshot right; text-only when no screen) → Architecture (one functional diagram only: frontend, backend, data & processing, pipeline, cross-cutting logging/security/monitoring, numbered main calls; no bullet lists or stack tags) → Recent release notes (date column + bullets, newest first).
 - English UI like the rest of Projects; screenshots crop 16:10 from the top. One column below 700px.

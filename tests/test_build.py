@@ -299,7 +299,7 @@ class ForFunTests(unittest.TestCase):
             self.assertTrue(src.startswith('blog/media/') or src.startswith('assets/fun/'),src)
             base=ROOT/'blog/public'/src.removeprefix('blog/') if src.startswith('blog/') else ROOT/src
             self.assertTrue(base.is_file(),src)
-        self.assertEqual({p.name for p in (ROOT/'assets/fun').iterdir()},{'noteon-architecture.png','SOURCES.md'})
+        self.assertEqual({p.name for p in (ROOT/'assets/fun').iterdir()},{'noteon-architecture.png','noteon-memo.png','noteon-study.png','SOURCES.md'})
 
     def test_noteon_page_sections_and_no_question_feature(self):
         html=(ROOT/'dist/projects/fun/noteon/index.html').read_text()

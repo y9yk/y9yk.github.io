@@ -172,7 +172,9 @@ FUN_IMAGES = {
     'home': ('blog/media/noteon-good-lectures-with-notes/home.png', 1492, 2563),
     'lecture': ('blog/media/noteon-good-lectures-with-notes/lecture.png', 1492, 910),
     'notes': ('blog/media/noteon-good-lectures-with-notes/notes.png', 1280, 900),
-    'architecture': ('assets/fun/noteon-architecture.png', 1200, 880),
+    'architecture': ('assets/fun/noteon-architecture.png', 1200, 1024),
+    'memo': ('assets/fun/noteon-memo.png', 880, 550),
+    'study': ('assets/fun/noteon-study.png', 600, 370),
 }
 
 
@@ -234,12 +236,9 @@ def render_fun(data, page):
         shot=f'<figure class="fun-shot">{img(f["image"],f["title"]+" screen")}</figure>' if f.get('image') else ''
         feats.append(f'<article class="fun-feature{" has-shot" if shot else ""}"><div><h3>{esc(f["title"])}</h3><p>{esc(f["text"])}</p></div>{shot}</article>')
     features=f'<section class="section" id="features"><h2>Features</h2>{"".join(feats)}</section>'
-    arch=page['architecture']
-    chips=''.join(f'<li>{esc(s)}</li>' for s in arch['stack'])
-    groups=''.join(f'<div class="fun-layer"><h3>{esc(g["name"])}</h3>{bullets(g["items"])}</div>' for g in arch['groups'])
-    architecture=(f'<section class="section" id="architecture"><h2>Architecture &amp; stack</h2>'
+    architecture=(f'<section class="section" id="architecture"><h2>Architecture</h2>'
                   f'<figure class="fun-shot fun-shot-wide">{img("architecture","How NoteOn fits together: frontend, backend, data and processing, the curation pipeline, and cross-cutting logging, security and monitoring, with the main calls between them")}<figcaption>How the parts connect. Numbered arrows are the main calls.</figcaption></figure>'
-                  f'<div class="fun-layers">{groups}</div><ul class="fun-stack" aria-label="Technology">{chips}</ul></section>')
+                  '</section>')
     rel=''.join(f'<article class="timeline-row"><div class="period">{esc(r["date"])}</div><div>{bullets(r["items"],"career-bullets")}</div></article>' for r in page['releases'])
     releases=f'<section class="section" id="releases"><h2>Recent release notes</h2>{rel}</section>'
     values['body']=hero+nav+why+features+architecture+releases

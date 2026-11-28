@@ -34,72 +34,16 @@
     },
     {
       "title": "Sentence memos",
-      "text": "Select sentences, even across paragraphs, and keep a memo on them. Memos are private by default."
+      "text": "Select sentences, even across paragraphs, and write a memo in your own words beside them. The selected text stays attached, and memos are private unless you choose to share them.",
+      "image": "memo"
     },
     {
       "title": "My study",
-      "text": "Bookmarks and liked lectures collect in one place after signing in with Google."
+      "text": "Sign in with Google and the lectures you bookmark or like collect on one page, so you can pick up where you left off.",
+      "image": "study"
     }
   ],
-  "architecture": {
-    "groups": [
-      {
-        "name": "Frontend",
-        "items": [
-          "React 19 client components in the browser",
-          "YouTube IFrame player with a Korean caption overlay synced to playback time",
-          "Contents and mini player follow the chapter being read",
-          "Bookmarks and memos write through supabase-js"
-        ]
-      },
-      {
-        "name": "Backend",
-        "items": [
-          "Next.js 16 App Router on Railway, rendered per request",
-          "One catalog loader reads Supabase in production and a snapshot in development",
-          "Caption reader serves the published <video ID>.ko.json track",
-          "POST /api/telemetry accepts batched usage events"
-        ]
-      },
-      {
-        "name": "Data & processing",
-        "items": [
-          "Supabase Postgres: courses → lectures, keyed by the 11-character YouTube ID",
-          "Notes, segments, chapters and self-checks live as jsonb on the lecture row",
-          "DB constraints reject segments that run past the video length",
-          "Study records: bookmarks, likes and sentence memos per user"
-        ]
-      },
-      {
-        "name": "Curation pipeline",
-        "items": [
-          "Codex plugin confirms the official source and drafts notes from captions",
-          "Two Codex passes: write, then review against a timed caption digest",
-          "A depth check gates every draft before it becomes a SQL migration",
-          "Only caption tracks cleared for republishing are published"
-        ]
-      },
-      {
-        "name": "Logging, security, measurement & monitoring",
-        "items": [
-          "Google sign-in via Supabase Auth; row-level security on every personal table",
-          "OpenTelemetry traces, metrics and logs without emails, tokens or memo text",
-          "Allowed usage events only, random IDs, nothing sent under DNT/GPC",
-          "Daily usage, lecture engagement, server health and latency views"
-        ]
-      }
-    ],
-    "stack": [
-      "Next.js 16 (App Router)",
-      "React 19",
-      "TypeScript",
-      "Supabase Postgres + RLS",
-      "Google sign-in",
-      "OpenTelemetry",
-      "Railway",
-      "Codex curation plugin"
-    ]
-  },
+  "architecture": {},
   "releases": [
     {
       "date": "2026-11-28",
