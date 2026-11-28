@@ -4,6 +4,8 @@ date: "2026-11-27T09:30:00+09:00"
 description: "공개 강연 한 편이 한국어 노트가 되고, 노트의 재생 시각이 영상으로 이어지는 과정. NoteOn의 모듈 구성, 데이터, 화면 설계와 운영 방식을 정리했다."
 topic: "제품 개발"
 cover: "/blog/media/noteon-how-it-works/architecture.png"
+relatedPosts:
+  - noteon-good-lectures-with-notes
 ---
 
 테렌스 타오의 「Math 2.0」 강연에는 답을 얻는 것과 그 답을 이해하는 것의 차이를 짚는 대목이 있다. NoteOn에서 이 대목은 강의 노트 5장에 있다. 제목 옆 **21분 25초**를 누르면 설명에 해당하는 장면이 재생된다. 편집할 때는 이 시각이 정확한지 확인해야 하고, 화면을 만들 때는 독자가 읽던 문장을 놓치지 않고 영상을 볼 수 있게 해야 한다. [강연에서 해당 대목 보기](https://www.youtube.com/watch?v=aHpPoNNTOKY&t=1285s)
@@ -13,7 +15,7 @@ cover: "/blog/media/noteon-how-it-works/architecture.png"
 NoteOn에는 두 종류의 노트가 있다. **강의 노트**는 편집자가 영상과 자료를 대조해 작성한 해설이다. 공개한 강의에서는 누구나 같은 글을 읽는다. **문장 메모**는 독자가 그 해설에서 문장을 선택해 남기는 개인 기록이다. 아래 그림은 누가 어떤 일을 하는지 보여 준다.
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/service-map.svg"><img width="800" height="422" src="/blog/media/noteon-how-it-works/service-map.svg" alt="편집자는 강의 노트를 제작하고, 독자는 영상을 보며 노트를 읽거나 자신의 학습 기록을 남긴다." loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/service-map.svg"><img width="800" height="338" src="/blog/media/noteon-how-it-works/service-map.svg" alt="편집자는 강의 노트를 제작하고, 독자는 영상을 보며 노트를 읽거나 자신의 학습 기록을 남긴다." loading="lazy" decoding="async"/></a>
 <figcaption>편집자가 작성한 강의 노트 한 편을 여러 독자가 읽는다. 같은 문장을 읽어도 각자의 메모와 북마크는 따로 남는다.</figcaption>
 </figure>
 
@@ -22,7 +24,7 @@ NoteOn에는 두 종류의 노트가 있다. **강의 노트**는 편집자가 �
 모듈을 나눈 기준은 맡은 일이다. 예를 들어 **강의 조회**는 한 화면에 무엇을 보낼지 결정하고, **재생 제어**는 독자가 선택한 시각으로 플레이어를 옮긴다. 구간을 누를 때마다 서버에서 강의 한 편을 다시 읽을 필요가 없는 이유다.
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/layers.svg"><img width="800" height="634" src="/blog/media/noteon-how-it-works/layers.svg" alt="화면, 조회, 저장, 편집으로 묶은 모듈 구성. 화면은 표시와 재생을, 조회는 읽기와 조합을, 저장은 자료 보관을, 편집은 노트 작성과 검증 및 반영을 맡는다." loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/layers.svg"><img width="800" height="507" src="/blog/media/noteon-how-it-works/layers.svg" alt="화면, 조회, 저장, 편집으로 묶은 모듈 구성. 화면은 표시와 재생을, 조회는 읽기와 조합을, 저장은 자료 보관을, 편집은 노트 작성과 검증 및 반영을 맡는다." loading="lazy" decoding="async"/></a>
 <figcaption>같은 테두리 안의 모듈은 역할이 비슷하다. 편집은 노트를 고칠 때 실행하고, 화면과 조회는 독자가 강의를 이용할 때 실행한다.</figcaption>
 </figure>
 
@@ -40,7 +42,7 @@ NoteOn에는 두 종류의 노트가 있다. **강의 노트**는 편집자가 �
 타오의 강연을 식별하는 값은 YouTube 영상 ID `aHpPoNNTOKY`다. 여기에 무엇을 더 붙이느냐에 따라 구간을 재생하거나 특정 독자의 문장 메모를 다시 열 수 있다.
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/hub.png"><img width="1920" height="800" src="/blog/media/noteon-how-it-works/hub.png" alt="영상 ID를 중심으로 자막, 핵심 구간, 강의 노트, 메모와 학습 기록이 연결된 그림" loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/hub.svg"><img width="800" height="224" src="/blog/media/noteon-how-it-works/hub.svg" alt="영상 ID를 중심으로 자막, 핵심 구간, 강의 노트, 메모와 학습 기록이 연결된 그림" loading="lazy" decoding="async"/></a>
 <figcaption>재생 구간은 시간에, 문장 메모는 글 안의 위치에 연결된다. 둘을 같은 강의로 찾아가는 기준이 영상 ID다.</figcaption>
 </figure>
 
@@ -60,7 +62,7 @@ NoteOn에는 두 종류의 노트가 있다. **강의 노트**는 편집자가 �
 ### 강의 노트 제작
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/curation-sequence.svg"><img width="800" height="724" src="/blog/media/noteon-how-it-works/curation-sequence.svg" alt="노트 편집, 초안 검사, 변경 반영, 공개 카탈로그 사이의 전달 순서. 편집자가 원본을 대조하고 검토된 내용만 반영한다." loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/curation-sequence.svg"><img width="800" height="579" src="/blog/media/noteon-how-it-works/curation-sequence.svg" alt="노트 편집, 초안 검사, 변경 반영, 공개 카탈로그 사이의 전달 순서. 편집자가 원본을 대조하고 검토된 내용만 반영한다." loading="lazy" decoding="async"/></a>
 <figcaption>작성한 초안은 검사와 원본 대조를 거친다. 편집자가 미리보기에서 확인한 뒤에 운영 카탈로그에 반영한다.</figcaption>
 </figure>
 
@@ -74,7 +76,7 @@ NoteOn에는 두 종류의 노트가 있다. **강의 노트**는 편집자가 �
 ### 강의 조회와 구간 재생
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/lecture-sequence.svg"><img width="800" height="816" src="/blog/media/noteon-how-it-works/lecture-sequence.svg" alt="강의 조회가 카탈로그 로더와 자막 조회에서 받은 자료를 강의 화면에 전달한다. 노트의 시각을 누르면 재생 제어가 선택한 위치에서 재생한다." loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/lecture-sequence.svg"><img width="800" height="653" src="/blog/media/noteon-how-it-works/lecture-sequence.svg" alt="강의 조회가 카탈로그 로더와 자막 조회에서 받은 자료를 강의 화면에 전달한다. 노트의 시각을 누르면 재생 제어가 선택한 위치에서 재생한다." loading="lazy" decoding="async"/></a>
 <figcaption>세로 방향은 시간, 가로 방향은 모듈 사이의 호출이다. 페이지를 열 때 서버 조회가 일어나고, 노트의 시각을 누를 때에는 화면 안에서 재생 위치가 바뀐다.</figcaption>
 </figure>
 
@@ -99,7 +101,7 @@ GitHub Actions에서 코드와 정적 데이터의 일치 여부를 검사하고
 강의 화면을 그릴 때는 스크롤 전후를 한 쌍으로 보았다. 처음에는 ‘어느 대목을 볼까’가 중요해서 영상 옆에 구간 목록을 두었다. 노트로 내려간 뒤에는 ‘방금 읽은 설명을 영상에서 확인할 수 있을까’가 중요해서 작은 플레이어와 목차를 곁에 남겼다.
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/wireframe.png"><img width="1920" height="1120" src="/blog/media/noteon-how-it-works/wireframe.png" alt="스크롤 전에는 큰 플레이어와 타임라인, 스크롤 후에는 작은 플레이어와 목차, 노트 본문이 놓이는 와이어프레임" loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/wireframe.svg"><img width="800" height="412" src="/blog/media/noteon-how-it-works/wireframe.svg" alt="스크롤 전에는 큰 플레이어와 타임라인, 스크롤 후에는 작은 플레이어와 목차, 노트 본문이 놓이는 와이어프레임" loading="lazy" decoding="async"/></a>
 <figcaption>왼쪽은 구간을 고를 때, 오른쪽은 노트를 읽을 때의 배치다. 두 화면에서 같은 플레이어가 자리를 옮긴다.</figcaption>
 </figure>
 
@@ -132,7 +134,7 @@ GitHub Actions에서 코드와 정적 데이터의 일치 여부를 검사하고
 ## 측정과 모니터링
 
 <figure>
-<a href="/blog/media/noteon-how-it-works/operations.svg"><img width="800" height="584" src="/blog/media/noteon-how-it-works/operations.svg" alt="서버 요청은 상태 코드·처리 시간으로 집계하고, 브라우저 동작은 허용된 이벤트만 검증해 종류별로 집계하는 두 흐름" loading="lazy" decoding="async"/></a>
+<a href="/blog/media/noteon-how-it-works/operations.svg"><img width="800" height="467" src="/blog/media/noteon-how-it-works/operations.svg" alt="서버 요청은 상태 코드·처리 시간으로 집계하고, 브라우저 동작은 허용된 이벤트만 검증해 종류별로 집계하는 두 흐름" loading="lazy" decoding="async"/></a>
 <figcaption>서버는 요청의 처리 결과를 남기고, 브라우저는 독자가 화면에서 실행한 동작을 남긴다.</figcaption>
 </figure>
 
@@ -155,7 +157,3 @@ GitHub Actions에서 코드와 정적 데이터의 일치 여부를 검사하고
 서버는 OpenTelemetry로 요청 완료와 처리되지 않은 오류를 기록한다. 요청 완료 로그에는 경로 형식, HTTP 메서드, 응답 코드와 처리 시간이 들어간다. 예를 들어 서로 다른 강의를 여는 요청도 같은 강의 상세 경로로 묶인다. 오류 로그에는 발생 경로와 렌더링·요청 처리 등 발생 위치, 제한된 오류 유형이 남는다.
 
 수집이 설정된 환경에서는 이 로그가 Supabase에 쌓인다. 운영할 때는 먼저 시간대별 요청 수, 4xx·5xx 응답 수, 처리되지 않은 오류 수를 본다. 응답 시간이 길어졌다면 최근 24시간의 로그를 경로별로 묶어 처리 시간의 중앙값(p50)과 95번째 백분위수(p95)를 비교한다. 중앙값이 비슷한데 특정 경로의 p95만 올라가면 그 경로에서 유독 오래 걸린 요청부터 살펴볼 수 있다. 서버 처리 시간의 측정 범위는 NoteOn이 요청을 처리한 구간까지다. 화면에서 영상을 누른 뒤 YouTube의 첫 프레임이 뜨기까지의 시간은 여기에 포함되지 않는다.
-
-## 관련 글
-
-[좋은 강의를 다 봤는데, 왜 '남는 게' 없을까?](/blog/noteon-good-lectures-with-notes/)

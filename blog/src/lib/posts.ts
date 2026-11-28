@@ -8,6 +8,7 @@ type Metadata = {
   source?: string;
   cover?: string;
   coverAlt?: string;
+  relatedPosts?: string[];
 };
 
 const files = import.meta.glob<MarkdownInstance<Metadata>>('../posts/*.md', { eager: true });

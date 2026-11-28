@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="224" viewBox="0 0 800 224" role="img" aria-labelledby="title desc" lang="ko" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="15" fill="#22272b">
+  <title id="title">영상 ID와 강의 데이터</title>
+  <desc id="desc">과목에 속한 강의의 11자리 영상 ID가 한국어 자막, 핵심 구간, 강의 노트와 개인 학습 기록을 연결한다.</desc>
+  <rect x=".5" y=".5" width="799" height="223" rx="10" fill="#fff" stroke="#dce3e8"/>
+  <g fill="none" stroke="#a0adb7" stroke-width="1.25">
+    <path d="M304 112H277Q271 112 271 106V70Q271 64 265 64H234M271 102V154Q271 160 265 160H234"/>
+    <path d="M496 112H523Q529 112 529 106V70Q529 64 535 64H566M529 102V154Q529 160 535 160H566"/>
+  </g>
+  <g fill="#f7f9fa" stroke="#dce3e8">
+    <rect x="30" y="31" width="204" height="66" rx="6"/>
+    <rect x="30" y="127" width="204" height="66" rx="6"/>
+    <rect x="566" y="31" width="204" height="66" rx="6"/>
+    <rect x="566" y="127" width="204" height="66" rx="6"/>
+  </g>
+  <rect x="304" y="75" width="192" height="74" rx="6" fill="#eef4f8" stroke="#b9cede"/>
+  <g font-weight="550">
+    <text x="45" y="59">한국어 자막</text>
+    <text x="45" y="155">핵심 구간</text>
+    <text x="581" y="59">강의 노트</text>
+    <text x="581" y="155">개인 학습 기록</text>
+    <text x="400" y="108" text-anchor="middle" fill="#205f8c">YouTube 영상 ID</text>
+  </g>
+  <g font-size="13" fill="#56616b">
+    <text x="45" y="81">자막 줄별 시작·종료 시각</text>
+    <text x="45" y="177">시작·종료 시각과 근거</text>
+    <text x="581" y="81">요지, 개념, 출처</text>
+    <text x="581" y="177">문장 메모와 북마크</text>
+    <text x="400" y="130" text-anchor="middle">11자 · 소속 과목과 연결</text>
+  </g>
+</svg>

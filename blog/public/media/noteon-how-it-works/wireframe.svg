@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="412" viewBox="0 0 800 412" role="img" aria-labelledby="title desc" lang="ko" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#22272b">
+  <title id="title">강의 화면 와이어프레임</title>
+  <desc id="desc">재생 화면에서는 큰 영상과 핵심 구간이 나란히 있고, 아래로 내리면 작은 플레이어와 목차 옆에 본문과 재생 시각, 문장 메모가 놓인다.</desc>
+  <rect x=".5" y=".5" width="799" height="411" rx="10" stroke="#dce3e8" fill="#fff"/>
+  <g font-size="16" font-weight="550">
+    <text x="20" y="37">구간을 고를 때</text>
+    <text x="412" y="37">노트를 읽을 때</text>
+  </g>
+  <g fill="#fff" stroke="#cbd5dc">
+    <rect x="20" y="55" width="368" height="338" rx="5"/>
+    <rect x="412" y="55" width="368" height="338" rx="5"/>
+  </g>
+  <!-- The initial viewport -->
+  <path d="M21 81H387" stroke="#dce3e8"/>
+  <text x="32" y="73" fill="#56616b" font-size="12">검색 · 내 학습</text>
+  <rect x="32" y="93" width="214" height="133" rx="4" fill="#344047"/>
+  <text x="139" y="155" text-anchor="middle" fill="#fff">YouTube 플레이어</text>
+  <rect x="55" y="192" width="168" height="23" rx="3" fill="#526067"/>
+  <text x="139" y="208" text-anchor="middle" fill="#fff" font-size="12">한국어 자막</text>
+  <rect x="254" y="93" width="122" height="133" rx="4" fill="#f5f7f8" stroke="#dce3e8"/>
+  <text x="265" y="116">핵심 구간</text>
+  <g fill="#e0e5e8">
+    <rect x="265" y="132" width="99" height="13" rx="2"/>
+    <rect x="265" y="156" width="99" height="13" rx="2"/>
+    <rect x="265" y="180" width="99" height="13" rx="2"/>
+    <rect x="265" y="204" width="99" height="10" rx="2"/>
+  </g>
+  <text x="33" y="253">강의 제목 · 북마크 · 원본 링크</text>
+  <rect x="32" y="269" width="344" height="34" rx="4" fill="#f9f5ee"/>
+  <text x="43" y="291">한 문장 요지</text>
+  <g stroke="#dfe4e7" stroke-width="4" stroke-linecap="round">
+    <path d="M34 319H354M34 331H328M34 343H274"/>
+  </g>
+  <text x="32" y="375" fill="#56616b" font-size="12">아래로 내려 노트 읽기 ↓</text>
+  <!-- The reading viewport -->
+  <rect x="424" y="69" width="108" height="74" rx="4" fill="#344047"/>
+  <text x="478" y="111" text-anchor="middle" fill="#fff" font-size="12">작은 플레이어</text>
+  <rect x="424" y="152" width="108" height="135" rx="4" fill="#f5f7f8" stroke="#dce3e8"/>
+  <text x="436" y="174">목차</text>
+  <g fill="#e4e9ec">
+    <rect x="435" y="185" width="85" height="16" rx="2"/>
+    <rect x="435" y="211" width="85" height="16" rx="2"/>
+    <rect x="435" y="237" width="85" height="16" rx="2"/>
+  </g>
+  <text x="543" y="84" font-weight="550">장 제목</text>
+  <text x="543" y="104" font-size="12" fill="#8c4b20">▶ 24:08–31:40</text>
+  <g stroke="#dfe4e7" stroke-width="4" stroke-linecap="round">
+    <path d="M545 121H760M545 133H720"/>
+  </g>
+  <rect x="543" y="145" width="214" height="9" rx="1" fill="#f1df9c"/>
+  <rect x="613" y="164" width="84" height="25" rx="12" fill="#344047"/>
+  <text x="655" y="181" text-anchor="middle" fill="#fff" font-size="12">메모 쓰기</text>
+  <rect x="543" y="202" width="224" height="55" rx="3" fill="#f5f7f8"/>
+  <text x="553" y="234" fill="#56616b">그림 · 강의 예시</text>
+  <rect x="543" y="268" width="224" height="33" rx="3" fill="#f9f5ee"/>
+  <text x="553" y="289">이 구간 정리</text>
+  <g stroke="#dfe4e7" stroke-width="4" stroke-linecap="round">
+    <path d="M545 318H759M545 330H726"/>
+  </g>
+  <text x="543" y="374" fill="#56616b" font-size="12">문장 메모는 기본 비공개</text>
+</svg>

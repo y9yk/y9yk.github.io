@@ -1,37 +1,37 @@
-<svg aria-labelledby="title desc" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans CJK KR, Noto Sans KR, sans-serif" xmlns="http://www.w3.org/2000/svg" width="800" height="584" viewBox="0 0 800 584" role="img">
+<svg aria-labelledby="title desc" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Arial, Apple SD Gothic Neo, Malgun Gothic, Noto Sans KR, sans-serif" xmlns="http://www.w3.org/2000/svg" width="800" height="467" viewBox="0 0 800 467" role="img">
   <title id="title">이용 이벤트와 서버 로그의 수집·집계 경로</title>
   <desc id="desc">브라우저 이용 이벤트는 수집 API를 거쳐 일별·강의별로 집계한다. 서버 요청은 OpenTelemetry 로그로 남겨 시간대별 오류와 경로별 처리 시간을 계산한다.</desc>
-  <rect x="1" y="1" width="798" height="582" rx="13" fill="#fff" stroke="#cad5dd" />
-  <text font-size="29" font-weight="650" fill="#22272b" x="32" y="51">이용 이벤트와 서버 로그</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="32" y="84">수집을 켰을 때 각 기록이 거치는 경로</text>
-  <text font-size="23" font-weight="650" fill="#205f8c" x="32" y="126">브라우저</text>
-  <rect x="32" y="149" width="351" height="112" rx="8" fill="#f5f8fa" stroke="#cad5dd" />
-  <text font-size="22" font-weight="650" fill="#22272b" x="47" y="181">화면에서 발생한 동작</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="47" y="213">재생 시작 · 구간 이동</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="47" y="240">메모 저장 · 북마크 변경</text>
-  <path stroke-width="2" stroke-linejoin="round" d="M207 261V289m-5 -6l5 6 5 -6" fill="none" stroke="#546471" />
-  <rect x="32" y="294" width="351" height="112" rx="8" fill="#f5f8fa" stroke="#cad5dd" />
-  <text font-size="22" font-weight="650" fill="#22272b" x="47" y="326">이벤트 수집 API</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="47" y="358">허용된 이벤트와 속성을 검증해</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="47" y="385">이용 기록 테이블에 저장</text>
-  <path stroke-width="2" stroke-linejoin="round" d="M207 406V434m-5 -6l5 6 5 -6" fill="none" stroke="#546471" />
-  <rect x="32" y="439" width="351" height="112" rx="8" fill="#eaf2f8" stroke="#cad5dd" />
-  <text font-size="22" font-weight="650" fill="#22272b" x="47" y="471">사용 현황 집계</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="47" y="503">하루 동안 발생한 동작 수</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="47" y="530">최근 30일의 강의·구간별 이동 수</text>
-  <text font-size="23" font-weight="650" fill="#205f8c" x="416" y="126">서버</text>
-  <rect x="416" y="149" width="351" height="112" rx="8" fill="#f5f8fa" stroke="#cad5dd" />
-  <text font-size="22" font-weight="650" fill="#22272b" x="431" y="181">요청 처리 결과</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="431" y="213">경로 · 응답 코드 · 처리 시간</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="431" y="240">처리되지 않은 오류의 유형</text>
-  <path stroke-width="2" stroke-linejoin="round" d="M591 261V289m-5 -6l5 6 5 -6" fill="none" stroke="#546471" />
-  <rect x="416" y="294" width="351" height="112" rx="8" fill="#f5f8fa" stroke="#cad5dd" />
-  <text font-size="22" font-weight="650" fill="#22272b" x="431" y="326">OpenTelemetry</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="431" y="358">요청 완료·오류 로그를</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="431" y="385">서버 로그 테이블에 저장</text>
-  <path stroke-width="2" stroke-linejoin="round" d="M591 406V434m-5 -6l5 6 5 -6" fill="none" stroke="#546471" />
-  <rect x="416" y="439" width="351" height="112" rx="8" fill="#eaf2f8" stroke="#cad5dd" />
-  <text font-size="22" font-weight="650" fill="#22272b" x="431" y="471">서버 상태 집계</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="431" y="503">시간대별 4xx · 5xx 응답 수</text>
-  <text font-size="19" font-weight="450" fill="#546471" x="431" y="530">최근 24시간 경로별 p50 · p95</text>
+  <rect x="1" y="0.8" width="798" height="465.6" rx="13" fill="#fff" stroke="#d7dfe3" />
+  <text font-size="19" font-weight="600" fill="#22272b" x="32" y="40.8">이용 이벤트와 서버 로그</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="32" y="67.2">수집을 켰을 때 각 기록이 거치는 경로</text>
+  <text font-size="16" font-weight="600" fill="#205f8c" x="32" y="100.8">브라우저</text>
+  <rect x="32" y="119.2" width="351" height="89.6" rx="8" fill="#f6f9fb" stroke="#d7dfe3" />
+  <text font-size="16" font-weight="600" fill="#22272b" x="47" y="144.8">화면에서 발생한 동작</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="47" y="170.4">재생 시작 · 구간 이동</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="47" y="192">메모 저장 · 북마크 변경</text>
+  <path transform="scale(1 .8)" stroke-width="2" stroke-linejoin="round" d="M207 261V289m-5 -6l5 6 5 -6" fill="none" stroke="#58636b" />
+  <rect x="32" y="235.2" width="351" height="89.6" rx="8" fill="#f6f9fb" stroke="#d7dfe3" />
+  <text font-size="16" font-weight="600" fill="#22272b" x="47" y="260.8">이벤트 수집 API</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="47" y="286.4">허용된 이벤트와 속성을 검증해</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="47" y="308">이용 기록 테이블에 저장</text>
+  <path transform="scale(1 .8)" stroke-width="2" stroke-linejoin="round" d="M207 406V434m-5 -6l5 6 5 -6" fill="none" stroke="#58636b" />
+  <rect x="32" y="351.2" width="351" height="89.6" rx="8" fill="#eaf2f8" stroke="#d7dfe3" />
+  <text font-size="16" font-weight="600" fill="#22272b" x="47" y="376.8">사용 현황 집계</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="47" y="402.4">하루 동안 발생한 동작 수</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="47" y="424">최근 30일의 강의·구간별 이동 수</text>
+  <text font-size="16" font-weight="600" fill="#205f8c" x="416" y="100.8">서버</text>
+  <rect x="416" y="119.2" width="351" height="89.6" rx="8" fill="#f6f9fb" stroke="#d7dfe3" />
+  <text font-size="16" font-weight="600" fill="#22272b" x="431" y="144.8">요청 처리 결과</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="431" y="170.4">경로 · 응답 코드 · 처리 시간</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="431" y="192">처리되지 않은 오류의 유형</text>
+  <path transform="scale(1 .8)" stroke-width="2" stroke-linejoin="round" d="M591 261V289m-5 -6l5 6 5 -6" fill="none" stroke="#58636b" />
+  <rect x="416" y="235.2" width="351" height="89.6" rx="8" fill="#f6f9fb" stroke="#d7dfe3" />
+  <text font-size="16" font-weight="600" fill="#22272b" x="431" y="260.8">OpenTelemetry</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="431" y="286.4">요청 완료·오류 로그를</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="431" y="308">서버 로그 테이블에 저장</text>
+  <path transform="scale(1 .8)" stroke-width="2" stroke-linejoin="round" d="M591 406V434m-5 -6l5 6 5 -6" fill="none" stroke="#58636b" />
+  <rect x="416" y="351.2" width="351" height="89.6" rx="8" fill="#eaf2f8" stroke="#d7dfe3" />
+  <text font-size="16" font-weight="600" fill="#22272b" x="431" y="376.8">서버 상태 집계</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="431" y="402.4">시간대별 4xx · 5xx 응답 수</text>
+  <text font-size="14" font-weight="400" fill="#58636b" x="431" y="424">최근 24시간 경로별 p50 · p95</text>
 </svg>

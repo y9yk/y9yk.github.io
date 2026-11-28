@@ -1,6 +1,7 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import Discussion from '../components/Discussion.astro';
+import PostCover from '../components/PostCover.astro';
 import { posts, dateLabel, type Post } from '../lib/posts';
 
 export function getStaticPaths() {
@@ -12,6 +13,9 @@ export function getStaticPaths() {
 interface Props { post: Post; newer?: Post; older?: Post }
 const { post, newer, older } = Astro.props;
 const { Content } = post.entry;
+const related = (post.relatedPosts ?? []).flatMap(slug =>
+  posts.filter(candidate => candidate.slug === slug && candidate.slug !== post.slug)
+);
 const arrow = (d: string) => `<svg class="action-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
 ---
 <Shell title={post.title} description={post.description} image={post.cover} type="article">
@@ -25,6 +29,17 @@ const arrow = (d: string) => `<svg class="action-icon" viewBox="0 0 24 24" aria-
 
     <div class="article-main">
       <div class="prose"><Content /></div>
+      {related.length > 0 && (
+        <section class="related-posts" aria-labelledby="관련-글">
+          <h2 id="관련-글">관련 글</h2>
+          {related.map(target => (
+            <a class="related-post" href={target.href}>
+              <PostCover post={target} />
+              <span>{target.title}</span>
+            </a>
+          ))}
+        </section>
+      )}
       <Discussion />
     </div>
 
