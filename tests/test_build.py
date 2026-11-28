@@ -8,6 +8,15 @@ import sys
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
+_BUILT=False
+def build_once():
+    """Build dist once per test run; every class that reads dist calls this first."""
+    global _BUILT
+    if not _BUILT:
+        subprocess.run([sys.executable, str(ROOT/'scripts/build.py')], check=True, cwd=ROOT)
+        _BUILT=True
+
+
 class Document(HTMLParser):
     def __init__(self,text):super().__init__();self.ids=[];self.links=[];self.feed(text)
     def handle_starttag(self,tag,attrs):
@@ -18,7 +27,7 @@ class Document(HTMLParser):
 class PublishedRoutesTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        subprocess.run([sys.executable, str(ROOT/'scripts/build.py')], check=True, cwd=ROOT)
+        build_once()
 
     def test_build_omits_private_and_retired_routes(self):
         output=ROOT/'dist'
@@ -269,6 +278,7 @@ class ForFunTests(unittest.TestCase):
     """For fun landing pages are the owner's own side projects, approved one by one (AGENTS.md)."""
     @classmethod
     def setUpClass(cls):
+        build_once()
         spec=importlib.util.spec_from_file_location('build',ROOT/'scripts/build.py');cls.build=importlib.util.module_from_spec(spec);spec.loader.exec_module(cls.build)
         cls.pages=cls.build.load_fun()
 
@@ -296,6 +306,10 @@ class ForFunTests(unittest.TestCase):
 
 
 class CoverTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        build_once()
+
     def test_every_post_has_a_distinct_cover(self):
         listing=(ROOT/'dist/blog/index.html').read_text()
         import re as _re
