@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="634" viewBox="0 0 800 634" role="img" aria-labelledby="title desc" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans CJK KR, Noto Sans KR, sans-serif">
+<title id="title">NoteOn의 레이어와 모듈</title><desc id="desc">화면, 조회, 저장, 편집의 네 레이어. 각 칸은 모듈명과 책임을 보여 준다.</desc>
+<rect x="1" y="1" width="798" height="632" rx="13" fill="#fff" stroke="#cad5dd"/>
+<text x="32" y="52" font-size="29" font-weight="700" fill="#22272b" text-anchor="start">레이어와 모듈</text>
+<text x="32" y="84" font-size="19" font-weight="450" fill="#546471" text-anchor="start">강의 한 편을 제공하는 데 참여하는 기능 단위</text>
+<rect x="26" y="112" width="748" height="114" rx="8" fill="#f5f8fa" stroke="#cad5dd"/>
+<text x="50" y="174" font-size="23" font-weight="700" fill="#22272b" text-anchor="start">화면</text>
+<line x1="133" x2="133" y1="129" y2="209" stroke="#cad5dd" stroke-width="1"/>
+<text x="151.0" y="149" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">강의 화면</text>
+<text x="151.0" y="180" font-size="18" font-weight="450" fill="#546471" text-anchor="start">노트·타임라인 표시</text>
+<text x="151.0" y="204" font-size="18" font-weight="450" fill="#546471" text-anchor="start">문장 선택과 메모</text>
+<text x="448.0" y="149" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">재생 제어</text>
+<text x="448.0" y="180" font-size="18" font-weight="450" fill="#546471" text-anchor="start">구간 재생과 시각 이동</text>
+<text x="448.0" y="204" font-size="18" font-weight="450" fill="#546471" text-anchor="start">현재 자막 표시</text>
+<line x1="438.0" x2="438.0" y1="135" y2="202" stroke="#cad5dd" stroke-width="1"/>
+<rect x="26" y="240" width="748" height="114" rx="8" fill="#eaf2f8" stroke="#cad5dd"/>
+<text x="50" y="302" font-size="23" font-weight="700" fill="#205f8c" text-anchor="start">조회</text>
+<line x1="133" x2="133" y1="257" y2="337" stroke="#cad5dd" stroke-width="1"/>
+<text x="151.0" y="277" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">강의 조회</text>
+<text x="151.0" y="308" font-size="18" font-weight="450" fill="#546471" text-anchor="start">영상 ID로 강의 선택</text>
+<text x="151.0" y="332" font-size="18" font-weight="450" fill="#546471" text-anchor="start">화면 데이터 구성</text>
+<text x="349.0" y="277" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">카탈로그 로더</text>
+<text x="349.0" y="308" font-size="18" font-weight="450" fill="#546471" text-anchor="start">과목·강의 로드</text>
+<text x="349.0" y="332" font-size="18" font-weight="450" fill="#546471" text-anchor="start">챕터와 노트 결합</text>
+<line x1="339.0" x2="339.0" y1="263" y2="330" stroke="#cad5dd" stroke-width="1"/>
+<text x="547.0" y="277" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">자막 조회</text>
+<text x="547.0" y="308" font-size="18" font-weight="450" fill="#546471" text-anchor="start">강의에 맞는 공개</text>
+<text x="547.0" y="332" font-size="18" font-weight="450" fill="#546471" text-anchor="start">자막 트랙 확인</text>
+<line x1="537.0" x2="537.0" y1="263" y2="330" stroke="#cad5dd" stroke-width="1"/>
+<rect x="26" y="368" width="748" height="114" rx="8" fill="#f5f8fa" stroke="#cad5dd"/>
+<text x="50" y="430" font-size="23" font-weight="700" fill="#22272b" text-anchor="start">저장</text>
+<line x1="133" x2="133" y1="385" y2="465" stroke="#cad5dd" stroke-width="1"/>
+<text x="151.0" y="405" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">공개 카탈로그</text>
+<text x="151.0" y="436" font-size="18" font-weight="450" fill="#546471" text-anchor="start">과목·강의·노트</text>
+<text x="151.0" y="460" font-size="18" font-weight="450" fill="#546471" text-anchor="start">출처와 발췌 구간</text>
+<text x="349.0" y="405" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">공개 자막</text>
+<text x="349.0" y="436" font-size="18" font-weight="450" fill="#546471" text-anchor="start">영상별 번역 자막</text>
+<text x="349.0" y="460" font-size="18" font-weight="450" fill="#546471" text-anchor="start">줄별 시작·종료 시각</text>
+<line x1="339.0" x2="339.0" y1="391" y2="458" stroke="#cad5dd" stroke-width="1"/>
+<text x="547.0" y="405" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">개인 학습 기록</text>
+<text x="547.0" y="436" font-size="18" font-weight="450" fill="#546471" text-anchor="start">계정별 북마크</text>
+<text x="547.0" y="460" font-size="18" font-weight="450" fill="#546471" text-anchor="start">문장 메모와 범위</text>
+<line x1="537.0" x2="537.0" y1="391" y2="458" stroke="#cad5dd" stroke-width="1"/>
+<rect x="26" y="496" width="748" height="114" rx="8" fill="#f5f8fa" stroke="#cad5dd"/>
+<text x="50" y="558" font-size="23" font-weight="700" fill="#22272b" text-anchor="start">편집</text>
+<line x1="133" x2="133" y1="513" y2="593" stroke="#cad5dd" stroke-width="1"/>
+<text x="151.0" y="533" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">노트 편집</text>
+<text x="151.0" y="564" font-size="18" font-weight="450" fill="#546471" text-anchor="start">원본 수집·대조</text>
+<text x="151.0" y="588" font-size="18" font-weight="450" fill="#546471" text-anchor="start">출처가 있는 초안 작성</text>
+<text x="349.0" y="533" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">초안 검사</text>
+<text x="349.0" y="564" font-size="18" font-weight="450" fill="#546471" text-anchor="start">필드와 구간 검증</text>
+<text x="349.0" y="588" font-size="18" font-weight="450" fill="#546471" text-anchor="start">기존 강의와 차이 확인</text>
+<line x1="339.0" x2="339.0" y1="519" y2="586" stroke="#cad5dd" stroke-width="1"/>
+<text x="547.0" y="533" font-size="21" font-weight="700" fill="#22272b" text-anchor="start">변경 반영</text>
+<text x="547.0" y="564" font-size="18" font-weight="450" fill="#546471" text-anchor="start">스냅샷·시드 생성</text>
+<text x="547.0" y="588" font-size="18" font-weight="450" fill="#546471" text-anchor="start">운영용 변경 SQL</text>
+<line x1="537.0" x2="537.0" y1="519" y2="586" stroke="#cad5dd" stroke-width="1"/>
+</svg>

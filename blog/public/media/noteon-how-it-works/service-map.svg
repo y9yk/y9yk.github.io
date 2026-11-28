@@ -1,33 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 420" width="720" height="420" role="img"><title>강의 한 편을 준비하고 보여 주는 서비스 구성</title>
-<defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="#456479"/></marker></defs>
-<style>text{font-family:system-ui,sans-serif;fill:#172e3a}.small{font-size:17px}.name{font-size:22px;font-weight:650}</style>
-<rect width="720" height="420" rx="14" fill="#f6f8f8"/>
-<rect x="20" y="20" width="285" height="80" rx="10" fill="#fff" stroke="#a5b8bf"/>
-<text x="162.5" y="54" text-anchor="middle" class="name">편집 · 검토</text>
-<text x="162.5" y="80" text-anchor="middle" class="small">공식 영상, 자료, 구간 시각</text>
-<rect x="415" y="20" width="285" height="80" rx="10" fill="#fff" stroke="#a5b8bf"/>
-<text x="557.5" y="54" text-anchor="middle" class="name">Supabase Postgres</text>
-<text x="557.5" y="80" text-anchor="middle" class="small">공개 과목과 강의 카탈로그</text>
-<polyline points="305,60 410,60" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
-<text x="360" y="50" text-anchor="middle" class="small">반영</text>
-<rect x="415" y="165" width="285" height="80" rx="10" fill="#e3eff1" stroke="#a5b8bf"/>
-<text x="557.5" y="199" text-anchor="middle" class="name">Railway · Next.js</text>
-<text x="557.5" y="225" text-anchor="middle" class="small">강의에 노트와 자막을 결합</text>
-<polyline points="558,100 558,161" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
-<text x="607" y="140" text-anchor="middle" class="small">조회 결과</text>
-<rect x="20" y="165" width="285" height="80" rx="10" fill="#e3eff1" stroke="#a5b8bf"/>
-<text x="162.5" y="199" text-anchor="middle" class="name">독자의 브라우저</text>
-<text x="162.5" y="225" text-anchor="middle" class="small">React가 강의 화면을 표시</text>
-<polyline points="415,207 310,207" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
-<text x="360" y="196" text-anchor="middle" class="small">화면</text>
-<rect x="20" y="315" width="285" height="80" rx="10" fill="#fff" stroke="#a5b8bf"/>
-<text x="162.5" y="349" text-anchor="middle" class="name">YouTube</text>
-<text x="162.5" y="375" text-anchor="middle" class="small">영상 스트리밍과 재생 위치</text>
-<rect x="415" y="315" width="285" height="80" rx="10" fill="#fff" stroke="#a5b8bf"/>
-<text x="557.5" y="349" text-anchor="middle" class="name">Supabase Auth · DB</text>
-<text x="557.5" y="375" text-anchor="middle" class="small">로그인한 계정의 북마크·메모</text>
-<polyline points="161,245 161,311" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
-<text x="207" y="288" text-anchor="middle" class="small">재생</text>
-<polyline points="270,245 270,285 558,285 558,311" fill="none" stroke="#456479" stroke-width="2" marker-end="url(#arrow)"/>
-<text x="412" y="276" text-anchor="middle" class="small">계정 세션으로 저장</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="422" viewBox="0 0 800 422" role="img" aria-labelledby="title desc" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans CJK KR, Noto Sans KR, sans-serif">
+<title id="title">NoteOn의 기능</title><desc id="desc">편집자는 강의 노트를 제작한다. 독자는 영상과 노트를 함께 공부하고 계정에 북마크와 문장 메모를 남긴다.</desc>
+<rect x="1" y="1" width="798" height="420" rx="13" fill="#fff" stroke="#cad5dd"/>
+<text x="32" y="52" font-size="29" font-weight="700" fill="#22272b" text-anchor="start">NoteOn의 기능</text>
+<text x="32" y="84" font-size="19" font-weight="450" fill="#546471" text-anchor="start">사용자별로 할 수 있는 일</text>
+<rect x="32" y="111" width="736" height="80" rx="8" fill="#f5f8fa" stroke="#cad5dd"/>
+<text x="58" y="160" font-size="25" font-weight="700" fill="#205f8c" text-anchor="start">편집자</text>
+<line x1="159" x2="159" y1="124" y2="178" stroke="#cad5dd" stroke-width="1"/>
+<text x="184" y="142" font-size="24" font-weight="650" fill="#22272b" text-anchor="start">강의 노트 제작</text>
+<text x="184" y="174" font-size="20" font-weight="450" fill="#546471" text-anchor="start">공식 영상과 자료를 대조해 구간별 해설을 작성한다.</text>
+<rect x="32" y="205" width="736" height="181" rx="8" fill="#f5f8fa" stroke="#cad5dd"/>
+<text x="58" y="254" font-size="25" font-weight="700" fill="#205f8c" text-anchor="start">독자</text>
+<line x1="159" x2="159" y1="218" y2="373" stroke="#cad5dd" stroke-width="1"/>
+<text x="184" y="236" font-size="24" font-weight="650" fill="#22272b" text-anchor="start">강의 학습</text>
+<text x="184" y="268" font-size="20" font-weight="450" fill="#546471" text-anchor="start">구간을 선택하고 영상을 보면서 노트를 읽는다.</text>
+<text x="184" y="327" font-size="24" font-weight="650" fill="#22272b" text-anchor="start">내 학습 기록</text>
+<text x="184" y="359" font-size="20" font-weight="450" fill="#546471" text-anchor="start">로그인하면 강의를 북마크하고 문장에 메모를 남긴다.</text>
+<line x1="184" x2="740" y1="285" y2="285" stroke="#cad5dd" stroke-width="1"/>
 </svg>
